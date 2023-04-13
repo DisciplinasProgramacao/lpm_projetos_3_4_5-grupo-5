@@ -1,4 +1,4 @@
-package codigo;
+package codigo.Class;
 
 public class Serie {
     private static final String[] GENEROS = {"comedia", "romance", "terror"};
@@ -34,13 +34,13 @@ public class Serie {
      * @param qtdEpisodios
      * @param audiencia
      */
-    public Serie(String nome, String genero, String idioma, int qtdEpisodios, int audiencia) {
+    public Serie(String nome, String genero, String idioma, int qtdEpisodios) {
         verificaGenero(genero);
         this.nome = nome;
         this.genero = genero;
         this.idioma = idioma;
         this.qtdEpisodios = qtdEpisodios;
-        this.audiencia = audiencia;
+        this.audiencia = 0;
     }
 
     /**
