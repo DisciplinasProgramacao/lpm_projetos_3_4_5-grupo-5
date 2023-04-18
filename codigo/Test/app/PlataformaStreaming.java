@@ -30,6 +30,9 @@ public class PlataformaStreaming {
 	public HashMap<String,Serie> getSeries(){
 		return series;
 	}
+	public Cliente getClienteAtual(){
+		return clienteAtual;
+	}
 	/** gera uma chave aleatória a patir da concatenação de usuário e senha.
 	 * adiciona na tabela hash uma chave associada ao cliente e o cliente
 	 * @param cliente com os atributos senha e usuario
@@ -57,8 +60,8 @@ public class PlataformaStreaming {
 	//TesteFalhando
 	public Cliente login (String nomeUsuario , String senha) {
 		String chave = nomeUsuario+":"+senha;
-		Cliente cliente = clientes.get(chave);
-		return cliente;	
+		clienteAtual = clientes.get(chave);
+		return clientes.get(chave);
 	}
 	
 	/**
@@ -143,5 +146,11 @@ public class PlataformaStreaming {
                 serie.setAudiencia(x);
             }
         }
+	}
+	/**
+	 * Quando o cliente fizer logout de sua conta, o clienteAtual será setado para null
+	 */
+	public void logoff() {
+		clienteAtual = null;
 	}
 }

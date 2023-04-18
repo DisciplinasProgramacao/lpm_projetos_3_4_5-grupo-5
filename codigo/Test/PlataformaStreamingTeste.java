@@ -35,13 +35,13 @@ public class PlataformaStreamingTeste {
 	    	Assert.assertNotNull(plataforma.getClientes().get(chave));
 	    }
 	    
-	    //teste falhando
-//	    @Test
-//	    public void deveFazerLogin() {
-//	    	plataforma.adicionarCliente(clienteTeste);
-//	    	Cliente cliente = plataforma.login("Cteste", "123");
-//	    	Assert.assertNotNull(cliente);
-//	    }
+	   // teste falhando
+	    @Test
+	    public void deveFazerLogin() {
+	    	plataforma.adicionarCliente(clienteTeste);
+	    	plataforma.login("Cteste", "123");
+	    	assertEquals(clienteTeste,plataforma.getClienteAtual());
+	    }
 	    
 	    @Test
 	    public void deveAdicionarSerie() {
@@ -126,5 +126,13 @@ public class PlataformaStreamingTeste {
 	    	plataforma.registrarAudiência(serieTeste);
 	    	
 	    	assertEquals(1,serieTeste.getAudiencia());
+	    }
+	    
+	    @Test
+	    public void testaLogoff() {
+	    	plataforma.adicionarCliente(clienteTeste);
+	    	plataforma.login("Cteste", "123");
+	    	plataforma.logoff();
+	    	Assert.assertNull(plataforma.getClienteAtual());
 	    }
 }
