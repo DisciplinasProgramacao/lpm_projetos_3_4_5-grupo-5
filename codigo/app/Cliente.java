@@ -1,4 +1,4 @@
-package app;
+package codigo.app;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +21,8 @@ public class Cliente {
             this.nomeDeUsuario = nomeDeUsuario;
         if (senha.isEmpty() || senha.length() > 10)
             this.senha = senha;
+        this.listaParaVer = new ArrayList<>();
+        this.listaJaVistas = new ArrayList<>();
     }
     
     public String getUsuario() {
@@ -88,12 +90,12 @@ public class Cliente {
         List<Serie> listaFiltrada = new ArrayList<>();
 
         for (Serie serie : listaParaVer) {
-            if (serie.getGenero().equals(idioma) && !(listaFiltrada.contains(serie)))
+            if (serie.getIdioma().equals(idioma) && !(listaFiltrada.contains(serie)))
                 listaFiltrada.add(serie);
         }
 
         for (Serie serie : listaJaVistas) {
-            if (serie.getGenero().equals(idioma) && !(listaFiltrada.contains(serie)))
+            if (serie.getIdioma().equals(idioma) && !(listaFiltrada.contains(serie)))
                 listaFiltrada.add(serie);
         }
 

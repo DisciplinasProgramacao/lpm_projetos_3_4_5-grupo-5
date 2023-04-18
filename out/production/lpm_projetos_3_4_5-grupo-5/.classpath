@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry excluding="codigo/Test/" kind="src" path=""/>
+	<classpathentry kind="src" path="codigo/Test"/>
+	<classpathentry kind="output" path="out/production/lpm_projetos_3_4_5-grupo-5"/>
+</classpath>

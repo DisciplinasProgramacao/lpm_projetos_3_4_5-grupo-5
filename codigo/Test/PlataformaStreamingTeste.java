@@ -1,16 +1,17 @@
-import static org.junit.jupiter.api.Assertions.assertEquals;
- 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+package codigo.Test;
+
+import codigo.app.Cliente;
+import codigo.app.PlataformaStreaming;
+import codigo.app.Serie;
+import org.junit.Assert;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import app.Cliente;
-import app.Serie;
-import app.PlataformaStreaming;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class PlataformaStreamingTeste {
 
 	    Cliente clienteTeste;

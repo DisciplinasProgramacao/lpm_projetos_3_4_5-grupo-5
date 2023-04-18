@@ -1,4 +1,4 @@
-package app;
+package codigo.app;
 
 public class Serie {
     private static final String[] GENEROS = {"comedia", "romance", "terror"};
