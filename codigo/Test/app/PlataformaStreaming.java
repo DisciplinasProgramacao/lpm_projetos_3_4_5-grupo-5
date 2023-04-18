@@ -130,5 +130,18 @@ public class PlataformaStreaming {
 		return null;
 	}
 	
-	//Registrar audiencia?
+	/**
+	 * Toda vez que um usuário assistir uma serie, será adicionado uma audiência à audiência da serie
+	 * @param serie escolhida pelo usuário para assistir
+	 */
+	public void registrarAudiência(Serie serie) {
+		for (Map.Entry<String, Serie>entrada : series.entrySet()) {
+            Serie aux = entrada.getValue();
+            if (aux.getNome().equalsIgnoreCase(serie.getNome())) {
+                int x = serie.getAudiencia();
+                x++;
+                serie.setAudiencia(x);
+            }
+        }
+	}
 }

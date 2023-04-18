@@ -119,4 +119,12 @@ public class PlataformaStreamingTeste {
 	    	
 	    	assertEquals(serieTeste.getNome(),serie.getNome());	
 	    }
+	    
+	    @Test
+	    public void deveRegistrarAudiencia() {
+	    	plataforma.adicionarSerie(serieTeste);
+	    	plataforma.registrarAudiência(serieTeste);
+	    	
+	    	assertEquals(1,serieTeste.getAudiencia());
+	    }
 }

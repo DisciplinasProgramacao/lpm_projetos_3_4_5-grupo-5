@@ -24,6 +24,9 @@ public class Serie {
     public int getAudiencia() {
         return audiencia;
     }
+    public void setAudiencia(int audiencia) {
+        this.audiencia=audiencia;
+    }
 
 
     /**
