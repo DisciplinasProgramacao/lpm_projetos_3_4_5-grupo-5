@@ -1,7 +1,10 @@
-import static org.junit.jupiter.api.Assertions.assertEquals;
+ import static org.junit.jupiter.api.Assertions.assertEquals;
+ 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import app.Cliente;
+import app.Serie;
 
 public class ClitenteTeste {
     Cliente clienteTeste;
@@ -22,15 +25,15 @@ public class ClitenteTeste {
 
     @Test
     public void deveAdicionarSerie(){
-        Serie serieTerror3 = new Serie("SerieTerror3", "terror", "portugues", 10, 50);
+        Serie serieTerror3 = new Serie("SerieTerror3", "terror", "portugues", 10);
         clienteTeste.adicionarNaLista(serieTerror3);
-        assertEquals(4, clienteTeste.listaParaVer.size());
+        assertEquals(4, clienteTeste.getListaParaVer().size());
     }
 
     @Test
     public void deveRetirarSerie(){
-        clienteTeste.retirarDaLista("SerieTerror1");
-        assertTrue(2, clienteTeste.listaParaVer.size());
+        clienteTeste.retirarNaLista("SerieTerror1");
+        assertEquals(2, clienteTeste.getListaParaVer().size());
     }
 
     @Test
@@ -43,13 +46,13 @@ public class ClitenteTeste {
         assertEquals(2, clienteTeste.filtrarPorGenero("portugues").size());
     }
 
-    @Test
-    public void deveFiltrarEpisodio(){
-        assertEquals(2, clienteTeste.filtrarPorIdioma(10).size());
-    }
+//    @Test
+//    public void deveFiltrarEpisodio(){
+//        assertEquals(2, clienteTeste.filtrarPorIdioma(10).size());
+//    }
 
     @Test
     public void deveFiltrarEpisodio(){
-        assertEquals(2, clienteTeste.filtrarPorIdioma(10).size());
+        assertEquals(2, clienteTeste.filtrarPorQtdEpisodios(10).size());
     }
 }

@@ -1,6 +1,5 @@
-package codigo.Test;
+import app.Serie;
 
-import codigo.Class.Serie;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

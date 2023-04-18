@@ -1,4 +1,4 @@
-package codigo.Class;
+package app;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +21,17 @@ public class Cliente {
             this.nomeDeUsuario = nomeDeUsuario;
         if (senha.isEmpty() || senha.length() > 10)
             this.senha = senha;
+    }
+    
+    public String getUsuario() {
+    	return nomeDeUsuario;
+    }
+    public String getSenha() {
+    	return senha;
+    }
+    
+    public List<Serie> getListaParaVer() {
+    	return listaParaVer;
     }
 
     /**
