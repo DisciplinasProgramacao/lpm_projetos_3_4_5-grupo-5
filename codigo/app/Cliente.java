@@ -17,23 +17,24 @@ public class Cliente {
      * @param senha         Senha pode ter ate 10 caracteres
      */
     public Cliente(String nomeDeUsuario, String senha) {
-        if (nomeDeUsuario.isEmpty() || nomeDeUsuario.length() > 10)
+        if (!(nomeDeUsuario.isEmpty() || nomeDeUsuario.length() > 10))
             this.nomeDeUsuario = nomeDeUsuario;
-        if (senha.isEmpty() || senha.length() > 10)
+        if (!(senha.isEmpty() || senha.length() > 10))
             this.senha = senha;
         this.listaParaVer = new ArrayList<>();
         this.listaJaVistas = new ArrayList<>();
     }
-    
+
     public String getUsuario() {
-    	return nomeDeUsuario;
+        return nomeDeUsuario;
     }
+
     public String getSenha() {
-    	return senha;
+        return senha;
     }
-    
+
     public List<Serie> getListaParaVer() {
-    	return listaParaVer;
+        return listaParaVer;
     }
 
     /**
