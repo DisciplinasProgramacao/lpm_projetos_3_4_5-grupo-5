@@ -11,6 +11,8 @@
 |Salvar dados de clientes, filmes e séries  | em progresso     |
 |Implementação do protótipo de sistema cobrindo os requisitos atuais (documento anterior) | em progresso     |
 
+| :----:        |   :----: |
+
 | teste | Status     |
 | :----:        |   :----: |
 |Implementação das classes Cliente, Serie e PlataformaStreaming como originalmente planejadas   | implementado  |
