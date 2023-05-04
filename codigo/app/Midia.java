@@ -21,14 +21,13 @@ public abstract class Midia {
      * @param nome             Nome da midia
      * @param genero           Gênero da midia, que pode ser: aventura, drama, comedia, romance ou terror
      * @param idioma           Idioma da midia
-     * @param audiencia        Audiência da midia
      * @param dataDeLancamento Data de lançamento da midia
      */
-    private void init(String nome, String genero, String idioma, int audiencia, String dataDeLancamento) {
+    private void init(String nome, String genero, String idioma, String dataDeLancamento) {
         this.nome = nome;
         this.genero = verificaGenero(genero) ? genero : "indefinido";
         this.idioma = idioma.isEmpty() ? "indefinido" : idioma;
-        this.audiencia = audiencia > 0 ? audiencia : 0;
+        this.audiencia = 0;
         this.dataDeLancamento = dataDeLancamento;
     }
 
@@ -41,20 +40,7 @@ public abstract class Midia {
      * @param dataDeLancamento Data de lançamento da midia
      */
     public Midia(String nome, String genero, String idioma, String dataDeLancamento) {
-        init(nome, genero, idioma, 0, dataDeLancamento);
-    }
-
-    /**
-     * Construtor de mídia com audiencia.
-     *
-     * @param nome             Nome da midia
-     * @param genero           Gênero da midia, que pode ser: aventura, drama, comedia, romance ou terror
-     * @param idioma           Idioma da midia
-     * @param audiencia        Audiência da midia
-     * @param dataDeLancamento Data de lançamento da midia
-     */
-    public Midia(String nome, String genero, String idioma, int audiencia, String dataDeLancamento) {
-        init(nome, genero, idioma, audiencia, dataDeLancamento);
+        init(nome, genero, idioma, dataDeLancamento);
     }
 
     //#endregion
@@ -83,11 +69,6 @@ public abstract class Midia {
     }
 
     @Override
-    /**
-     * Retorna caracteristicas da midia. Formato:
-     * <nome> (<dataDeLancamento>) - <genero>, <idioma>, <audiencia> visualizacoes - <duracao>
-     * @return String no formato indicado.
-     */
     public String toString() {
         return this.nome + " (" + this.dataDeLancamento + ") - " + this.genero + ", " + this.idioma + ", " + this.audiencia + " visualizações";
     }
