@@ -22,7 +22,7 @@ public class PlataformaStreamingTeste {
 
     @BeforeEach
     public void prepare() {
-        clienteTeste = new Cliente("Cteste", "123");
+        clienteTeste = new Cliente("Cteste", "login", "123");
         serieTeste = new Serie(4,"you", "drama", "ingles", "20", 20);
         plataforma = new PlataformaStreaming("netflix");
         plataforma.adicionarCliente(clienteTeste);

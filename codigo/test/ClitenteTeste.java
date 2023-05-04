@@ -14,7 +14,7 @@ public class ClitenteTeste {
 
     @BeforeEach
     public void prepare(){
-        clienteTeste = new Cliente("Cteste", "123");
+        clienteTeste = new Cliente("Cteste", "login", "123");
         serieTerror1 = new Serie(1,"SerieTerror1", "terror", "portugues", "10", 10);
         serieTerror2 = new Serie(2,"SerieTerror2", "terror", "ingles", "12",58);
         serieComedia = new Serie(3,"SerieComedia", "comedia", "portugues", "10",4);

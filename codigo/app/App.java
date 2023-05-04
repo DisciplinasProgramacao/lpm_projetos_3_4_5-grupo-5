@@ -1,11 +1,12 @@
 package codigo.app;
 
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class App {
     static Scanner teclado = new Scanner(System.in);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         PlataformaStreaming plataformaStreaming = new PlataformaStreaming("Plataforma de Streaming");
         int opcao = -1;
 
@@ -13,10 +14,10 @@ public class App {
             opcao = menu();
             switch (opcao) {
                 case 1:
-//                    plataformaStreaming.carregarSeries(caminho);
+//                    plataformaStreaming.lerArquivosSeries();
                     break;
                 case 2:
-//                    plataformaStreaming.carregarFilmes(caminho);
+//                    plataformaStreaming.
                     break;
                 case 3:
 //                    plataformaStreaming.carregarUsuarios(caminho);
@@ -40,7 +41,19 @@ public class App {
 //                    plataformaStreaming.salvarUsuarios(caminho);
                     break;
                 case 10:
-//                    plataforma.getlista
+                    System.out.println("Digite o genero:");
+                    String genero = teclado.nextLine();
+                    System.out.println(plataformaStreaming.filtrarPorGenero(genero).toString());
+                    break;
+                case 11:
+                    System.out.println("Digite o idioma:");
+                    String idioma = teclado.nextLine();
+                    System.out.println(plataformaStreaming.filtrarPorIdioma(idioma).toString());
+                    break;
+                case 12:
+                    System.out.println("Digite a quantidade de episódios:");
+                    int qtdEp = Integer.parseInt(teclado.nextLine());
+                    System.out.println(plataformaStreaming.filtrarPorQtdEpisodio(qtdEp).toString());
                     break;
             }
         } while (opcao != 0);
@@ -62,7 +75,7 @@ public class App {
         System.out.println("Digite a quantidade de episodios:");
         int qtdEp = Integer.parseInt(teclado.nextLine());
 
-        Midia serie = new Serie(id,nome,genero,idioma,dtLancamento,qtdEp);
+        Midia serie = new Serie(id, nome, genero, idioma, dtLancamento, qtdEp);
 
     }
 
@@ -82,7 +95,7 @@ public class App {
         System.out.println("Digite duração em minutos:");
         int duracao = Integer.parseInt(teclado.nextLine());
 
-        Midia filme = new Filme(id,nome,genero,idioma,dtLancamento,duracao);
+        Midia filme = new Filme(id, nome, genero, idioma, dtLancamento, duracao);
 
     }
 
@@ -91,10 +104,12 @@ public class App {
         System.out.println("Cadastro de Usuário:");
         System.out.println("Digite o nome de usuário:");
         String nome = teclado.nextLine();
+        System.out.println("Digite o login do usuário:");
+        String login = teclado.nextLine();
         System.out.println("Digite a senha:");
         String senha = teclado.nextLine();
 
-        Cliente usuario = new Cliente(nome, senha);
+        Cliente usuario = new Cliente(nome, login, senha);
 
     }
 
@@ -112,7 +127,9 @@ public class App {
                 "\n7 - Salvar Séries" +
                 "\n8 - Salvar Filmes" +
                 "\n9 - Salvar Usuários" +
-                "\n10 - Exibir catálago de filmes e séries" +
+                "\n10 - Filtrar midias por genero" +
+                "\n11 - Filtrar midias por idioma" +
+                "\n12 - Filtrar séries por quantidade de episódios" +
                 "\n---------------------" +
                 "\nDigite sua opção: ");
 

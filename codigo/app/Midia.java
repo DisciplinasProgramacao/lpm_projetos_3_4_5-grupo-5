@@ -6,6 +6,7 @@ package codigo.app;
 public abstract class Midia implements ISalvar{
     //#region atributos
     private static final String[] GENEROS = {"aventura", "drama", "comedia", "romance", "terror"};
+    private int id;
     private String nome;
     private String genero;
     private String idioma;
@@ -18,12 +19,14 @@ public abstract class Midia implements ISalvar{
     /**
      * Inicializador para os construtores da mídia.
      *
+     * @param id               Id da mídia
      * @param nome             Nome da midia
      * @param genero           Gênero da midia, que pode ser: aventura, drama, comedia, romance ou terror
      * @param idioma           Idioma da midia
      * @param dataDeLancamento Data de lançamento da midia
      */
     private void init(int id, String nome, String genero, String idioma, String dataDeLancamento) {
+        this.id = id;
         this.nome = nome;
         this.genero = verificaGenero(genero) ? genero : "indefinido";
         this.idioma = idioma.isEmpty() ? "indefinido" : idioma;
@@ -70,7 +73,7 @@ public abstract class Midia implements ISalvar{
 
     @Override
     public String toString() {
-        return this.nome + " (" + this.dataDeLancamento + ") - " + this.genero + ", " + this.idioma + ", " + this.audiencia + " visualizações";
+        return this.id + " | " + this.nome + " (" + this.dataDeLancamento + ") - " + this.genero + ", " + this.idioma + ", " + this.audiencia + " visualizações";
     }
 
     public String getNome() {
@@ -100,6 +103,10 @@ public abstract class Midia implements ISalvar{
         if(this.idioma.equals(idioma))
             return true;
         return false;
+    }
+
+    public int getId() {
+        return this.id;
     }
 
     //#endregion
