@@ -15,11 +15,6 @@ public class Filme extends Midia {
         super(nome, genero, idioma, DataDeLancamento);
         init(duracaoMin);
     }
-
-    public Filme(String nome, String genero, String idioma, int audiencia, String DataDeLancamento, int duracaoMin) {
-        super(nome, genero, idioma, audiencia, DataDeLancamento);
-        init(duracaoMin);
-    }
     //#endregion
 
     //#region metodos da classe
@@ -44,7 +39,7 @@ public class Filme extends Midia {
     }
 
     /**
-     * Descrição da filme em string: caracteristicas - duração.
+     * Descrição da filme em string: <nome> (<dataDeLancamento>) - <genero>, <idioma>, <audiencia> visualizacoes - - duração.
      *
      * @return String com o formato descrito acima.
      */
@@ -54,5 +49,8 @@ public class Filme extends Midia {
         desc.append(" - " + converteDuracaoMin() + " min.");
         return desc.toString();
     }
+
+
+
     //#endregion
 }

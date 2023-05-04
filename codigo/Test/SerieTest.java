@@ -1,4 +1,4 @@
-package codigo.Test;
+package codigo.test;
 
 import codigo.app.Serie;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,7 +10,7 @@ public class SerieTest {
     Serie s1;
     @BeforeEach
     public void prepare(){
-        s1 = new Serie("nome", "terror", "portugues", 2);
+        s1 = new Serie("nome", "terror", "portugues", "2");
     }
 
     @Test
