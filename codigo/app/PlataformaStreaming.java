@@ -104,20 +104,19 @@ public class PlataformaStreaming {
 	/**Para cada entrada da tabela hash verifica se a quantidade de episodios é correspondente ao passado por parametro.
 	 * Se a quantidade de episodios for correspondente, a serie é adicionada à lista "seriesPorEpisodio"
 	 * A função retorna uma lista de serie que possuem aquela determinada quantidade de episodios
-	 * @param quantidade de episodios para filtrar as series
+	 * @param quantidadeEpisodios de episodios para filtrar as series
 	 * @return
 	 */
  // loop na lista, cast pra serie, e chama o filtro
-	public List<Serie> filtrarPorQtdEpisodio(int quantidade) {
+	public List<Serie> filtrarPorQtdEpisodio(int quantidadeEpisodios) {
 		List<Serie> seriesPorEpisodio = new ArrayList<>();
-		// como pegar as series da midia?
-//		HashMap<String, Serie> series = midias.getSeries();
-//		for (Map.Entry<String, Serie>entrada : series.entrySet()) {
-//			Serie serie = entrada.getValue();
-//			if (serie.getQtdEpisodios()== quantidade) {
-//				seriesPorEpisodio.add(serie);
-//			}
-//		}
+		for (Map.Entry<String, Midia> entrada : midias.entrySet()) {
+			if (entrada instanceof Serie) {
+				Serie serie = (Serie)entrada;
+				if (serie.filtrarPorQtdEpisodios(quantidadeEpisodios))
+					seriesPorEpisodio.add(serie);
+			}
+		}
 		return seriesPorEpisodio;
 	}
 
@@ -141,7 +140,7 @@ public class PlataformaStreaming {
 	 * Toda vez que um usuário assistir uma midia, será adicionado uma audiência à audiência da midia
 	 * @param midia escolhida pelo usuário para assistir
 	 */
-	public void registrarAudiência(Midia midia) {
+	public void registrarAudiencia(Midia midia) {
 		for (Map.Entry<String, Midia>entrada : midias.entrySet()) {
 			Midia aux = entrada.getValue();
 			if (aux.getNome().equalsIgnoreCase(midia.getNome())) {

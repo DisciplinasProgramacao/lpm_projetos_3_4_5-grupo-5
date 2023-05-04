@@ -28,4 +28,10 @@ public class Serie extends Midia {
         return qtdEpisodios;
     }
 
+    public boolean filtrarPorQtdEpisodios(int qtdEpisodios){
+        if(this.qtdEpisodios == qtdEpisodios)
+            return true;
+        return false;
+    }
+
 }

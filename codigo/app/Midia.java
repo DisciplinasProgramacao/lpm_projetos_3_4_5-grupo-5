@@ -89,5 +89,18 @@ public abstract class Midia {
         return this.audiencia;
     }
 
+
+    public boolean filtrarPorGenero(String genero){
+        if(this.genero.equals(genero))
+            return true;
+        return false;
+    }
+
+    public boolean filtrarPorIdioma(String idioma){
+        if(this.idioma.equals(idioma))
+            return true;
+        return false;
+    }
+
     //#endregion
 }

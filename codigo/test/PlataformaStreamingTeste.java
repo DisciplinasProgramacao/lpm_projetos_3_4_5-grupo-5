@@ -29,6 +29,13 @@ public class PlataformaStreamingTeste {
         plataforma.adicionarMidia(serieTeste);
     }
 
+
+    @Test
+    public void deveRetornarSerieComQtdEpisodios(){
+        List<Serie> listaSeries = plataforma.filtrarPorQtdEpisodio(20);
+        assertEquals(1,  listaSeries.size());
+    }
+
     @Test
     public void deveAdicionarCliente() {
         plataforma.adicionarCliente(clienteTeste);
@@ -124,7 +131,7 @@ public class PlataformaStreamingTeste {
     @Test
     public void deveRegistrarAudiencia() {
         plataforma.adicionarMidia(serieTeste);
-        plataforma.registrarAudiência(serieTeste);
+        plataforma.registrarAudiencia(serieTeste);
 
         assertEquals(1, serieTeste.getAudiencia());
     }
