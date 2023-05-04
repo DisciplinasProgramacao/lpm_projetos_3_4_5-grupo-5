@@ -1,5 +1,8 @@
 package codigo.app;
 
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class Serie extends Midia {
 
     private int qtdEpisodios;
@@ -32,6 +35,20 @@ public class Serie extends Midia {
         if(this.qtdEpisodios == qtdEpisodios)
             return true;
         return false;
+    }
+
+    public void salvar(String caminhoArq){
+        try {
+            FileWriter writer = new FileWriter(caminhoArq, true);
+
+            if(!caminhoArq.equals("")){
+                writer.write(toString() + "\n");
+            }
+
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Erro ao salvar dados no arquivo.");
+        }
     }
 
 }

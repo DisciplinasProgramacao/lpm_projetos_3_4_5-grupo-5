@@ -3,7 +3,7 @@ package codigo.app;
 /**
  * Midia: tem nome, gênero, idioma e audiência. Classe abstrata que recebe por parâmetro os valores necessários da classe filha.
  */
-public abstract class Midia {
+public abstract class Midia implements ISalvar{
     //#region atributos
     private static final String[] GENEROS = {"aventura", "drama", "comedia", "romance", "terror"};
     private String nome;

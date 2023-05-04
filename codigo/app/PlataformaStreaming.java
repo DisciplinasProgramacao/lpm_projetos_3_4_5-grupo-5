@@ -154,4 +154,11 @@ public class PlataformaStreaming {
 	public void logoff() {
 		clienteAtual = null;
 	}
+
+	public void salvar(String caminho) {
+		for (Map.Entry<String, Midia>entrada : midias.entrySet()) {
+			Midia midia = entrada.getValue();
+			midia.salvar(caminho);
+		}
+	}
 }
