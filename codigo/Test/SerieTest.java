@@ -10,7 +10,7 @@ public class SerieTest {
     Serie s1;
     @BeforeEach
     public void prepare(){
-        s1 = new Serie("nome", "terror", "portugues", "2");
+        s1 = new Serie(1,"nome", "terror", "portugues", "2",6);
     }
 
     @Test

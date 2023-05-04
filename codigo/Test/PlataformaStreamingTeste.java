@@ -23,7 +23,7 @@ public class PlataformaStreamingTeste {
     @BeforeEach
     public void prepare() {
         clienteTeste = new Cliente("Cteste", "123");
-        serieTeste = new Serie("you", "drama", "ingles", "20");
+        serieTeste = new Serie(4,"you", "drama", "ingles", "20", 20);
         plataforma = new PlataformaStreaming("netflix");
         plataforma.adicionarCliente(clienteTeste);
         plataforma.adicionarMidia(serieTeste);
@@ -53,9 +53,9 @@ public class PlataformaStreamingTeste {
 
     @Test
     public void deveFiltrarSeriePorGenero() {
-        Serie serieTeste1 = new Serie("teste", "drama", "ingles", "20");
-        Serie serieTeste2 = new Serie("teste", "suspense", "ingles", "20");
-        Serie serieTeste3 = new Serie("teste", "terroe", "ingles", "20");
+        Serie serieTeste1 = new Serie(1,"teste", "drama", "ingles", "20",6);
+        Serie serieTeste2 = new Serie(2,"teste", "suspense", "ingles", "20",8);
+        Serie serieTeste3 = new Serie(3,"teste", "terroe", "ingles", "20",9);
         List<Midia> listaTeste = new ArrayList<>();
         plataforma.adicionarMidia(serieTeste);
         plataforma.adicionarMidia(serieTeste1);
@@ -72,9 +72,9 @@ public class PlataformaStreamingTeste {
 
     @Test
     public void deveFiltrarSeriePorIdioma() {
-        Serie serieTeste1 = new Serie("teste", "drama", "ingles", "20");
-        Serie serieTeste2 = new Serie("teste", "suspense", "portugues", "20");
-        Serie serieTeste3 = new Serie("teste", "terroe", "ingles", "20");
+        Serie serieTeste1 = new Serie(5,"teste", "drama", "ingles", "20",5);
+        Serie serieTeste2 = new Serie(6,"teste", "suspense", "portugues", "20",9);
+        Serie serieTeste3 = new Serie(7,"teste", "terroe", "ingles", "20",3);
         List<Midia> listaTeste = new ArrayList<>();
         plataforma.adicionarMidia(serieTeste);
         plataforma.adicionarMidia(serieTeste1);
@@ -90,9 +90,9 @@ public class PlataformaStreamingTeste {
 
     @Test
     public void deveFiltrarSeriePorQtdEpisodio() {
-        Serie serieTeste1 = new Serie("teste", "drama", "ingles", "20");
-        Serie serieTeste2 = new Serie("teste", "suspense", "portugues", "10");
-        Serie serieTeste3 = new Serie("teste", "terroe", "ingles", "10");
+        Serie serieTeste1 = new Serie(8,"teste", "drama", "ingles", "20",89);
+        Serie serieTeste2 = new Serie(9,"teste", "suspense", "portugues", "10",57);
+        Serie serieTeste3 = new Serie(10,"teste", "terroe", "ingles", "10",23);
         List<Serie> listaTeste = new ArrayList<>();
         plataforma.adicionarMidia(serieTeste);
         plataforma.adicionarMidia(serieTeste1);
@@ -108,9 +108,9 @@ public class PlataformaStreamingTeste {
 
     @Test
     public void deveBuscarSerie() {
-        Serie serieTeste1 = new Serie("teste", "drama", "ingles", "20");
-        Serie serieTeste2 = new Serie("teste", "suspense", "portugues", "10");
-        Serie serieTeste3 = new Serie("teste", "terroe", "ingles", "10");
+        Serie serieTeste1 = new Serie(11,"teste", "drama", "ingles", "20",20);
+        Serie serieTeste2 = new Serie(12,"teste", "suspense", "portugues", "10",4);
+        Serie serieTeste3 = new Serie(13,"teste", "terroe", "ingles", "10",6);
         plataforma.adicionarMidia(serieTeste);
         plataforma.adicionarMidia(serieTeste1);
         plataforma.adicionarMidia(serieTeste2);

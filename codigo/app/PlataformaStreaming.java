@@ -49,7 +49,7 @@ public class PlataformaStreaming {
 	 */
 	public void adicionarMidia(Midia midia) {
 		String chave = midia.getNome() +":"+midia.getGenero();
-		Midia nova = new Filme("a","n","c","10",100); //to-do -> filme ou serie? metodos separados?
+		Midia nova = new Filme(1,"a","n","c","10",100); //to-do -> filme ou serie? metodos separados?
 
 	}
 
@@ -107,7 +107,7 @@ public class PlataformaStreaming {
 	 * @param quantidade de episodios para filtrar as series
 	 * @return
 	 */
-
+ // loop na lista, cast pra serie, e chama o filtro
 	public List<Serie> filtrarPorQtdEpisodio(int quantidade) {
 		List<Serie> seriesPorEpisodio = new ArrayList<>();
 		// como pegar as series da midia?

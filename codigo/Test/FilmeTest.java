@@ -11,7 +11,7 @@ public class FilmeTest {
     Midia f1;
     @BeforeEach
     public void prepare(){
-        f1 = new Filme("nome", "terror", "portugues", "2", 30);
+        f1 = new Filme(1,"nome", "terror", "portugues", "2", 30);
     }
 
     @Test

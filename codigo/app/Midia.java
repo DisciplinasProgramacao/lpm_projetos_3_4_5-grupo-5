@@ -23,7 +23,7 @@ public abstract class Midia {
      * @param idioma           Idioma da midia
      * @param dataDeLancamento Data de lançamento da midia
      */
-    private void init(String nome, String genero, String idioma, String dataDeLancamento) {
+    private void init(int id, String nome, String genero, String idioma, String dataDeLancamento) {
         this.nome = nome;
         this.genero = verificaGenero(genero) ? genero : "indefinido";
         this.idioma = idioma.isEmpty() ? "indefinido" : idioma;
@@ -39,8 +39,8 @@ public abstract class Midia {
      * @param idioma           Idioma da midia
      * @param dataDeLancamento Data de lançamento da midia
      */
-    public Midia(String nome, String genero, String idioma, String dataDeLancamento) {
-        init(nome, genero, idioma, dataDeLancamento);
+    public Midia(int id, String nome, String genero, String idioma, String dataDeLancamento) {
+        init(id, nome, genero, idioma, dataDeLancamento);
     }
 
     //#endregion

@@ -15,9 +15,9 @@ public class ClitenteTeste {
     @BeforeEach
     public void prepare(){
         clienteTeste = new Cliente("Cteste", "123");
-        serieTerror1 = new Serie("SerieTerror1", "terror", "portugues", "10");
-        serieTerror2 = new Serie("SerieTerror2", "terror", "ingles", "12");
-        serieComedia = new Serie("SerieComedia", "comedia", "portugues", "10");
+        serieTerror1 = new Serie(1,"SerieTerror1", "terror", "portugues", "10", 10);
+        serieTerror2 = new Serie(2,"SerieTerror2", "terror", "ingles", "12",58);
+        serieComedia = new Serie(3,"SerieComedia", "comedia", "portugues", "10",4);
         clienteTeste.adicionarNaLista(serieTerror1);
         clienteTeste.adicionarNaLista(serieTerror2);
         clienteTeste.adicionarNaLista(serieComedia);
@@ -25,7 +25,7 @@ public class ClitenteTeste {
 
     @Test
     public void deveAdicionarSerie(){
-        Serie serieTerror3 = new Serie("SerieTerror3", "terror", "portugues", "10");
+        Serie serieTerror3 = new Serie(4,"SerieTerror3", "terror", "portugues", "10",5);
         clienteTeste.adicionarNaLista(serieTerror3);
         assertEquals(4, clienteTeste.getListaParaVer().size());
     }
