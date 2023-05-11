@@ -2,6 +2,7 @@ package codigo.app;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.*;
 
 public class Filme extends Midia {
 
@@ -34,11 +35,16 @@ public class Filme extends Midia {
         return desc.toString();
     }
 
-    public void salvar(String caminhoArq){
+    /**
+     * Salva um filme no arquivo
+     *
+     * @param caminhoArq Caminho do arquivo a ser salvo
+     */
+    public void salvar(String caminhoArq) {
         try {
             FileWriter writer = new FileWriter(caminhoArq, true);
 
-            if(!caminhoArq.equals("")){
+            if (!caminhoArq.equals("")) {
                 writer.write(toString() + "\n");
             }
 
@@ -47,4 +53,6 @@ public class Filme extends Midia {
             System.out.println("Erro ao salvar dados no arquivo.");
         }
     }
+
+
 }

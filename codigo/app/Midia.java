@@ -1,5 +1,8 @@
 package codigo.app;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Midia: tem nome, gênero, idioma e audiência. Classe abstrata que recebe por parâmetro os valores necessários da classe filha.
  */
@@ -12,6 +15,8 @@ public abstract class Midia implements ISalvar{
     private String idioma;
     private int audiencia;
     private String dataDeLancamento;
+    private List<Integer> avaliacoes;
+    private double nota;
     //#endregion
 
     //#region construtores
@@ -32,6 +37,7 @@ public abstract class Midia implements ISalvar{
         this.idioma = idioma.isEmpty() ? "indefinido" : idioma;
         this.audiencia = 0;
         this.dataDeLancamento = dataDeLancamento;
+        avaliacoes = new ArrayList<Integer>();
     }
 
     /**
@@ -103,6 +109,16 @@ public abstract class Midia implements ISalvar{
         if(this.idioma.equals(idioma))
             return true;
         return false;
+    }
+
+    /**
+     * Adiciona avaliação às avaliações da mídia
+     *
+     * @param avaliacao Nota da mídia
+     */
+    public void addAvaliacao(int avaliacao) {
+        this.avaliacoes.add(avaliacao);
+        this.nota = this.avaliacoes.stream().mapToDouble(f -> f).average().orElse(0);
     }
 
     public int getId() {

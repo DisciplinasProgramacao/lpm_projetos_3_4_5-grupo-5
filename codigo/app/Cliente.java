@@ -164,4 +164,18 @@ public class Cliente {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Adiciona avaliação à uma mídia
+     *
+     * @param midia     Mídia a ser avaliada
+     * @param avaliacao Nota da mídia
+     */
+    public void addAvaliacao(Midia midia, int avaliacao) {
+        Avaliacao nota = new Avaliacao();
+        for (Midia m : listaJaVistas) {
+            if (midia.equals(m))
+                midia.addAvaliacao(avaliacao);
+        }
+    }
 }
