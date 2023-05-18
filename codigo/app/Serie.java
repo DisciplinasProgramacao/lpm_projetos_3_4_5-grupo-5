@@ -12,7 +12,7 @@ import java.util.Scanner;
 public class Serie extends Midia {
 
     private int qtdEpisodios;
-
+    private String TIPO_MIDIA = "S";
     private void init(int qtdEpisodios) {
         this.qtdEpisodios = qtdEpisodios;
     }
@@ -30,8 +30,13 @@ public class Serie extends Midia {
     @Override
     public String toString() {
         StringBuilder desc = new StringBuilder(super.toString());
-        desc.append(" - " + this.qtdEpisodios + " episodios.");
+        desc.append(";" + this.qtdEpisodios);
         return desc.toString();
+    }
+
+    @Override
+    public String definirTipoMidia() {
+        return this.TIPO_MIDIA;
     }
 
     public int getQtdEpisodios() {

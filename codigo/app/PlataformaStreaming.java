@@ -1,9 +1,10 @@
 package codigo.app;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.*;
 
 public class PlataformaStreaming {
 
@@ -11,7 +12,7 @@ public class PlataformaStreaming {
     private Cliente clienteAtual;
     private HashMap<String, Midia> midias;
     private HashMap<String, Cliente> clientes;
-
+    private List<Midia> catalogoMidias;
 
     /**
      * Criar uma nova plataforma
@@ -23,6 +24,7 @@ public class PlataformaStreaming {
         this.nome = nome;
         clientes = new HashMap<>();
         midias = new HashMap<>();
+        this.catalogoMidias = new ArrayList<>();
     }
 
     public HashMap<String, Cliente> getClientes() {
@@ -115,14 +117,10 @@ public class PlataformaStreaming {
     public List<Serie> filtrarPorQtdEpisodio(int quantidadeEpisodios) {
         List<Serie> seriesPorEpisodio = new ArrayList<>();
         for (Map.Entry<String, Midia> entrada : midias.entrySet()) {
-            try {
-                Midia midia = entrada.getValue();
-                if (midia instanceof Serie) {
-                    Serie serie = (Serie) midia;
-                    if (((Serie) serie).filtrarPorQtdEpisodios(quantidadeEpisodios))
-                        seriesPorEpisodio.add(serie);
-                }
-            } catch (ClassCastException e) {
+            if (entrada instanceof Serie) {
+                Serie serie = (Serie) entrada;
+                if (serie.filtrarPorQtdEpisodios(quantidadeEpisodios))
+                    seriesPorEpisodio.add(serie);
             }
         }
         return seriesPorEpisodio;
@@ -167,10 +165,46 @@ public class PlataformaStreaming {
         clienteAtual = null;
     }
 
-    public void salvar(String caminho) {
-        for (Map.Entry<String, Midia> entrada : midias.entrySet()) {
+    public void salvar(String caminho) throws IOException {
+        FileWriter writer = new FileWriter(caminho, false);
+
+        for (Map.Entry<String, Midia>entrada : midias.entrySet()) {
             Midia midia = entrada.getValue();
             midia.salvar(caminho);
         }
+    }
+
+    public void carregar(String arquivo) throws FileNotFoundException {
+
+        Scanner scanner = new Scanner(new File(arquivo));
+//        scanner.nextLine();
+
+        while (scanner.hasNextLine()) {
+            String linha = scanner.nextLine();
+            String[] campos = linha.split(";");
+            String tipoMidia = campos[0];
+            int id = Integer.parseInt(campos[1]);
+            String nome = campos[2];
+            String genero = campos[3];
+            String idioma= campos[4];
+            String lancamento = campos[5];
+//            int duracao = Integer.parseInt(campos[6]);
+
+            if (tipoMidia.equals("F")){
+                int duracao = Integer.parseInt(campos[6]);
+                Midia filme = new Filme(id, nome, genero, idioma, lancamento, duracao);
+                catalogoMidias.add(filme);
+
+            } else if (tipoMidia.equals("S")){
+                int qtdEpisodios = Integer.parseInt(campos[6]);
+                Midia serie = new Serie(id, nome, genero, idioma, lancamento, qtdEpisodios);
+                catalogoMidias.add(serie);
+            }
+        }
+        scanner.close();
+    }
+
+    public List<Midia> filmes() {
+        return catalogoMidias;
     }
 }

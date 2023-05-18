@@ -8,6 +8,7 @@ public class Filme extends Midia {
 
     //#region atributos
     private long duracao;
+    private String TIPO_MIDIA = "F";
     //#endregion
 
     //#region construtores
@@ -31,8 +32,13 @@ public class Filme extends Midia {
     @Override
     public String toString() {
         StringBuilder desc = new StringBuilder(super.toString());
-        desc.append(" - " + this.duracao + " min.");
+        desc.append(";" + this.duracao);
         return desc.toString();
+    }
+
+    @Override
+    public String definirTipoMidia() {
+        return this.TIPO_MIDIA;
     }
 
     /**
