@@ -115,10 +115,14 @@ public class PlataformaStreaming {
     public List<Serie> filtrarPorQtdEpisodio(int quantidadeEpisodios) {
         List<Serie> seriesPorEpisodio = new ArrayList<>();
         for (Map.Entry<String, Midia> entrada : midias.entrySet()) {
-            if (entrada instanceof Serie) {
-                Serie serie = (Serie) entrada;
-                if (serie.filtrarPorQtdEpisodios(quantidadeEpisodios))
-                    seriesPorEpisodio.add(serie);
+            try {
+                Midia midia = entrada.getValue();
+                if (midia instanceof Serie) {
+                    Serie serie = (Serie) midia;
+                    if (((Serie) serie).filtrarPorQtdEpisodios(quantidadeEpisodios))
+                        seriesPorEpisodio.add(serie);
+                }
+            } catch (ClassCastException e) {
             }
         }
         return seriesPorEpisodio;
@@ -156,17 +160,17 @@ public class PlataformaStreaming {
         }
     }
 
-	/**
-	 * Quando o cliente fizer logout de sua conta, o clienteAtual será setado para null
-	 */
-	public void logoff() {
-		clienteAtual = null;
-	}
+    /**
+     * Quando o cliente fizer logout de sua conta, o clienteAtual será setado para null
+     */
+    public void logoff() {
+        clienteAtual = null;
+    }
 
-	public void salvar(String caminho) {
-		for (Map.Entry<String, Midia>entrada : midias.entrySet()) {
-			Midia midia = entrada.getValue();
-			midia.salvar(caminho);
-		}
-	}
+    public void salvar(String caminho) {
+        for (Map.Entry<String, Midia> entrada : midias.entrySet()) {
+            Midia midia = entrada.getValue();
+            midia.salvar(caminho);
+        }
+    }
 }

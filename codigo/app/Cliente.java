@@ -8,8 +8,8 @@ public class Cliente {
     private String nomeDeUsuario;
     private String login;
     private String senha;
-    private List<Serie> listaParaVer;
-    private List<Serie> listaJaVistas;
+    private List<Midia> listaParaVer;
+    private List<Midia> listaJaVistas;
 
 
     /**
@@ -42,71 +42,71 @@ public class Cliente {
         return this.senha;
     }
 
-    public List<Serie> getListaParaVer() {
+    public List<Midia> getListaParaVer() {
         return listaParaVer;
     }
 
     /**
-     * Adiciona serie na lista de séries "Para Ver"
+     * Adiciona midia na lista de mídias "Para Ver"
      *
-     * @param serie Serie a ser adicionada na lista
+     * @param midia Midia a ser adicionada na lista
      */
-    public void adicionarNaLista(Serie serie) {
-        if ((!this.listaParaVer.contains(serie)))
-            this.listaParaVer.add(serie);
+    public void adicionarNaLista(Midia midia) {
+        if ((!this.listaParaVer.contains(midia)))
+            this.listaParaVer.add(midia);
     }
 
     /**
-     * Retira serie da lista de séries "Para Ver"
+     * Retira midia da lista de mídias "Para Ver"
      *
-     * @param nomeSerie Nome da serie a ser removida da lista
+     * @param nomeMidia Nome da midia a ser removida da lista
      */
-    public void retirarNaLista(String nomeSerie) {
-        for (Serie serie : listaParaVer) {
-            if (serie.getNome().equals(nomeSerie)) {
-                this.listaParaVer.remove(serie);
+    public void retirarNaLista(String nomeMidia) {
+        for (Midia midia : listaParaVer) {
+            if (midia.getNome().equals(nomeMidia)) {
+                this.listaParaVer.remove(midia);
                 return;
             }
         }
     }
 
     /**
-     * Filtra series por genero
+     * Filtra midias por genero
      *
      * @param genero
      */
-    public List<Serie> filtrarPorGenero(String genero) {
-        List<Serie> listaFiltrada = new ArrayList<>();
+    public List<Midia> filtrarPorGenero(String genero) {
+        List<Midia> listaFiltrada = new ArrayList<>();
 
-        for (Serie serie : listaParaVer) {
-            if (serie.getGenero().equals(genero) && !(listaFiltrada.contains(serie)))
-                listaFiltrada.add(serie);
+        for (Midia midia : listaParaVer) {
+            if (midia.getGenero().equals(genero) && !(listaFiltrada.contains(midia)))
+                listaFiltrada.add(midia);
         }
 
-        for (Serie serie : listaJaVistas) {
-            if (serie.getGenero().equals(genero) && !(listaFiltrada.contains(serie)))
-                listaFiltrada.add(serie);
+        for (Midia midia : listaJaVistas) {
+            if (midia.getGenero().equals(genero) && !(listaFiltrada.contains(midia)))
+                listaFiltrada.add(midia);
         }
 
         return listaFiltrada;
     }
 
     /**
-     * Filtra series por idioma
+     * Filtra midias por idioma
      *
      * @param idioma
      */
-    public List<Serie> filtrarPorIdioma(String idioma) {
-        List<Serie> listaFiltrada = new ArrayList<>();
+    public List<Midia> filtrarPorIdioma(String idioma) {
+        List<Midia> listaFiltrada = new ArrayList<>();
 
-        for (Serie serie : listaParaVer) {
-            if (serie.getIdioma().equals(idioma) && !(listaFiltrada.contains(serie)))
-                listaFiltrada.add(serie);
+        for (Midia midia : listaParaVer) {
+            if (midia.getIdioma().equals(idioma) && !(listaFiltrada.contains(midia)))
+                listaFiltrada.add(midia);
         }
 
-        for (Serie serie : listaJaVistas) {
-            if (serie.getIdioma().equals(idioma) && !(listaFiltrada.contains(serie)))
-                listaFiltrada.add(serie);
+        for (Midia midia : listaJaVistas) {
+            if (midia.getIdioma().equals(idioma) && !(listaFiltrada.contains(midia)))
+                listaFiltrada.add(midia);
         }
 
         return listaFiltrada;
@@ -120,28 +120,40 @@ public class Cliente {
     public List<Serie> filtrarPorQtdEpisodios(int quantEpisodios) {
         List<Serie> listaFiltrada = new ArrayList<>();
 
-        for (Serie serie : listaParaVer) {
-            if (serie.getQtdEpisodios() == quantEpisodios && !(listaFiltrada.contains(serie)))
-                listaFiltrada.add(serie);
+        for (Midia midia : listaParaVer) {
+            try {
+                if (midia instanceof Serie) {
+                    Serie serie = (Serie) midia;
+                    if (serie.filtrarPorQtdEpisodios(quantEpisodios) && !(listaFiltrada.contains(midia)))
+                        listaFiltrada.add(serie);
+                }
+            } catch (ClassCastException e) {
+            }
         }
 
-        for (Serie serie : listaJaVistas) {
-            if (serie.getQtdEpisodios() == quantEpisodios && !(listaFiltrada.contains(serie)))
-                listaFiltrada.add(serie);
+        for (Midia midia : listaJaVistas) {
+            try {
+                if (midia instanceof Serie) {
+                    Serie serie = (Serie) midia;
+                    if (serie.filtrarPorQtdEpisodios(quantEpisodios) && !(listaFiltrada.contains(midia)))
+                        listaFiltrada.add(serie);
+                }
+            } catch (ClassCastException e) {
+            }
         }
 
         return listaFiltrada;
     }
 
     /**
-     * Adiciona serie na lista de series assistidas
+     * Adiciona midia na lista de midias assistidas
      *
-     * @param serie
+     * @param midia
      */
-    public void registrarPorAudiencia(Serie serie) {
-        if (!(this.listaJaVistas.contains(serie))) {
-            this.listaJaVistas.add(serie);
-            serie.registrarAudiencia();
+    public void registrarPorAudiencia(Midia midia) {
+        if (!(this.listaJaVistas.contains(midia))) {
+            this.listaJaVistas.add(midia);
+            midia.registrarAudiencia();
         }
     }
 
@@ -168,14 +180,17 @@ public class Cliente {
     /**
      * Adiciona avaliação à uma mídia
      *
-     * @param midia     Mídia a ser avaliada
-     * @param avaliacao Nota da mídia
+     * @param midia Mídia a ser avaliada
+     * @param nota  Avaliacao da mídia (número inteiro de 0 a 10)
      */
-    public void addAvaliacao(Midia midia, int avaliacao) {
-        Avaliacao nota = new Avaliacao();
+    public void addAvaliacao(Midia midia, int nota) throws Exception {
+        Avaliacao avaliacao = new Avaliacao(this.nomeDeUsuario, nota);
         for (Midia m : listaJaVistas) {
-            if (midia.equals(m))
+            if (midia.equals(m)) {
                 midia.addAvaliacao(avaliacao);
+                return;
+            }
         }
+
     }
 }

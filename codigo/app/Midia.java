@@ -1,12 +1,13 @@
 package codigo.app;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
  * Midia: tem nome, gênero, idioma e audiência. Classe abstrata que recebe por parâmetro os valores necessários da classe filha.
  */
-public abstract class Midia implements ISalvar{
+public abstract class Midia implements ISalvar {
     //#region atributos
     private static final String[] GENEROS = {"aventura", "drama", "comedia", "romance", "terror"};
     private int id;
@@ -15,7 +16,7 @@ public abstract class Midia implements ISalvar{
     private String idioma;
     private int audiencia;
     private String dataDeLancamento;
-    private List<Integer> avaliacoes;
+    private HashSet<Avaliacao> avaliacoes;
     private double nota;
     //#endregion
 
@@ -37,7 +38,7 @@ public abstract class Midia implements ISalvar{
         this.idioma = idioma.isEmpty() ? "indefinido" : idioma;
         this.audiencia = 0;
         this.dataDeLancamento = dataDeLancamento;
-        avaliacoes = new ArrayList<Integer>();
+        avaliacoes = new HashSet<>();
     }
 
     /**
@@ -99,14 +100,14 @@ public abstract class Midia implements ISalvar{
     }
 
 
-    public boolean filtrarPorGenero(String genero){
-        if(this.genero.equals(genero))
+    public boolean filtrarPorGenero(String genero) {
+        if (this.genero.equals(genero))
             return true;
         return false;
     }
 
-    public boolean filtrarPorIdioma(String idioma){
-        if(this.idioma.equals(idioma))
+    public boolean filtrarPorIdioma(String idioma) {
+        if (this.idioma.equals(idioma))
             return true;
         return false;
     }
@@ -116,9 +117,23 @@ public abstract class Midia implements ISalvar{
      *
      * @param avaliacao Nota da mídia
      */
-    public void addAvaliacao(int avaliacao) {
+    public void addAvaliacao(Avaliacao avaliacao) {
+
+        String nomeUsuario = avaliacao.getNomeDeUsuario();
+
+        try {
+            for (Avaliacao a : this.avaliacoes) {
+                if (a.getNomeDeUsuario().equals(nomeUsuario)) {
+                    throw new Exception("Mídia já avaliada!");
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e.toString());
+            return;
+        }
+
         this.avaliacoes.add(avaliacao);
-        this.nota = this.avaliacoes.stream().mapToDouble(f -> f).average().orElse(0);
+        this.nota = this.avaliacoes.stream().mapToDouble(f -> f.getAvaliacao()).average().orElse(0);
     }
 
     public int getId() {

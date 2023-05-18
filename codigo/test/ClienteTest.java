@@ -6,7 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ClitenteTeste {
+public class ClienteTest {
     Cliente clienteTeste;
     Serie serieTerror1;
     Serie serieTerror2;
@@ -17,7 +17,7 @@ public class ClitenteTeste {
         clienteTeste = new Cliente("Cteste", "login", "123");
         serieTerror1 = new Serie(1,"SerieTerror1", "terror", "portugues", "10", 10);
         serieTerror2 = new Serie(2,"SerieTerror2", "terror", "ingles", "12",58);
-        serieComedia = new Serie(3,"SerieComedia", "comedia", "portugues", "10",4);
+        serieComedia = new Serie(3,"SerieComedia", "comedia", "portugues", "10",10);
         clienteTeste.adicionarNaLista(serieTerror1);
         clienteTeste.adicionarNaLista(serieTerror2);
         clienteTeste.adicionarNaLista(serieComedia);
@@ -50,4 +50,11 @@ public class ClitenteTeste {
     public void deveFiltrarEpisodio(){
         assertEquals(2, clienteTeste.filtrarPorQtdEpisodios(10).size());
     }
+
+    @Test
+    public void deveAdicionarAvaliacao() throws Exception {
+        clienteTeste.registrarPorAudiencia(serieComedia);
+        clienteTeste.addAvaliacao(serieComedia, 5);
+    }
+
 }
