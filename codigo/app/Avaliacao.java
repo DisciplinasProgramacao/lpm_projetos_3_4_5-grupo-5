@@ -30,7 +30,7 @@ public class Avaliacao {
         this.comentario=comentario;
     }
 
-    private boolean validaAvaliacao(int avaliacao) {
+    public boolean validaAvaliacao(int avaliacao) {
         try {
             if (avaliacao >= 0 && avaliacao <= 10)
                 return true;
