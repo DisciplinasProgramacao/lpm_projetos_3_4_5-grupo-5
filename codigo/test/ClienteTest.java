@@ -4,13 +4,19 @@ import codigo.app.Cliente;
 import codigo.app.Serie;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.time.LocalDate;
+import java.util.HashMap;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ClienteTest {
     Cliente clienteTeste;
     Serie serieTerror1;
     Serie serieTerror2;
     Serie serieComedia;
+    Serie serieComedia2;
+    Serie serieComedia3;
 
     @BeforeEach
     public void prepare(){
@@ -18,9 +24,12 @@ public class ClienteTest {
         serieTerror1 = new Serie(1,"SerieTerror1", "terror", "portugues", "10", 10);
         serieTerror2 = new Serie(2,"SerieTerror2", "terror", "ingles", "12",58);
         serieComedia = new Serie(3,"SerieComedia", "comedia", "portugues", "10",10);
+        serieComedia2 = new Serie(4,"SerieComedia2", "comedia", "portugues", "10",10);
+        serieComedia3 = new Serie(5,"SerieComedia3", "comedia", "portugues", "10",10);
         clienteTeste.adicionarNaLista(serieTerror1);
         clienteTeste.adicionarNaLista(serieTerror2);
         clienteTeste.adicionarNaLista(serieComedia);
+
     }
 
     @Test
@@ -52,9 +61,33 @@ public class ClienteTest {
     }
 
     @Test
-    public void deveAdicionarAvaliacao() throws Exception {
-        clienteTeste.registrarPorAudiencia(serieComedia);
-        clienteTeste.addAvaliacao(serieComedia, 5);
+    public void deveAdicionarMidiaJaVista(){
+        clienteTeste.registrarPorAudiencia(serieTerror1,"1999-08-01");
+        assertEquals(1,clienteTeste.getDataQueFoiVista().size());
+
     }
+
+    @Test
+    public void isNotEspecalista(){
+        clienteTeste.registrarPorAudiencia(serieTerror1,"1999-04-01");
+        assertFalse(clienteTeste.isEspecialista());
+    }
+
+    @Test
+    public void isEspecalista(){
+        clienteTeste.registrarPorAudiencia(serieTerror1,"2023-04-23");
+        clienteTeste.registrarPorAudiencia(serieTerror2,"2023-04-24");
+        clienteTeste.registrarPorAudiencia(serieComedia,"2023-04-25");
+        clienteTeste.registrarPorAudiencia(serieComedia2,"2023-04-26");
+        clienteTeste.registrarPorAudiencia(serieComedia3,"2023-04-27");
+        assertTrue(clienteTeste.isEspecialista());
+    }
+
+
+//    @Test
+//    public void deveAdicionarAvaliacao() throws Exception {
+//        clienteTeste.registrarPorAudiencia(serieComedia,String dataVista);
+//        clienteTeste.addAvaliacao(serieComedia, 5);
+//    }
 
 }

@@ -15,7 +15,7 @@ public abstract class Midia implements ISalvar{
     private String idioma;
     private int audiencia;
     private String dataDeLancamento;
-    private List<Integer> avaliacoes;
+    private List<Avaliacao> avaliacoes;
     private double nota;
     private String tipoMidia;
 
@@ -39,7 +39,7 @@ public abstract class Midia implements ISalvar{
         this.idioma = idioma.isEmpty() ? "indefinido" : idioma;
         this.audiencia = 0;
         this.dataDeLancamento = dataDeLancamento;
-        avaliacoes = new ArrayList<Integer>();
+        avaliacoes = new ArrayList<Avaliacao>();
     }
 
     /**
@@ -120,9 +120,9 @@ public abstract class Midia implements ISalvar{
      *
      * @param avaliacao Nota da mídia
      */
-    public void addAvaliacao(int avaliacao) {
+    public void addAvaliacao(Avaliacao avaliacao) {
         this.avaliacoes.add(avaliacao);
-        this.nota = this.avaliacoes.stream().mapToDouble(f -> f).average().orElse(0);
+        //this.nota = this.avaliacoes.stream().mapToDouble(f -> f).average().orElse(0);
     }
 
     public int getId() {

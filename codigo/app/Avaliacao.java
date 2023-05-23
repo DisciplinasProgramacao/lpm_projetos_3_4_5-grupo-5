@@ -4,6 +4,7 @@ public class Avaliacao {
 
     private String nomeDeUsuario;
     private int avaliacao;
+    private String comentario;
 
     /**
      * Adiciona avaliacao
@@ -13,10 +14,20 @@ public class Avaliacao {
      */
     public Avaliacao(String nomeDeUsuario, int avaliacao) throws Exception {
         this.nomeDeUsuario = nomeDeUsuario;
-
         if (validaAvaliacao(avaliacao))
             this.avaliacao = avaliacao;
 
+    }
+    /**
+     * Adiciona avaliacao para clietnes especialistas
+     *
+     * @param nomeDeUsuario
+     * @param avaliacao
+     * @param comentario
+     */
+    public Avaliacao(String nomeDeUsuario, int avaliacao,String comentario) throws Exception {
+        this(nomeDeUsuario,avaliacao);
+        this.comentario=comentario;
     }
 
     private boolean validaAvaliacao(int avaliacao) {

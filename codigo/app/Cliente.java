@@ -1,8 +1,10 @@
 package codigo.app;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 public class Cliente {
     private String nomeDeUsuario;
@@ -10,6 +12,8 @@ public class Cliente {
     private String senha;
     private List<Midia> listaParaVer;
     private List<Midia> listaJaVistas;
+    private Map<Integer, LocalDate> dataQueFoiVista;
+
 
 
     /**
@@ -28,6 +32,8 @@ public class Cliente {
             this.senha = senha;
         this.listaParaVer = new ArrayList<>();
         this.listaJaVistas = new ArrayList<>();
+        this.dataQueFoiVista = new HashMap<>();
+        // inicializar hashmap
     }
 
     public String getUsuario() {
@@ -36,6 +42,10 @@ public class Cliente {
 
     public String getLogin() {
         return this.login;
+    }
+
+    public Map<Integer, LocalDate> getDataQueFoiVista() {
+        return this.dataQueFoiVista;
     }
 
     public String getSenha() {
@@ -147,16 +157,49 @@ public class Cliente {
 
     /**
      * Adiciona midia na lista de midias assistidas
-     *
+     *Associa midia addistida com a data em que foi assistida
      * @param midia
+     * @param dataVista insere a data em que o usuario assistiu a midia
      */
-    public void registrarPorAudiencia(Midia midia) {
+    public void registrarPorAudiencia(Midia midia, String dataVista) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate data = LocalDate.parse(dataVista, formatter);
         if (!(this.listaJaVistas.contains(midia))) {
             this.listaJaVistas.add(midia);
             midia.registrarAudiencia();
+            this.dataQueFoiVista.put(midia.getId(), data);
         }
     }
 
+    /**
+     * Verifica se é um cliente especialista
+     * Caso tenha assistido  5 ou mais midias mes passado, retornara true
+     *
+     */
+    public boolean isEspecialista(){
+        //peguei a data atual
+        LocalDate dataAtual = LocalDate.now();
+
+        //armazenei o ano e o mes atual como int
+        int anoAtual = dataAtual.getYear();
+        int mesAtual = dataAtual.getMonthValue();
+
+        //Conta quantas midias foram assistidas no mês anterior
+        int totalMidiasUltimoMes = 0;
+
+        //itera sobre o hashmap para analisar as datas
+        for(LocalDate date : dataQueFoiVista.values()){
+            int anoVisto = date.getYear();
+            int mesVisto = date.getMonthValue();
+            if (anoAtual == anoVisto && mesAtual - mesVisto == 1) {
+                totalMidiasUltimoMes++;
+            }
+            if(totalMidiasUltimoMes>=5){
+                return true;
+            }
+        }
+        return false;
+    }
     @Override
     public String toString() {
         StringBuilder aux = new StringBuilder((this.nomeDeUsuario + " - " + this.login + ", " + this.senha));
@@ -193,4 +236,27 @@ public class Cliente {
         }
 
     }
+
+    /**
+     * Adiciona avaliação e comentario de um cliente especialisa à uma mídia
+     *
+     * @param midia Mídia a ser avaliada
+     * @param nota  Avaliacao da mídia (número inteiro de 0 a 10)
+     * @param comentario
+     */
+    public void addAvaliacaoEspecialista(Midia midia, int nota, String comentario) throws Exception {
+        Avaliacao avaliacao = new Avaliacao(this.nomeDeUsuario, nota,comentario);
+        if(isEspecialista()){
+            for (Midia m : listaJaVistas) {
+                if (midia.equals(m)) {
+                    midia.addAvaliacao(avaliacao);
+                    return;
+                }
+            }
+        }
+
+
+    }
+
+
 }
