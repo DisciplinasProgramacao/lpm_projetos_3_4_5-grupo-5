@@ -3,6 +3,7 @@ package codigo.test;
 import codigo.app.Avaliacao;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 
 public class AvaliacaoTest {
 
@@ -21,4 +22,18 @@ public class AvaliacaoTest {
         avaliacao = new Avaliacao(nomeUsuario, 5);
     }
 
+    @Test
+    void testeValorEntreOsValoresDeterminados() {
+        Assertions.assertThrows(Exception.class, () -> avaliacao.validaAvaliacao(5));
+    }
+
+    @Test
+    void testeValorAcimaDosValoresEsperados() {
+        Assertions.assertThrows(Exception.class, () -> avaliacao.validaAvaliacao(15));
+    }
+
+    @Test
+    void testeValorAbaixoDosValoresEsperados() {
+        Assertions.assertThrows(Exception.class, () -> avaliacao.validaAvaliacao(-5));
+    }
 }

@@ -187,7 +187,7 @@ public class Cliente {
         Avaliacao avaliacao = new Avaliacao(this.nomeDeUsuario, nota);
         for (Midia m : listaJaVistas) {
             if (midia.equals(m)) {
-                midia.addAvaliacao(avaliacao);
+                midia.addAvaliacao(avaliacao.getAvaliacao());
                 return;
             }
         }
