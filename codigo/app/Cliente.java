@@ -176,28 +176,16 @@ public class Cliente {
      * Caso tenha assistido  5 ou mais midias mes passado, retornara true
      */
     public boolean isEspecialista() {
-        //peguei a data atual
-        LocalDate dataAtual = LocalDate.now();
+        // Pega a data atual e subtrai um mês para obter a data de um mês atrás
+        LocalDate umMesAtras = LocalDate.now().minusMonths(1);
 
-        //armazenei o ano e o mes atual como int
-        int anoAtual = dataAtual.getYear();
-        int mesAtual = dataAtual.getMonthValue();
+        // Conta quantas mídias foram assistidas no mês anterior
+        long totalMidiasUltimoMes = dataQueFoiVista.values().stream()
+                .filter(date -> date.getYear() == umMesAtras.getYear() && date.getMonthValue() == umMesAtras.getMonthValue())
+                .count();
 
-        //Conta quantas midias foram assistidas no mês anterior
-        int totalMidiasUltimoMes = 0;
-
-        //itera sobre o hashmap para analisar as datas
-        for (LocalDate date : dataQueFoiVista.values()) {
-            int anoVisto = date.getYear();
-            int mesVisto = date.getMonthValue();
-            if (anoAtual == anoVisto && mesAtual - mesVisto == 1) {
-                totalMidiasUltimoMes++;
-            }
-            if (totalMidiasUltimoMes >= 5) {
-                return true;
-            }
-        }
-        return false;
+        // Retorna true se 5 ou mais mídias foram assistidas no mês anterior
+        return totalMidiasUltimoMes >= 5;
     }
 
     @Override
