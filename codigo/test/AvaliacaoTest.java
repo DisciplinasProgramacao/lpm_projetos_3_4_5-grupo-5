@@ -19,7 +19,7 @@ public class AvaliacaoTest {
 
     @Test
     public void deveValidarAvaliacao() throws Exception {
-        avaliacao = new Avaliacao(nomeUsuario, 5);
+        avaliacao = new Avaliacao(nomeUsuario, 5, "legal");
     }
 
     @Test

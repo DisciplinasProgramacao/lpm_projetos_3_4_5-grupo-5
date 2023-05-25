@@ -6,27 +6,31 @@ public class Avaliacao {
     private int avaliacao;
     private String comentario;
 
-    /**
-     * Adiciona avaliacao
-     *
-     * @param nomeDeUsuario
-     * @param avaliacao
-     */
-    public Avaliacao(String nomeDeUsuario, int avaliacao) throws Exception {
-        this.nomeDeUsuario = nomeDeUsuario;
-        if (validaAvaliacao(avaliacao))
-            this.avaliacao = avaliacao;
+//    /**
+//     * Adiciona avaliacao
+//     *
+//     * @param nomeDeUsuario
+//     * @param avaliacao
+//     */
+//    public Avaliacao(String nomeDeUsuario, int avaliacao) throws Exception {
+//        this.nomeDeUsuario = nomeDeUsuario;
+//        if (validaAvaliacao(avaliacao))
+//            this.avaliacao = avaliacao;
+//
+//    }
 
-    }
     /**
-     * Adiciona avaliacao para clietnes especialistas
+     * Adiciona avaliacao para clientes especialistas
      *
      * @param nomeDeUsuario
      * @param avaliacao
      * @param comentario
      */
-    public Avaliacao(String nomeDeUsuario, int avaliacao,String comentario) throws Exception {
-        this(nomeDeUsuario,avaliacao);
+    public Avaliacao(String nomeDeUsuario, int avaliacao, String comentario) throws Exception {
+//        this(nomeDeUsuario,avaliacao);
+        this.nomeDeUsuario = nomeDeUsuario;
+        if (validaAvaliacao(avaliacao))
+            this.avaliacao = avaliacao;
         this.comentario=comentario;
     }
 

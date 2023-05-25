@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 
 public class PlataformaStreaming {
@@ -25,14 +27,6 @@ public class PlataformaStreaming {
         clientes = new HashMap<>();
         midias = new HashMap<>();
         this.catalogoMidias = new ArrayList<>();
-    }
-
-    public HashMap<String, Cliente> getClientes() {
-        return clientes;
-    }
-
-    public Cliente getClienteAtual() {
-        return clienteAtual;
     }
 
     /**
@@ -117,17 +111,21 @@ public class PlataformaStreaming {
     public List<Serie> filtrarPorQtdEpisodio(int quantidadeEpisodios) {
         List<Serie> seriesPorEpisodio = new ArrayList<>();
         for (Map.Entry<String, Midia> entrada : midias.entrySet()) {
-            if (entrada instanceof Serie) {
-                Serie serie = (Serie) entrada;
-                if (serie.filtrarPorQtdEpisodios(quantidadeEpisodios))
-                    seriesPorEpisodio.add(serie);
+            try {
+                Midia midia = entrada.getValue();
+                if (midia instanceof Serie) {
+                    Serie serie = (Serie) midia;
+                    if (((Serie) serie).filtrarPorQtdEpisodios(quantidadeEpisodios))
+                        seriesPorEpisodio.add(serie);
+                }
+            } catch (ClassCastException e) {
             }
         }
         return seriesPorEpisodio;
     }
 
     /**
-     * Para cada entrada da tabela hash verifica se o nome  é correspondente ao passado por parametro.
+     * Para cada entrada da tabela hash verifica se o nome é correspondente ao passado por parametro.
      * Se o nome for correspondente, a midia é retornada
      * Caso nenhuma midia possua o nome equivalente, a função retorna nulo
      *
@@ -165,16 +163,24 @@ public class PlataformaStreaming {
         clienteAtual = null;
     }
 
+    /**
+     * @param caminho
+     * @throws IOException
+     */
     public void salvar(String caminho) throws IOException {
         FileWriter writer = new FileWriter(caminho, false);
 
-        for (Map.Entry<String, Midia>entrada : midias.entrySet()) {
+        for (Map.Entry<String, Midia> entrada : midias.entrySet()) {
             Midia midia = entrada.getValue();
             midia.salvar(caminho);
         }
     }
 
-    public void carregar(String arquivo) throws FileNotFoundException {
+    /**
+     * @param arquivo
+     * @throws FileNotFoundException
+     */
+    public void carregarMidias(String arquivo) throws FileNotFoundException {
 
         Scanner scanner = new Scanner(new File(arquivo));
 //        scanner.nextLine();
@@ -186,16 +192,15 @@ public class PlataformaStreaming {
             int id = Integer.parseInt(campos[1]);
             String nome = campos[2];
             String genero = campos[3];
-            String idioma= campos[4];
+            String idioma = campos[4];
             String lancamento = campos[5];
-//            int duracao = Integer.parseInt(campos[6]);
 
-            if (tipoMidia.equals("F")){
+            if (tipoMidia.equals("F")) {
                 int duracao = Integer.parseInt(campos[6]);
                 Midia filme = new Filme(id, nome, genero, idioma, lancamento, duracao);
                 catalogoMidias.add(filme);
 
-            } else if (tipoMidia.equals("S")){
+            } else if (tipoMidia.equals("S")) {
                 int qtdEpisodios = Integer.parseInt(campos[6]);
                 Midia serie = new Serie(id, nome, genero, idioma, lancamento, qtdEpisodios);
                 catalogoMidias.add(serie);
@@ -204,7 +209,81 @@ public class PlataformaStreaming {
         scanner.close();
     }
 
-    public List<Midia> filmes() {
-        return catalogoMidias;
+    /**
+     * ler
+     *
+     * @return
+     * @throws FileNotFoundException
+     */
+    public void carregarClientes(String arquivo) throws FileNotFoundException {
+
+        Scanner scanner = new Scanner(new File(arquivo));
+
+        while (scanner.hasNextLine()) {
+            String linha = scanner.nextLine();
+            String[] dados = linha.split(";");
+
+            String nomeDeUsuario = dados[0];
+            String login = dados[1];
+            String senha = dados[2];
+
+            Cliente novoCliente = new Cliente(nomeDeUsuario, login, senha);
+
+            clientes.put(login, novoCliente);
+        }
+
+        scanner.close();
+    }
+
+    public void carregarAudiencia(String arquivo) throws FileNotFoundException {
+
+        Scanner scanner = new Scanner(new File(arquivo));
+
+        while (scanner.hasNextLine()) {
+            String linha = scanner.nextLine();
+
+            String[] dados = linha.split(";");
+            Cliente cliente = buscarCliente(dados[0]);
+
+            if (cliente != null) {
+
+                Midia midia = midias.get(dados[2]);
+                if (midia != null) {
+
+                    if (dados[1].equals("F"))  // quero ver
+                        cliente.adicionarNaLista(midia);
+
+                    else if (dados[1].equals("A")) { // historico
+
+                        Date dataAtual = new Date();
+                        SimpleDateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy");
+                        String dataFormatada = formatoData.format(dataAtual);
+
+                        cliente.registrarPorAudiencia(midia, dataFormatada);
+                    }
+                }
+
+            }
+        }
+        scanner.close();
+    }
+
+    private Cliente buscarCliente(String login) {
+        return clientes.get(login);
+    }
+
+    /**
+     * @return
+     */
+    public String midias() {
+        return catalogoMidias.toString();
+    }
+
+    public HashMap<String, Cliente> getClientes() {
+        return clientes;
+    }
+
+    public Cliente getClienteAtual() {
+        return clienteAtual;
     }
 }

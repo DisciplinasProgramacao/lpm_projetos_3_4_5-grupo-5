@@ -63,31 +63,4 @@ public class Serie extends Midia {
         }
     }
 
-    public HashMap<Integer, Serie> lerArquivosSeries() {
-        HashMap<Integer, Serie> arqSeries = new HashMap<Integer, Serie>();
-
-        try {
-            File arquivo = new File("POO_Series.csv");
-            Scanner scanner = new Scanner(arquivo);
-            String t = scanner.nextLine();
-            while (scanner.hasNextLine()) {
-                String linha = scanner.nextLine();
-                String[] dados = linha.split(";");
-
-                int idSerie = Integer.parseInt(dados[0].trim());
-                String nomeSerie = dados[1];
-                String dataDeLancamento = dados[2];
-
-                Serie novaSerie = new Serie(idSerie, nomeSerie, "", "", dataDeLancamento, 0);
-                arqSeries.put(novaSerie.getId(), novaSerie);
-            }
-
-            scanner.close();
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return arqSeries;
-    }
-
 }

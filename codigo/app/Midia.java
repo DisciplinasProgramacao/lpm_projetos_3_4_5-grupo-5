@@ -1,6 +1,7 @@
 package codigo.app;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -15,7 +16,7 @@ public abstract class Midia implements ISalvar{
     private String idioma;
     private int audiencia;
     private String dataDeLancamento;
-    private List<Avaliacao> avaliacoes;
+    private HashSet<Avaliacao> avaliacoes;
     private double nota;
     private String tipoMidia;
 
@@ -39,7 +40,7 @@ public abstract class Midia implements ISalvar{
         this.idioma = idioma.isEmpty() ? "indefinido" : idioma;
         this.audiencia = 0;
         this.dataDeLancamento = dataDeLancamento;
-        avaliacoes = new ArrayList<Avaliacao>();
+        avaliacoes = new HashSet<>();
     }
 
     /**
@@ -121,8 +122,22 @@ public abstract class Midia implements ISalvar{
      * @param avaliacao Nota da mídia
      */
     public void addAvaliacao(Avaliacao avaliacao) {
+
+        String nomeUsuario = avaliacao.getNomeDeUsuario();
+
+        try {
+            for (Avaliacao a : this.avaliacoes) {
+                if (a.getNomeDeUsuario().equals(nomeUsuario)) {
+                    throw new Exception("Mídia já avaliada!");
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e.toString());
+            return;
+        }
+
         this.avaliacoes.add(avaliacao);
-        //this.nota = this.avaliacoes.stream().mapToDouble(f -> f).average().orElse(0);
+        this.nota = this.avaliacoes.stream().mapToDouble(f -> f.getAvaliacao()).average().orElse(0);
     }
 
     public int getId() {

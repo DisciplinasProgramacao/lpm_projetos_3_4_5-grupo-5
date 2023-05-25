@@ -15,7 +15,6 @@ public class Cliente {
     private Map<Integer, LocalDate> dataQueFoiVista;
 
 
-
     /**
      * Cria um novo usuario
      *
@@ -157,7 +156,8 @@ public class Cliente {
 
     /**
      * Adiciona midia na lista de midias assistidas
-     *Associa midia addistida com a data em que foi assistida
+     * Associa midia addistida com a data em que foi assistida
+     *
      * @param midia
      * @param dataVista insere a data em que o usuario assistiu a midia
      */
@@ -174,9 +174,8 @@ public class Cliente {
     /**
      * Verifica se é um cliente especialista
      * Caso tenha assistido  5 ou mais midias mes passado, retornara true
-     *
      */
-    public boolean isEspecialista(){
+    public boolean isEspecialista() {
         //peguei a data atual
         LocalDate dataAtual = LocalDate.now();
 
@@ -188,18 +187,19 @@ public class Cliente {
         int totalMidiasUltimoMes = 0;
 
         //itera sobre o hashmap para analisar as datas
-        for(LocalDate date : dataQueFoiVista.values()){
+        for (LocalDate date : dataQueFoiVista.values()) {
             int anoVisto = date.getYear();
             int mesVisto = date.getMonthValue();
             if (anoAtual == anoVisto && mesAtual - mesVisto == 1) {
                 totalMidiasUltimoMes++;
             }
-            if(totalMidiasUltimoMes>=5){
+            if (totalMidiasUltimoMes >= 5) {
                 return true;
             }
         }
         return false;
     }
+
     @Override
     public String toString() {
         StringBuilder aux = new StringBuilder((this.nomeDeUsuario + " - " + this.login + ", " + this.senha));
@@ -221,42 +221,45 @@ public class Cliente {
     }
 
     /**
-     * Adiciona avaliação à uma mídia
+     * Adiciona avaliação à uma mídia, contanto que ela já tenha sido assistida pelo usuário
      *
      * @param midia Mídia a ser avaliada
      * @param nota  Avaliacao da mídia (número inteiro de 0 a 10)
      */
-    public void addAvaliacao(Midia midia, int nota) throws Exception {
-        Avaliacao avaliacao = new Avaliacao(this.nomeDeUsuario, nota);
+    public void addAvaliacao(Midia midia, int nota, String comentario) throws Exception {
+        Avaliacao avaliacao;
+
+        if (isEspecialista())
+            avaliacao = new Avaliacao(this.nomeDeUsuario, nota, comentario);
+        else
+            avaliacao = new Avaliacao(this.nomeDeUsuario, nota, null);
+
         for (Midia m : listaJaVistas) {
             if (midia.equals(m)) {
                 midia.addAvaliacao(avaliacao);
                 return;
             }
         }
-
     }
 
-    /**
-     * Adiciona avaliação e comentario de um cliente especialisa à uma mídia
-     *
-     * @param midia Mídia a ser avaliada
-     * @param nota  Avaliacao da mídia (número inteiro de 0 a 10)
-     * @param comentario
-     */
-    public void addAvaliacaoEspecialista(Midia midia, int nota, String comentario) throws Exception {
-        Avaliacao avaliacao = new Avaliacao(this.nomeDeUsuario, nota,comentario);
-        if(isEspecialista()){
-            for (Midia m : listaJaVistas) {
-                if (midia.equals(m)) {
-                    midia.addAvaliacao(avaliacao);
-                    return;
-                }
-            }
-        }
-
-
-    }
+//    /**
+//     * Adiciona avaliação e comentario de um cliente especialisa à uma mídia
+//     *
+//     * @param midia      Mídia a ser avaliada
+//     * @param nota       Avaliacao da mídia (número inteiro de 0 a 10)
+//     * @param comentario
+//     */
+//    public void addAvaliacaoEspecialista(Midia midia, int nota, String comentario) throws Exception {
+//        Avaliacao avaliacao = new Avaliacao(this.nomeDeUsuario, nota, comentario);
+//        if (isEspecialista()) {
+//            for (Midia m : listaJaVistas) {
+//                if (midia.equals(m)) {
+//                    midia.addAvaliacao(avaliacao);
+//                    return;
+//                }
+//            }
+//        }
+//    }
 
 
 }
