@@ -3,6 +3,7 @@ package codigo.app;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -15,7 +16,7 @@ public class PlataformaStreaming {
     private HashMap<String, Midia> midias;
     private HashMap<String, Cliente> clientes;
     private List<Midia> catalogoMidias;
-
+    private Map<Cliente, List<Midia>> seriesPorCliente;
     /**
      * Criar uma nova plataforma
      * Cria uma tabela hash vazia
@@ -27,6 +28,7 @@ public class PlataformaStreaming {
         clientes = new HashMap<>();
         midias = new HashMap<>();
         this.catalogoMidias = new ArrayList<>();
+        seriesPorCliente = new HashMap<>();
     }
 
     /**
@@ -173,6 +175,49 @@ public class PlataformaStreaming {
         for (Map.Entry<String, Midia> entrada : midias.entrySet()) {
             Midia midia = entrada.getValue();
             midia.salvar(caminho);
+        }
+    }
+
+    /**
+     * Adicionar a Serie que o cliente assistiu ou futuramente vai assistir.
+     * @param cliente
+     * @param serie
+     */
+    public void adicionarSerieParaCliente(Cliente cliente, Serie serie) {
+        List<Midia> seriesCliente = seriesPorCliente.getOrDefault(cliente, new ArrayList<>());
+        seriesCliente.add(serie);
+        seriesPorCliente.put(cliente, seriesCliente);
+    }
+
+    /**
+     * Este código Java salva uma lista de programas de TV (Midia) associados a cada usuário (Cliente) em um arquivo.
+     * Ele percorre um mapa contendo os dados e os grava no arquivo usando um BufferedWriter. O método usa o nome do
+     * arquivo como um parâmetro de entrada e imprime uma mensagem de sucesso ou mensagem de erro se uma exceção for
+     * lançada.
+     * @param nomeArquivo
+     */
+    public void salvarSeriesPorClienteEmArquivo(String nomeArquivo) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(nomeArquivo))) {
+            for (Map.Entry<Cliente, List<Midia>> entry : seriesPorCliente.entrySet()) {
+                Cliente cliente = entry.getKey();
+                List<Midia> series = entry.getValue();
+
+                for (Midia serie : series) {
+                    String lista = "";
+                    if (cliente.getListaParaVer().contains(serie)) {
+                        lista = "F";
+                    } else if (cliente.getListaJaVistas().contains(serie)) {
+                        lista = "A";
+                    }
+
+                    String linha = cliente.getLogin() + ";" + lista + ";" + serie.getId() + "\n";
+                    writer.write(linha);
+                }
+            }
+
+            System.out.println("Séries por cliente salvas com sucesso em: " + nomeArquivo);
+        } catch (IOException e) {
+            System.out.println("Erro ao salvar as séries por cliente em arquivo: " + e.getMessage());
         }
     }
 

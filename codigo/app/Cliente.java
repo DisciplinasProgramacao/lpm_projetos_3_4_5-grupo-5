@@ -55,6 +55,9 @@ public class Cliente {
         return listaParaVer;
     }
 
+    public List<Midia> getListaJaVistas() {
+        return listaJaVistas;
+    }
     /**
      * Adiciona midia na lista de mídias "Para Ver"
      *
@@ -63,6 +66,16 @@ public class Cliente {
     public void adicionarNaLista(Midia midia) {
         if ((!this.listaParaVer.contains(midia)))
             this.listaParaVer.add(midia);
+    }
+
+    /**
+     * Adiciona midia na lista de mídias "Ja Vistas"
+     *
+     * @param midia Midia a ser adicionada na lista ja vistas
+     */
+    public void adicionarNaListaJaVistas(Midia midia) {
+        if ((!this.listaJaVistas.contains(midia)))
+            this.listaJaVistas.add(midia);
     }
 
     /**
