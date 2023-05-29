@@ -8,27 +8,62 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PlataformaStreamingTest {
 
     Cliente clienteTeste;
+    Cliente clienteTeste2;
+    HashMap<String, Cliente> clientes;
     Midia serieTeste;
-
+    Serie serie1;
+    Serie serie2;
+    Serie serie3;
+    Midia midiaTest;
+    Map<Cliente, List<Midia>> seriesPorCliente;
+    List<Midia> catalogoMidias;
     PlataformaStreaming plataforma;
-
 
     @BeforeEach
     public void prepare() {
-        clienteTeste = new Cliente("Cteste", "login", "123");
-        serieTeste = new Serie(4,"you", "drama", "ingles", "20", 10);
+        //Plataforma
         plataforma = new PlataformaStreaming("netflix");
-        plataforma.adicionarCliente(clienteTeste);
-        plataforma.adicionarMidia(serieTeste);
-    }
 
+        //Inicialização de listas
+        seriesPorCliente = new HashMap<>();
+        clientes = new HashMap<>();
+        catalogoMidias = new ArrayList<>();
+
+        //Clientes
+        clienteTeste = new Cliente("Cteste", "login", "123");
+        clienteTeste2 = new Cliente("Cteste2","usuario1", "1234");
+
+        //Series
+        serieTeste = new Serie(4,"you", "drama", "ingles", "20", 10);
+        serie1 = new Serie(15, "F.R.I.E.N.D.S", "comedia", "inglês", "22/09/1994", 236);
+        serie2 = new Serie(16, "Stranger Things", "drama", "inglês", "22/09/1994", 18);
+        serie3 = new Serie(17, "Breaking Bad", "drama", "inglês", "22/09/1994", 12);
+
+        //Midias
+        midiaTest = new Serie(14, "F.R.I.E.N.D.S", "comedia", "inglês", "22/09/1994", 236);
+
+        //Ações Plataforma
+        plataforma.adicionarMidia(serieTeste);
+        plataforma.adicionarMidia(midiaTest);
+        plataforma.adicionarSerieParaCliente(clienteTeste2, serie1);
+        plataforma.adicionarSerieParaCliente(clienteTeste2, serie2);
+        plataforma.adicionarSerieParaCliente(clienteTeste2, serie3);
+
+        //Ações Clientes
+        clienteTeste2.adicionarNaLista(serie1);
+        clienteTeste2.adicionarNaLista(serie2);
+        clienteTeste2.adicionarNaListaJaVistas(serie3);
+
+    }
 
     @Test
     public void deveRetornarSerieComQtdEpisodios(){
@@ -37,13 +72,29 @@ public class PlataformaStreamingTest {
 
     @Test
     public void deveAdicionarCliente() {
+        plataforma.adicionarCliente(clienteTeste);
         String chave = clienteTeste.getUsuario() + ":" + clienteTeste.getSenha();
         assertNotNull(plataforma.getClientes().get(chave));
+    }
+
+    @Test
+    public void testAdicionarMidia(){
+        assertEquals(midiaTest, plataforma.getMidias().get("F.R.I.E.N.D.S:comedia"));
+    }
+
+    @Test
+    public void testLogin(){
+        String chave1 = clienteTeste2.getUsuario() + ":" + clienteTeste2.getSenha();
+        clientes.put(chave1, clienteTeste2);
+        plataforma.adicionarCliente(clienteTeste2);
+        plataforma.login("Cteste2", "1234");
+        assertEquals(clienteTeste2, plataforma.getClienteAtual());
     }
 
     // teste falhando
     @Test
     public void deveFazerLogin() {
+        plataforma.adicionarCliente(clienteTeste);
         plataforma.login("Cteste", "123");
         assertEquals(clienteTeste, plataforma.getClienteAtual());
     }
@@ -82,6 +133,7 @@ public class PlataformaStreamingTest {
         plataforma.adicionarMidia(serieTeste3);
 
         assertEquals(3, plataforma.filtrarPorIdioma("ingles").size());
+        assertEquals(serieTeste1, plataforma.filtrarPorIdioma("ingles").get(0));
     }
 
     @Test
@@ -127,5 +179,46 @@ public class PlataformaStreamingTest {
         plataforma.login("Cteste", "123");
         plataforma.logoff();
         assertNull(plataforma.getClienteAtual());
+    }
+
+    @Test
+    public void testAdicionarSerieParaCliente(){
+        assertTrue(clienteTeste2.getListaParaVer().contains(serie1));
+        assertTrue(clienteTeste2.getListaParaVer().contains(serie2));
+        assertTrue(clienteTeste2.getListaJaVistas().contains(serie3));
+    }
+
+    @Test
+    public void testAdicionarSerieParaClienteSobrescrevendoASerieExistente(){
+        clienteTeste2.adicionarNaLista(serie1);
+        clienteTeste2.adicionarNaListaJaVistas(serie3);
+        plataforma.adicionarSerieParaCliente(clienteTeste2, serie1);
+        plataforma.adicionarSerieParaCliente(clienteTeste2, serie3);
+
+        assertTrue(clienteTeste2.getListaParaVer().contains(serie1));
+        assertTrue(clienteTeste2.getListaJaVistas().contains(serie3));
+        assertEquals(2, clienteTeste2.getListaParaVer().size());
+        assertEquals(1, clienteTeste2.getListaJaVistas().size());
+    }
+
+//    @Test
+//    public void testBuscarCliente(){
+//        clientes.put(clienteTeste.getLogin(), clienteTeste);
+//
+//        assertEquals(clienteTeste, plataforma.buscarCliente("login"));
+//    }
+
+    @Test
+    public void testGetClientes(){
+        HashMap<String, Cliente> expectedClientes = new HashMap<>();
+        Cliente cliente1 = new Cliente("Breno", "breno1", "breno123");
+        Cliente cliente2 = new Cliente("Arthur", "arthur1", "arthur123");
+        String chave1 = cliente1.getUsuario() + ":" + cliente1.getSenha();
+        String chave2 = cliente2.getUsuario() + ":" + cliente2.getSenha();
+        expectedClientes.put(chave1, cliente1);
+        expectedClientes.put(chave2, cliente2);
+        plataforma.adicionarCliente(cliente1);
+        plataforma.adicionarCliente(cliente2);
+        assertEquals(expectedClientes, plataforma.getClientes());
     }
 }

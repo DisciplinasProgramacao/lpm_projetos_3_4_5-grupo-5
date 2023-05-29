@@ -31,6 +31,10 @@ public class PlataformaStreaming {
         seriesPorCliente = new HashMap<>();
     }
 
+    public HashMap<String, Midia> getMidias() {
+        return midias;
+    }
+
     /**
      * gera uma chave aleatória a patir da concatenação de usuário e senha.
      * adiciona na tabela hash uma chave associada ao cliente e o cliente
@@ -313,7 +317,7 @@ public class PlataformaStreaming {
         scanner.close();
     }
 
-    private Cliente buscarCliente(String login) {
+    public Cliente buscarCliente(String login) {
         return clientes.get(login);
     }
 
