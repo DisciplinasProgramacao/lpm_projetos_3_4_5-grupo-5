@@ -1,5 +1,6 @@
 package codigo.test;
 
+import codigo.app.Avaliacao;
 import codigo.app.Cliente;
 import codigo.app.Serie;
 import org.junit.jupiter.api.BeforeEach;
@@ -7,6 +8,8 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,6 +20,9 @@ public class ClienteTest {
     Serie serieComedia;
     Serie serieComedia2;
     Serie serieComedia3;
+    Serie s1;
+    Serie s2;
+    Serie s3;
 
     @BeforeEach
     public void prepare(){
@@ -30,6 +36,12 @@ public class ClienteTest {
         clienteTeste.adicionarNaLista(serieTerror2);
         clienteTeste.adicionarNaLista(serieComedia);
 
+        s1 = new Serie(6, "F.R.I.E.N.D.S", "comedia", "inglês", "22/09/1994", 236);
+        s2 = new Serie(7, "Stranger Things", "drama", "inglês", "15/06/2016", 38);
+        s3 = new Serie(8, "Game of Thrones", "Drama", "inglês", "17/04/2011", 73);
+        clienteTeste.adicionarNaListaJaVistas(s1);
+        clienteTeste.adicionarNaListaJaVistas(s2);
+        clienteTeste.adicionarNaListaJaVistas(s3);
     }
 
     @Test
@@ -40,9 +52,20 @@ public class ClienteTest {
     }
 
     @Test
+    public void testAdicionarASerieNaListaDeJaVistas(){
+        assertEquals(3, clienteTeste.getListaJaVistas().size());
+    }
+
+    @Test
     public void deveRetirarSerie(){
         clienteTeste.retirarNaLista("SerieTerror1");
         assertEquals(2, clienteTeste.getListaParaVer().size());
+    }
+
+    @Test
+    public void testRetirarSerieDaListaDeJaVistas(){
+        clienteTeste.retirarNaListaJaVistas("F.R.I.E.N.D.S");
+        assertEquals(2, clienteTeste.getListaJaVistas().size());
     }
 
     @Test
@@ -68,19 +91,31 @@ public class ClienteTest {
     }
 
     @Test
-    public void isNotEspecalista(){
+    public void testIsEspecalistaComApenasUmaMidiaAssistida(){
         clienteTeste.registrarPorAudiencia(serieTerror1,"1999-04-01");
         assertFalse(clienteTeste.isEspecialista());
     }
 
     @Test
-    public void isEspecalista(){
+    public void testIsEspecalistaComMaisDeCincoMidiasAssistidas(){
         clienteTeste.registrarPorAudiencia(serieTerror1,"2023-04-23");
         clienteTeste.registrarPorAudiencia(serieTerror2,"2023-04-24");
         clienteTeste.registrarPorAudiencia(serieComedia,"2023-04-25");
         clienteTeste.registrarPorAudiencia(serieComedia2,"2023-04-26");
         clienteTeste.registrarPorAudiencia(serieComedia3,"2023-04-27");
+        clienteTeste.registrarPorAudiencia(s1, "2023-05-28");
         assertTrue(clienteTeste.isEspecialista());
+    }
+
+    @Test
+    public void testIsEspecialistaComNenhumaMidiaAssistida(){
+        assertFalse(clienteTeste.isEspecialista());
+    }
+
+    @Test
+    public void testToStringCliente(){
+        Cliente c1 = new Cliente("Breno", "breno1", "breno123");
+        assertEquals(c1.toString(), "Breno - breno1, breno123");
     }
 
 

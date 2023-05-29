@@ -93,6 +93,20 @@ public class Cliente {
     }
 
     /**
+     * Retira midia da lista de mídias "Ja Vistas"
+     *
+     * @param nomeMidia Nome da midia a ser removida da lista
+     */
+    public void retirarNaListaJaVistas(String nomeMidia) {
+        for (Midia midia : listaJaVistas) {
+            if (midia.getNome().equals(nomeMidia)) {
+                this.listaJaVistas.remove(midia);
+                return;
+            }
+        }
+    }
+
+    /**
      * Filtra midias por genero
      *
      * @param genero
