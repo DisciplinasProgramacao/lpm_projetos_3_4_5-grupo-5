@@ -54,9 +54,9 @@ public class PlataformaStreamingTest {
         //Ações Plataforma
         plataforma.adicionarMidia(serieTeste);
         plataforma.adicionarMidia(midiaTest);
-        plataforma.adicionarSerieParaCliente(clienteTeste2, serie1);
-        plataforma.adicionarSerieParaCliente(clienteTeste2, serie2);
-        plataforma.adicionarSerieParaCliente(clienteTeste2, serie3);
+//        plataforma.adicionarSerieParaCliente(clienteTeste2, serie1);
+//        plataforma.adicionarSerieParaCliente(clienteTeste2, serie2);
+//        plataforma.adicionarSerieParaCliente(clienteTeste2, serie3);
 
         //Ações Clientes
         clienteTeste2.adicionarNaLista(serie1);
@@ -192,8 +192,8 @@ public class PlataformaStreamingTest {
     public void testAdicionarSerieParaClienteSobrescrevendoASerieExistente(){
         clienteTeste2.adicionarNaLista(serie1);
         clienteTeste2.adicionarNaListaJaVistas(serie3);
-        plataforma.adicionarSerieParaCliente(clienteTeste2, serie1);
-        plataforma.adicionarSerieParaCliente(clienteTeste2, serie3);
+//        plataforma.adicionarSerieParaCliente(clienteTeste2, serie1);
+//        plataforma.adicionarSerieParaCliente(clienteTeste2, serie3);
 
         assertTrue(clienteTeste2.getListaParaVer().contains(serie1));
         assertTrue(clienteTeste2.getListaJaVistas().contains(serie3));

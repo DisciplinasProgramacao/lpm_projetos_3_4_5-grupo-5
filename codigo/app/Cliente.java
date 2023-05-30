@@ -32,32 +32,8 @@ public class Cliente {
         this.listaParaVer = new ArrayList<>();
         this.listaJaVistas = new ArrayList<>();
         this.dataQueFoiVista = new HashMap<>();
-        // inicializar hashmap
     }
 
-    public String getUsuario() {
-        return this.nomeDeUsuario;
-    }
-
-    public String getLogin() {
-        return this.login;
-    }
-
-    public Map<Integer, LocalDate> getDataQueFoiVista() {
-        return this.dataQueFoiVista;
-    }
-
-    public String getSenha() {
-        return this.senha;
-    }
-
-    public List<Midia> getListaParaVer() {
-        return listaParaVer;
-    }
-
-    public List<Midia> getListaJaVistas() {
-        return listaJaVistas;
-    }
     /**
      * Adiciona midia na lista de mídias "Para Ver"
      *
@@ -183,7 +159,7 @@ public class Cliente {
 
     /**
      * Adiciona midia na lista de midias assistidas
-     * Associa midia addistida com a data em que foi assistida
+     * Associa midia assistida com a data em que foi assistida
      *
      * @param midia
      * @param dataVista insere a data em que o usuario assistiu a midia
@@ -227,11 +203,26 @@ public class Cliente {
      */
     public void salvar(String caminhoArq) {
         try {
-            PrintWriter writer = new PrintWriter(new FileWriter("Usuarios.txt", true));
-            writer.print("\n" + this.toString());
+            FileWriter writer = new FileWriter(caminhoArq, true);
+
+            if (!caminhoArq.equals("")) {
+                writer.write(toString() + "\n");
+
+                writer.write("Lista de midias 'PARA VER': \n");
+                for (Midia midia : listaParaVer) {
+                    writer.write(midia.toString() + "\n");
+                }
+
+                writer.write("Historico de midias: \n");
+                for (Midia midia : listaJaVistas) {
+                    writer.write(midia.toString() + "\n");
+                }
+
+            }
+
             writer.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Erro ao salvar dados no arquivo.");
         }
     }
 
@@ -242,39 +233,42 @@ public class Cliente {
      * @param nota  Avaliacao da mídia (número inteiro de 0 a 10)
      */
     public void addAvaliacao(Midia midia, int nota, String comentario) throws Exception {
-        Avaliacao avaliacao;
 
-        if (isEspecialista())
-            avaliacao = new Avaliacao(this.nomeDeUsuario, nota, comentario);
-        else
-            avaliacao = new Avaliacao(this.nomeDeUsuario, nota, null);
+        if (!isEspecialista())
+            comentario = "";
 
-        for (Midia m : listaJaVistas) {
-            if (midia.equals(m)) {
-                midia.addAvaliacao(avaliacao);
-                return;
-            }
-        }
+        Avaliacao avaliacao = new Avaliacao(this.nomeDeUsuario, nota, comentario);
+
+        int index = listaJaVistas.indexOf(midia);
+        if (index != -1) {
+            midia.addAvaliacao(avaliacao);
+            return;
+        } // comentar com 2 (se cair no catch) e interface com 3 caso o cast dê certo
     }
 
-//    /**
-//     * Adiciona avaliação e comentario de um cliente especialisa à uma mídia
-//     *
-//     * @param midia      Mídia a ser avaliada
-//     * @param nota       Avaliacao da mídia (número inteiro de 0 a 10)
-//     * @param comentario
-//     */
-//    public void addAvaliacaoEspecialista(Midia midia, int nota, String comentario) throws Exception {
-//        Avaliacao avaliacao = new Avaliacao(this.nomeDeUsuario, nota, comentario);
-//        if (isEspecialista()) {
-//            for (Midia m : listaJaVistas) {
-//                if (midia.equals(m)) {
-//                    midia.addAvaliacao(avaliacao);
-//                    return;
-//                }
-//            }
-//        }
-//    }
+    public String getUsuario() {
+        return this.nomeDeUsuario;
+    }
+
+    public String getLogin() {
+        return this.login;
+    }
+
+    public Map<Integer, LocalDate> getDataQueFoiVista() {
+        return this.dataQueFoiVista;
+    }
+
+    public String getSenha() {
+        return this.senha;
+    }
+
+    public List<Midia> getListaParaVer() {
+        return listaParaVer;
+    }
+
+    public List<Midia> getListaJaVistas() {
+        return listaJaVistas;
+    }
 
 
 }
