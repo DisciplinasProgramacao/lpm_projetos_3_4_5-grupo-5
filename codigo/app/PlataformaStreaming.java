@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -26,6 +27,7 @@ public class PlataformaStreaming {
         clientes = new HashMap<>();
         midias = new HashMap<>();
 //        seriesPorCliente = new HashMap<>();
+        this.clienteAtual = clienteAtual;
     }
 
     /**
@@ -60,7 +62,7 @@ public class PlataformaStreaming {
     public Cliente login(String nomeUsuario, String senha) {
         String chave = nomeUsuario + ":" + senha;
         clienteAtual = clientes.get(chave);
-        return clientes.get(chave);
+        return clienteAtual;
     }
 
     /**
@@ -175,16 +177,6 @@ public class PlataformaStreaming {
         }
     }
 
-//    /**
-//     * Adicionar a Serie que o cliente assistiu ou futuramente vai assistir.
-//     * @param cliente
-//     * @param serie
-//     */
-//    public void adicionarSerieParaCliente(Cliente cliente, Serie serie) {
-//        List<Midia> seriesCliente = seriesPorCliente.getOrDefault(cliente, new ArrayList<>());
-//        seriesCliente.add(serie);
-//        seriesPorCliente.put(cliente, seriesCliente);
-//    }
 
     /**
      * Salvar Clientes da plataforma e suas respectivas listas de midias 'Para Ver' e historico de midias assistidas
@@ -200,37 +192,6 @@ public class PlataformaStreaming {
         }
     }
 
-//    /**
-//     * Este código Java salva uma lista de programas de TV (Midia) associados a cada usuário (Cliente) em um arquivo.
-//     * Ele percorre um mapa contendo os dados e os grava no arquivo usando um BufferedWriter. O método usa o nome do
-//     * arquivo como um parâmetro de entrada e imprime uma mensagem de sucesso ou mensagem de erro se uma exceção for
-//     * lançada.
-//     * @param nomeArquivo
-//     */
-//    public void salvarSeriesPorClienteEmArquivo(String nomeArquivo) {
-//        try (BufferedWriter writer = new BufferedWriter(new FileWriter(nomeArquivo))) {
-//            for (Map.Entry<Cliente, List<Midia>> entry : seriesPorCliente.entrySet()) {
-//                Cliente cliente = entry.getKey();
-//                List<Midia> series = entry.getValue();
-//
-//                for (Midia serie : series) {
-//                    String lista = "";
-//                    if (cliente.getListaParaVer().contains(serie)) {
-//                        lista = "F";
-//                    } else if (cliente.getListaJaVistas().contains(serie)) {
-//                        lista = "A";
-//                    }
-//
-//                    String linha = cliente.getLogin() + ";" + lista + ";" + serie.getId() + "\n";
-//                    writer.write(linha);
-//                }
-//            }
-//
-//            System.out.println("Séries por cliente salvas com sucesso em: " + nomeArquivo);
-//        } catch (IOException e) {
-//            System.out.println("Erro ao salvar as séries por cliente em arquivo: " + e.getMessage());
-//        }
-//    }
 
     /**
      * @param arquivo
@@ -239,25 +200,22 @@ public class PlataformaStreaming {
     public void carregarMidias(String arquivo) throws FileNotFoundException {
 
         Scanner scanner = new Scanner(new File(arquivo));
+        scanner.nextLine();
 
         while (scanner.hasNextLine()) {
             String linha = scanner.nextLine();
             String[] campos = linha.split(";");
-            String tipoMidia = campos[0];
-            int id = Integer.parseInt(campos[1]);
-            String nome = campos[2];
-            String genero = campos[3];
-            String idioma = campos[4];
-            String lancamento = campos[5];
+            int id = Integer.parseInt(campos[0]);
+            String nome = campos[1];
+            String lancamento = campos[2];
 
-            if (tipoMidia.equals("F")) {
-                int duracao = Integer.parseInt(campos[6]);
-                Midia filme = new Filme(id, nome, genero, idioma, lancamento, duracao);
+            if (arquivo.equals("docs/arquivos/POO_Filmes.csv")) {
+                int duracao = Integer.parseInt(campos[3]);
+                Midia filme = new Filme(id, nome, "", "", lancamento, duracao);
                 adicionarMidia(filme);
 
-            } else if (tipoMidia.equals("S")) {
-                int qtdEpisodios = Integer.parseInt(campos[6]);
-                Midia serie = new Serie(id, nome, genero, idioma, lancamento, qtdEpisodios);
+            } else if (arquivo.equals("docs/arquivos/POO_Series.csv")){
+                Midia serie = new Serie(id, nome, "", "", lancamento, 0);
                 adicionarMidia(serie);
             }
         }
@@ -285,7 +243,7 @@ public class PlataformaStreaming {
 
             Cliente novoCliente = new Cliente(nomeDeUsuario, login, senha);
 
-            clientes.put(login, novoCliente);
+            adicionarCliente(novoCliente);
         }
 
         scanner.close();
@@ -344,5 +302,4 @@ public class PlataformaStreaming {
     public HashMap<String, Midia> getMidias() {
         return midias;
     }
-
 }

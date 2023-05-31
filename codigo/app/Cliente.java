@@ -13,6 +13,7 @@ public class Cliente {
     private List<Midia> listaParaVer;
     private List<Midia> listaJaVistas;
     private Map<Integer, LocalDate> dataQueFoiVista;
+    private boolean logado;
 
 
     /**
@@ -32,6 +33,7 @@ public class Cliente {
         this.listaParaVer = new ArrayList<>();
         this.listaJaVistas = new ArrayList<>();
         this.dataQueFoiVista = new HashMap<>();
+        this.logado = false;
     }
 
     /**
@@ -193,7 +195,7 @@ public class Cliente {
 
     @Override
     public String toString() {
-        StringBuilder aux = new StringBuilder((this.nomeDeUsuario + " - " + this.login + ", " + this.senha));
+        StringBuilder aux = new StringBuilder((this.nomeDeUsuario + ";" + this.login + ";" + this.senha));
         return aux.toString();
     }
 
@@ -206,7 +208,7 @@ public class Cliente {
             FileWriter writer = new FileWriter(caminhoArq, true);
 
             if (!caminhoArq.equals("")) {
-                writer.write(toString() + "\n");
+                writer.write(this.toString() + "\n");
 
                 writer.write("Lista de midias 'PARA VER': \n");
                 for (Midia midia : listaParaVer) {
@@ -252,6 +254,14 @@ public class Cliente {
 
     public String getLogin() {
         return this.login;
+    }
+
+    public boolean isLogado() {
+        return logado;
+    }
+
+    public void setLogado(boolean logado) {
+        this.logado = logado;
     }
 
     public Map<Integer, LocalDate> getDataQueFoiVista() {
