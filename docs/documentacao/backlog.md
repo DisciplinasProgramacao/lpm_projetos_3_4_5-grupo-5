@@ -8,8 +8,8 @@
 |Atualização do diagrama para abrigar o novo tipo de mídia: Filme | implementado   |
 |Implementação da lógica de carga de dados do catálogo de filmes |implementado    |
 |Implementação do cadastro de clientes, filmes e séries | implementado     |
-|Salvar dados de clientes, filmes e séries  | em progresso     |
-|Implementação do protótipo de sistema cobrindo os requisitos atuais (documento anterior) | em progresso     |
+|Salvar dados de clientes, filmes e séries  | implementado     |
+|Implementação do protótipo de sistema cobrindo os requisitos atuais (documento anterior) | implementado     |
 
 
 
