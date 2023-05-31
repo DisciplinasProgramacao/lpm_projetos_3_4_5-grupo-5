@@ -1,6 +1,8 @@
 package codigo.app;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class App {
@@ -200,16 +202,29 @@ public class App {
                     // escolher midia da lista das midias da plataforma, mostrar midias -> perguntar id
                     // selecionar midia pelo id
                     // chamar metodo
+                    System.out.println(plataformaStreaming.getMidias().toString());
+                    System.out.println("Digite o nome da mídia para ser adicionada na lista:");
+                    String nomeMidia = teclado.nextLine();
+                    cliente.adicionarNaLista(plataformaStreaming.buscarMidia(nomeMidia));
                     break;
                 case 11:
                     // escolher midia da lista das midias da lista para ver, mostrar midias -> perguntar id
                     // selecionar midia pelo id
                     // chamar metodo
+                    System.out.println(cliente.getListaParaVer().toString());
+                    System.out.println("Digite o nome da mídia para ser removida da lista:");
+                    nomeMidia = teclado.nextLine();
+                    cliente.retirarNaLista(nomeMidia);
                     break;
                 case 12:
                     // escolher midia da lista das midias da plataforma, mostrar midias -> perguntar id
                     // selecionar midia pelo id
                     // chamar metodo
+                    System.out.println("Lista de Mídias:");
+                    System.out.println(plataformaStreaming.getMidias().toString());
+                    System.out.println("Escolha o NOME de uma mídia para assistir:");
+                    nomeMidia = teclado.nextLine();
+                    cliente.adicionarNaListaJaVistas(plataformaStreaming.buscarMidia(nomeMidia));
                     break;
                 case 13:
                     // nao sei se pode fazer isso ou a gnt escolhe o caminho pra ele
@@ -218,12 +233,11 @@ public class App {
                     cliente.salvar(caminho);
                     break;
                 case 14:
-                    // Caso 14
+                    plataformaStreaming.logoff();
                     break;
                 case 15:
-                    // Caso 15
-
                     // pode chamar o metodo encapsulado ou fazer os cases do cliente chamarem esse
+                    System.out.println(plataformaStreaming.getMidias().toString());
                     break;
                 case 16:
                     plataformaStreaming.carregarMidias("docs/arquivos/POO_Filmes.csv");
@@ -241,11 +255,20 @@ public class App {
                     usuario = cadastrarUsuario();
                     plataformaStreaming.adicionarCliente(usuario);
                     break;
-                case 21:
-                    // Caso 21
+                case 21: //REVISAR
+                    try {
+                        plataformaStreaming.salvarMidias("MinhasMidias");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
                     break;
-                case 22:
-                    // Caso 22
+                case 22: //REVISAR
+                    try {
+                        plataformaStreaming.salvarClientes("MeusClientes");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                     break;
                 case 23:
                     System.out.println("Digite o nome da midia:");
