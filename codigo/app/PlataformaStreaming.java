@@ -287,6 +287,26 @@ public class PlataformaStreaming {
         scanner.close();
     }
 
+    public String relatorioMaisMidias(){
+        Integer maisMidias = null;
+        int numMidias = 0;
+        Cliente cliente = null;
+        Cliente clienteMaisMidias = null;
+
+        for (Map.Entry<String, Cliente> entrada : clientes.entrySet()) {
+            cliente = entrada.getValue();
+            numMidias = cliente.getListaJaVistas().size();
+
+            if (maisMidias == null || numMidias > maisMidias) {
+                maisMidias = numMidias;
+                clienteMaisMidias = cliente;
+            }
+        }
+
+        StringBuilder aux = new StringBuilder( clienteMaisMidias.getUsuario() + ", " + maisMidias + " mídias assitidas");
+        return aux.toString();
+    }
+
     public Cliente buscarCliente(String login) {
         return clientes.get(login);
     }
@@ -301,5 +321,18 @@ public class PlataformaStreaming {
 
     public HashMap<String, Midia> getMidias() {
         return midias;
+    }
+
+    public static void main(String[] args) throws Exception{
+        PlataformaStreaming plat = new PlataformaStreaming("p");
+        Cliente c1 = new Cliente("c1", "c1", "123");
+        Cliente c2 = new Cliente("c2", "c2", "123");
+        Cliente c3 = new Cliente("c3", "c3", "123");
+        Serie s1 = new Serie(1, "s1", "terror", "pt", "2020", 20);
+        Serie s2 = new Serie(2, "s2", "terror", "pt", "2020", 20);
+        Filme f1 = new Filme(3, "f1", "comerdia", "ig", "2022", 120 );
+        Filme f2 = new Filme(3, "f2", "comerdia", "ig", "2022", 120 );
+
+
     }
 }

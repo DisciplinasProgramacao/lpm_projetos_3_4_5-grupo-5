@@ -1,9 +1,6 @@
 package codigo.test;
 
-import codigo.app.Cliente;
-import codigo.app.PlataformaStreaming;
-import codigo.app.Serie;
-import codigo.app.Midia;
+import codigo.app.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,11 +15,15 @@ public class PlataformaStreamingTest {
 
     Cliente clienteTeste;
     Cliente clienteTeste2;
+    Cliente clienteTeste3;
     HashMap<String, Cliente> clientes;
     Midia serieTeste;
     Serie serie1;
     Serie serie2;
     Serie serie3;
+    Filme f1;
+    Filme f2;
+    Filme f3;
     Midia midiaTest;
     Map<Cliente, List<Midia>> seriesPorCliente;
     List<Midia> catalogoMidias;
@@ -41,12 +42,18 @@ public class PlataformaStreamingTest {
         //Clientes
         clienteTeste = new Cliente("Cteste", "login", "123");
         clienteTeste2 = new Cliente("Cteste2","usuario1", "1234");
+        clienteTeste3 = new Cliente("Cteste3","usuario2", "12345");
 
         //Series
         serieTeste = new Serie(4,"you", "drama", "ingles", "20", 10);
         serie1 = new Serie(15, "F.R.I.E.N.D.S", "comedia", "inglês", "22/09/1994", 236);
         serie2 = new Serie(16, "Stranger Things", "drama", "inglês", "22/09/1994", 18);
         serie3 = new Serie(17, "Breaking Bad", "drama", "inglês", "22/09/1994", 12);
+
+        //Filmes
+        f1 = new Filme(18, "f1", "terror", "portugues", "2020", 120);
+        f2 = new Filme(19, "f2", "terror", "portugues", "2020", 120);
+        f3 = new Filme(13, "f3", "terror", "portugues", "2020", 120);
 
         //Midias
         midiaTest = new Serie(14, "F.R.I.E.N.D.S", "comedia", "inglês", "22/09/1994", 236);
@@ -61,8 +68,6 @@ public class PlataformaStreamingTest {
         //Ações Clientes
         clienteTeste2.adicionarNaLista(serie1);
         clienteTeste2.adicionarNaLista(serie2);
-        clienteTeste2.adicionarNaListaJaVistas(serie3);
-
     }
 
     @Test
@@ -119,8 +124,6 @@ public class PlataformaStreamingTest {
         listaTeste.add(serieTeste);
 
         assertEquals(listaTeste, plataforma.filtrarPorGenero("drama"));
-
-
     }
 
     @Test
@@ -220,5 +223,36 @@ public class PlataformaStreamingTest {
         plataforma.adicionarCliente(cliente1);
         plataforma.adicionarCliente(cliente2);
         assertEquals(expectedClientes, plataforma.getClientes());
+    }
+
+    @Test
+    public void relatorioClienteMaisMidiasAssistidas(){
+        plataforma.adicionarMidia(serie1);
+        plataforma.adicionarMidia(serie2);
+        plataforma.adicionarMidia(serie3);
+        plataforma.adicionarMidia(f1);
+        plataforma.adicionarMidia(f2);
+        plataforma.adicionarMidia(f3);
+        plataforma.adicionarCliente(clienteTeste);
+        plataforma.adicionarCliente(clienteTeste2);
+        plataforma.adicionarCliente(clienteTeste3);
+
+
+        clienteTeste2.adicionarNaListaJaVistas(f1);
+        clienteTeste2.adicionarNaListaJaVistas(f2);
+
+        clienteTeste.adicionarNaListaJaVistas(f1);
+        clienteTeste.adicionarNaListaJaVistas(serie1);
+        clienteTeste.adicionarNaListaJaVistas(serie2);
+        clienteTeste.adicionarNaListaJaVistas(serie3);
+
+        clienteTeste3.adicionarNaListaJaVistas(f1);
+        clienteTeste3.adicionarNaListaJaVistas(f2);
+        clienteTeste3.adicionarNaListaJaVistas(f3);
+
+        System.out.println(plataforma.relatorioMaisMidias());
+        assertTrue(plataforma.relatorioMaisMidias().contains(
+                "Cteste, 4 mídias"
+        ));
     }
 }
