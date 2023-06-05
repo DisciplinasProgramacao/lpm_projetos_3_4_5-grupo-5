@@ -291,7 +291,7 @@ public class PlataformaStreaming {
         Integer maisMidias = null;
         int numMidias = 0;
         Cliente cliente = null;
-        Cliente clienteMaisMidias = null;
+        String clienteMaisMidias = null;
 
         for (Map.Entry<String, Cliente> entrada : clientes.entrySet()) {
             cliente = entrada.getValue();
@@ -299,11 +299,46 @@ public class PlataformaStreaming {
 
             if (maisMidias == null || numMidias > maisMidias) {
                 maisMidias = numMidias;
-                clienteMaisMidias = cliente;
+                clienteMaisMidias = cliente.getUsuario();
             }
         }
 
-        StringBuilder aux = new StringBuilder( clienteMaisMidias.getUsuario() + ", " + maisMidias + " mídias assitidas");
+        StringBuilder aux = new StringBuilder( clienteMaisMidias +
+                ", " + maisMidias + " mídias assistidas");
+        return aux.toString();
+    }
+
+    public String relatorioMaisAvaliacoes(){
+        int maisAvaliacoes = 0;
+        int numMidias = 0;
+        Midia midia = null;
+        HashSet<Avaliacao> avaliacoes = null;
+        String  cliente = null;
+        String  clienteMaisAvaliacoes = null;
+
+        HashMap<String, Integer> frequencyMap = new HashMap<>();
+
+        for (Map.Entry<String, Midia> entrada : midias.entrySet()) {
+            midia = entrada.getValue();
+            avaliacoes = midia.getAvaliacoes();
+
+
+            for (Avaliacao avaliacao : avaliacoes) {
+                cliente = avaliacao.getNomeDeUsuario();
+                frequencyMap.put(cliente, frequencyMap.getOrDefault(cliente, 0) + 1);
+            }
+        }
+
+        for (String nomeCliente : frequencyMap.keySet()) {
+            int frequency = frequencyMap.get(nomeCliente);
+            if (frequency > maisAvaliacoes) {
+                maisAvaliacoes = frequency;
+                clienteMaisAvaliacoes = nomeCliente;
+            }
+        }
+
+        StringBuilder aux = new StringBuilder(clienteMaisAvaliacoes +
+                ", " + maisAvaliacoes + " avaliações");
         return aux.toString();
     }
 
@@ -321,18 +356,5 @@ public class PlataformaStreaming {
 
     public HashMap<String, Midia> getMidias() {
         return midias;
-    }
-
-    public static void main(String[] args) throws Exception{
-        PlataformaStreaming plat = new PlataformaStreaming("p");
-        Cliente c1 = new Cliente("c1", "c1", "123");
-        Cliente c2 = new Cliente("c2", "c2", "123");
-        Cliente c3 = new Cliente("c3", "c3", "123");
-        Serie s1 = new Serie(1, "s1", "terror", "pt", "2020", 20);
-        Serie s2 = new Serie(2, "s2", "terror", "pt", "2020", 20);
-        Filme f1 = new Filme(3, "f1", "comerdia", "ig", "2022", 120 );
-        Filme f2 = new Filme(3, "f2", "comerdia", "ig", "2022", 120 );
-
-
     }
 }

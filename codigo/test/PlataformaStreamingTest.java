@@ -25,12 +25,15 @@ public class PlataformaStreamingTest {
     Filme f2;
     Filme f3;
     Midia midiaTest;
+    Avaliacao a1;
+    Avaliacao a2;
+    Avaliacao a3;
     Map<Cliente, List<Midia>> seriesPorCliente;
     List<Midia> catalogoMidias;
     PlataformaStreaming plataforma;
 
     @BeforeEach
-    public void prepare() {
+    public void prepare() throws Exception {
         //Plataforma
         plataforma = new PlataformaStreaming("netflix");
 
@@ -56,11 +59,26 @@ public class PlataformaStreamingTest {
         f3 = new Filme(13, "f3", "terror", "portugues", "2020", 120);
 
         //Midias
-        midiaTest = new Serie(14, "F.R.I.E.N.D.S", "comedia", "inglês", "22/09/1994", 236);
+        midiaTest = new Serie(14, "mTest", "comedia", "inglês", "22/09/1994", 236);
+
+        //Avaliacoes
+        a1 = new Avaliacao("u1", 4,"bom");
+        a2 = new Avaliacao("u2", 4,"bom");
+        a3 = new Avaliacao("u3", 4,"bom");
+
 
         //Ações Plataforma
         plataforma.adicionarMidia(serieTeste);
         plataforma.adicionarMidia(midiaTest);
+        plataforma.adicionarMidia(serie1);
+        plataforma.adicionarMidia(serie2);
+        plataforma.adicionarMidia(serie3);
+        plataforma.adicionarMidia(f1);
+        plataforma.adicionarMidia(f2);
+        plataforma.adicionarMidia(f3);
+        plataforma.adicionarCliente(clienteTeste);
+        plataforma.adicionarCliente(clienteTeste2);
+        plataforma.adicionarCliente(clienteTeste3);
 //        plataforma.adicionarSerieParaCliente(clienteTeste2, serie1);
 //        plataforma.adicionarSerieParaCliente(clienteTeste2, serie2);
 //        plataforma.adicionarSerieParaCliente(clienteTeste2, serie3);
@@ -68,6 +86,24 @@ public class PlataformaStreamingTest {
         //Ações Clientes
         clienteTeste2.adicionarNaLista(serie1);
         clienteTeste2.adicionarNaLista(serie2);
+        clienteTeste2.adicionarNaListaJaVistas(f1);
+        clienteTeste2.adicionarNaListaJaVistas(f2);
+        clienteTeste.adicionarNaListaJaVistas(f1);
+        clienteTeste.adicionarNaListaJaVistas(serie1);
+        clienteTeste.adicionarNaListaJaVistas(serie2);
+        clienteTeste.adicionarNaListaJaVistas(serie3);
+        clienteTeste3.adicionarNaListaJaVistas(f1);
+        clienteTeste3.adicionarNaListaJaVistas(f2);
+        clienteTeste3.adicionarNaListaJaVistas(f3);
+
+        //Ações Mídias
+        serie1.addAvaliacao(a1);
+        serie1.addAvaliacao(a2);
+        serie1.addAvaliacao(a3);
+        serie2.addAvaliacao(a1);
+        serie2.addAvaliacao(a2);
+        serie3.addAvaliacao(a2);
+        serie3.addAvaliacao(a3);
     }
 
     @Test
@@ -84,7 +120,7 @@ public class PlataformaStreamingTest {
 
     @Test
     public void testAdicionarMidia(){
-        assertEquals(midiaTest, plataforma.getMidias().get("F.R.I.E.N.D.S:comedia"));
+        assertEquals(midiaTest, plataforma.getMidias().get("mTest:comedia"));
     }
 
     @Test
@@ -121,6 +157,8 @@ public class PlataformaStreamingTest {
         plataforma.adicionarMidia(serieTeste3);
 
         listaTeste.add(serieTeste1);
+        listaTeste.add(serie2);
+        listaTeste.add(serie3);
         listaTeste.add(serieTeste);
 
         assertEquals(listaTeste, plataforma.filtrarPorGenero("drama"));
@@ -201,7 +239,7 @@ public class PlataformaStreamingTest {
         assertTrue(clienteTeste2.getListaParaVer().contains(serie1));
         assertTrue(clienteTeste2.getListaJaVistas().contains(serie3));
         assertEquals(2, clienteTeste2.getListaParaVer().size());
-        assertEquals(1, clienteTeste2.getListaJaVistas().size());
+        assertEquals(3, clienteTeste2.getListaJaVistas().size());
     }
 
 //    @Test
@@ -218,8 +256,16 @@ public class PlataformaStreamingTest {
         Cliente cliente2 = new Cliente("Arthur", "arthur1", "arthur123");
         String chave1 = cliente1.getUsuario() + ":" + cliente1.getSenha();
         String chave2 = cliente2.getUsuario() + ":" + cliente2.getSenha();
+        String chave3 = clienteTeste.getUsuario() + ":" + clienteTeste.getSenha();
+        String chave4 = clienteTeste2.getUsuario() + ":" + clienteTeste2.getSenha();
+        String chave5 = clienteTeste3.getUsuario() + ":" + clienteTeste3.getSenha();
+
         expectedClientes.put(chave1, cliente1);
         expectedClientes.put(chave2, cliente2);
+        expectedClientes.put(chave3, clienteTeste);
+        expectedClientes.put(chave4, clienteTeste2);
+        expectedClientes.put(chave5, clienteTeste3);
+
         plataforma.adicionarCliente(cliente1);
         plataforma.adicionarCliente(cliente2);
         assertEquals(expectedClientes, plataforma.getClientes());
@@ -227,32 +273,16 @@ public class PlataformaStreamingTest {
 
     @Test
     public void relatorioClienteMaisMidiasAssistidas(){
-        plataforma.adicionarMidia(serie1);
-        plataforma.adicionarMidia(serie2);
-        plataforma.adicionarMidia(serie3);
-        plataforma.adicionarMidia(f1);
-        plataforma.adicionarMidia(f2);
-        plataforma.adicionarMidia(f3);
-        plataforma.adicionarCliente(clienteTeste);
-        plataforma.adicionarCliente(clienteTeste2);
-        plataforma.adicionarCliente(clienteTeste3);
-
-
-        clienteTeste2.adicionarNaListaJaVistas(f1);
-        clienteTeste2.adicionarNaListaJaVistas(f2);
-
-        clienteTeste.adicionarNaListaJaVistas(f1);
-        clienteTeste.adicionarNaListaJaVistas(serie1);
-        clienteTeste.adicionarNaListaJaVistas(serie2);
-        clienteTeste.adicionarNaListaJaVistas(serie3);
-
-        clienteTeste3.adicionarNaListaJaVistas(f1);
-        clienteTeste3.adicionarNaListaJaVistas(f2);
-        clienteTeste3.adicionarNaListaJaVistas(f3);
-
-        System.out.println(plataforma.relatorioMaisMidias());
         assertTrue(plataforma.relatorioMaisMidias().contains(
-                "Cteste, 4 mídias"
+                "Cteste, 4 mídias assistidas"
         ));
     }
+
+   @Test
+    public void relatorioClienteMaisAvalicoes(){
+        assertTrue(plataforma.relatorioMaisAvaliacoes().contains(
+                "u2, 3 avaliações"
+        ));
+    }
+
 }

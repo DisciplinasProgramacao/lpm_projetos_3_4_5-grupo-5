@@ -16,6 +16,7 @@ public abstract class Midia implements ISalvar{
     private String idioma;
     private int audiencia;
     private String dataDeLancamento;
+
     private HashSet<Avaliacao> avaliacoes;
     private double nota;
     private String tipoMidia;
@@ -143,6 +144,11 @@ public abstract class Midia implements ISalvar{
     public int getId() {
         return this.id;
     }
+
+    public HashSet<Avaliacao> getAvaliacoes() {
+        return avaliacoes;
+    }
+
 
     //#endregion
 }
