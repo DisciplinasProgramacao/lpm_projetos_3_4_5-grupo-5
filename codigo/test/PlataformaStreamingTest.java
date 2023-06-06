@@ -273,16 +273,105 @@ public class PlataformaStreamingTest {
 
     @Test
     public void relatorioClienteMaisMidiasAssistidas(){
-        assertTrue(plataforma.relatorioMaisMidias().contains(
+        assertTrue(plataforma.relatorioClienteMaisMidias().contains(
                 "Cteste, 4 mídias assistidas"
         ));
     }
 
    @Test
     public void relatorioClienteMaisAvalicoes(){
-        assertTrue(plataforma.relatorioMaisAvaliacoes().contains(
+        assertTrue(plataforma.relatorioClienteMaisAvaliacoes().contains(
                 "u2, 3 avaliações"
         ));
     }
 
+    @Test
+    public void relatorioClientes15Avaliacoes() throws Exception {
+        Midia  f4 = new Filme(19, "f4", "terror", "portugues", "2020", 120);
+        Midia  f5 = new Filme(20, "f5", "terror", "portugues", "2020", 120);
+        Midia  f6 = new Filme(21, "f6", "terror", "portugues", "2020", 120);
+        Midia  f7 = new Filme(22, "f7", "terror", "portugues", "2020", 120);
+        Midia  f8 = new Filme(23, "f8", "terror", "portugues", "2020", 120);
+        Midia  f9 = new Filme(24, "f9", "terror", "portugues", "2020", 120);
+        Midia  f10 = new Filme(25, "f10", "terror", "portugues", "2020", 120);
+        Midia  f11 = new Filme(26, "f11", "terror", "portugues", "2020", 120);
+        Midia  f12 = new Filme(27, "f12", "terror", "portugues", "2020", 120);
+        Midia  f13 = new Filme(28, "f13", "terror", "portugues", "2020", 120);
+        Midia  f14 = new Filme(29, "f14", "terror", "portugues", "2020", 120);
+        Midia  f15 = new Filme(30, "f15", "terror", "portugues", "2020", 120);
+        Midia  f16 = new Filme(31, "f16", "terror", "portugues", "2020", 120);
+        Midia  f17 = new Filme(32, "f17", "terror", "portugues", "2020", 120);
+
+        plataforma.adicionarMidia(f4);
+        plataforma.adicionarMidia(f5);
+        plataforma.adicionarMidia(f6);
+        plataforma.adicionarMidia(f7);
+        plataforma.adicionarMidia(f8);
+        plataforma.adicionarMidia(f9);
+        plataforma.adicionarMidia(f10);
+        plataforma.adicionarMidia(f11);
+        plataforma.adicionarMidia(f12);
+        plataforma.adicionarMidia(f13);
+        plataforma.adicionarMidia(f14);
+        plataforma.adicionarMidia(f15);
+        plataforma.adicionarMidia(f16);
+        plataforma.adicionarMidia(f17);
+
+        f4.addAvaliacao(a2);
+        f4.addAvaliacao(a3);
+        f4.addAvaliacao(a1);
+
+        f5.addAvaliacao(a2);
+        f5.addAvaliacao(a1);
+        f5.addAvaliacao(a3);
+
+        f6.addAvaliacao(a2);
+        f6.addAvaliacao(a1);
+        f6.addAvaliacao(a3);
+
+        f7.addAvaliacao(a2);
+        f7.addAvaliacao(a1);
+        f7.addAvaliacao(a3);
+
+        f8.addAvaliacao(a2);
+        f8.addAvaliacao(a1);
+        f8.addAvaliacao(a3);
+
+        f9.addAvaliacao(a2);
+        f9.addAvaliacao(a1);
+        f9.addAvaliacao(a3);
+
+        f10.addAvaliacao(a1);
+        f10.addAvaliacao(a3);
+        f10.addAvaliacao(a2);
+
+        f11.addAvaliacao(a1);
+        f11.addAvaliacao(a3);
+        f11.addAvaliacao(a2);
+
+        f12.addAvaliacao(a1);
+        f12.addAvaliacao(a3);
+        f12.addAvaliacao(a2);
+
+        f13.addAvaliacao(a1);
+        f13.addAvaliacao(a3);
+        f13.addAvaliacao(a2);
+
+        f14.addAvaliacao(a1);
+        f14.addAvaliacao(a3);
+        f14.addAvaliacao(a2);
+
+        f15.addAvaliacao(a1);
+        f15.addAvaliacao(a3);
+        f15.addAvaliacao(a2);
+
+        f16.addAvaliacao(a3);
+        f16.addAvaliacao(a2);
+
+        f17.addAvaliacao(a2);
+
+        assertTrue(plataforma.relatorioClientes15Avaliacoes().contains(
+                "66,7% dos clientes possuem 15 ou mais avaliações"
+        ));
+    }
 }

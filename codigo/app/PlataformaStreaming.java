@@ -1,10 +1,14 @@
 package codigo.app;
 
+import com.sun.tools.jconsole.JConsoleContext;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.SQLClientInfoException;
 import java.sql.SQLOutput;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -15,7 +19,7 @@ public class PlataformaStreaming {
     private HashMap<String, Midia> midias;
     private HashMap<String, Cliente> clientes;
 //    private Map<Cliente, List<Midia>> seriesPorCliente;
-
+    DecimalFormat formatter = new DecimalFormat("#.0");
     /**
      * Criar uma nova plataforma
      * Cria uma tabela hash vazia
@@ -287,8 +291,8 @@ public class PlataformaStreaming {
         scanner.close();
     }
 
-    public String relatorioMaisMidias(){
-        Integer maisMidias = null;
+    public String relatorioClienteMaisMidias(){
+        int maisMidias = 0;
         int numMidias = 0;
         Cliente cliente = null;
         String clienteMaisMidias = null;
@@ -297,7 +301,7 @@ public class PlataformaStreaming {
             cliente = entrada.getValue();
             numMidias = cliente.getListaJaVistas().size();
 
-            if (maisMidias == null || numMidias > maisMidias) {
+            if (numMidias > maisMidias) {
                 maisMidias = numMidias;
                 clienteMaisMidias = cliente.getUsuario();
             }
@@ -308,9 +312,8 @@ public class PlataformaStreaming {
         return aux.toString();
     }
 
-    public String relatorioMaisAvaliacoes(){
+    public String relatorioClienteMaisAvaliacoes(){
         int maisAvaliacoes = 0;
-        int numMidias = 0;
         Midia midia = null;
         HashSet<Avaliacao> avaliacoes = null;
         String  cliente = null;
@@ -339,6 +342,40 @@ public class PlataformaStreaming {
 
         StringBuilder aux = new StringBuilder(clienteMaisAvaliacoes +
                 ", " + maisAvaliacoes + " avaliações");
+        return aux.toString();
+    }
+    public String relatorioClientes15Avaliacoes(){
+        Midia midia = null;
+        HashSet<Avaliacao> avaliacoes = null;
+        String  cliente = null;
+        Integer frequencia = null;
+        int cont = 0;
+        int numAvaliacoes = 15;
+        HashMap<String, Integer> frequencyMap = new HashMap<>();
+
+        for (Map.Entry<String, Midia> entrada : midias.entrySet()) {
+            midia = entrada.getValue();
+            avaliacoes = midia.getAvaliacoes();
+
+
+            for (Avaliacao avaliacao : avaliacoes) {
+                cliente = avaliacao.getNomeDeUsuario();
+                frequencyMap.put(cliente, frequencyMap.getOrDefault(cliente, 0) + 1);
+            }
+        }
+
+        for (Map.Entry<String, Integer> entrada : frequencyMap.entrySet()) {
+            frequencia = entrada.getValue();
+
+            if(frequencia >= numAvaliacoes)  {
+                cont++;
+            }
+        }
+
+        double totalClientes = frequencyMap.size();
+        double porcentagem = (cont / totalClientes) * 100;
+
+        StringBuilder aux = new StringBuilder(formatter.format(porcentagem) + "% dos clientes possuem " + numAvaliacoes + " ou mais avaliações");
         return aux.toString();
     }
 
