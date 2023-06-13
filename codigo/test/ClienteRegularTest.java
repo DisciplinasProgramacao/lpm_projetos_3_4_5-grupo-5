@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ClienteTest {
-    Cliente clienteTeste;
+public class ClienteRegularTest {
+    ClienteRegular clienteTeste;
     Serie serieTerror1;
     Serie serieTerror2;
     Serie serieComedia;
@@ -94,11 +94,11 @@ public class ClienteTest {
 
     @Test
     public void testIsEspecalistaComMaisDeCincoMidiasAssistidas(){
-        clienteTeste.registrarPorAudiencia(serieTerror1,"2023-04-23");
-        clienteTeste.registrarPorAudiencia(serieTerror2,"2023-04-24");
-        clienteTeste.registrarPorAudiencia(serieComedia,"2023-04-25");
-        clienteTeste.registrarPorAudiencia(serieComedia2,"2023-04-26");
-        clienteTeste.registrarPorAudiencia(serieComedia3,"2023-04-27");
+        clienteTeste.registrarPorAudiencia(serieTerror1,"2023-05-23");
+        clienteTeste.registrarPorAudiencia(serieTerror2,"2023-05-24");
+        clienteTeste.registrarPorAudiencia(serieComedia,"2023-05-25");
+        clienteTeste.registrarPorAudiencia(serieComedia2,"2023-05-26");
+        clienteTeste.registrarPorAudiencia(serieComedia3,"2023-05-27");
         clienteTeste.registrarPorAudiencia(s1, "2023-05-28");
         assertTrue(clienteTeste.isEspecialista());
     }
@@ -111,14 +111,14 @@ public class ClienteTest {
     @Test
     public void testToStringCliente(){
         Cliente c1 = new ClienteRegular("Breno", "breno1", "breno123");
-        assertEquals(c1.toString(), "Breno - breno1, breno123");
+        assertEquals(c1.toString(), "Breno;breno1;breno123");
     }
 
 
 //    @Test
 //    public void deveAdicionarAvaliacao() throws Exception {
-//        clienteTeste.registrarPorAudiencia(serieComedia,String dataVista);
-//        clienteTeste.addAvaliacao(serieComedia, 5);
+//      clienteTeste.registrarPorAudiencia(serieComedia, "30/08/05");
+//       clienteTeste.addAvaliacao(serieComedia, 5);
 //    }
 
 }

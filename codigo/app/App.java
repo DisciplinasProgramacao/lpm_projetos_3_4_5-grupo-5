@@ -141,8 +141,8 @@ public class App {
         String login = teclado.nextLine();
         System.out.println("Digite a senha:");
         String senha = teclado.nextLine();
-
-        return new Cliente(nome, login, senha);
+        return null;
+      //  return new Cliente(nome, login, senha);
     }
 
     /**

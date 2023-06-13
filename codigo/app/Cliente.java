@@ -6,14 +6,14 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public class Cliente {
-    private String nomeDeUsuario;
-    private String login;
-    private String senha;
-    private List<Midia> listaParaVer;
-    private List<Midia> listaJaVistas;
-    private Map<Integer, LocalDate> dataQueFoiVista;
-    private boolean logado;
+public abstract class Cliente {
+    protected String nomeDeUsuario;
+    protected String login;
+    protected String senha;
+    protected List<Midia> listaParaVer;
+    protected List<Midia> listaJaVistas;
+    protected Map<Integer, LocalDate> dataQueFoiVista;
+    protected boolean logado;
 
 
     /**
@@ -236,11 +236,7 @@ public class Cliente {
      */
     public void addAvaliacao(Midia midia, int nota, String comentario) throws Exception {
 
-        if (!isEspecialista())
-            comentario = "";
-
         Avaliacao avaliacao = new Avaliacao(this.nomeDeUsuario, nota, comentario);
-
         int index = listaJaVistas.indexOf(midia);
         if (index != -1) {
             midia.addAvaliacao(avaliacao);
@@ -264,6 +260,7 @@ public class Cliente {
         this.logado = logado;
     }
 
+
     public Map<Integer, LocalDate> getDataQueFoiVista() {
         return this.dataQueFoiVista;
     }
@@ -279,6 +276,9 @@ public class Cliente {
     public List<Midia> getListaJaVistas() {
         return listaJaVistas;
     }
+
+    public abstract void addAvaliacao(Midia midia, int nota) throws Exception;
+
 
 
 }

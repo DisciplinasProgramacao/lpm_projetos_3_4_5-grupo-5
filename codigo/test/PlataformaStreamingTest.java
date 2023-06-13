@@ -43,9 +43,9 @@ public class PlataformaStreamingTest {
         catalogoMidias = new ArrayList<>();
 
         //Clientes
-        clienteTeste = new Cliente("Cteste", "login", "123");
-        clienteTeste2 = new Cliente("Cteste2","usuario1", "1234");
-        clienteTeste3 = new Cliente("Cteste3","usuario2", "12345");
+        clienteTeste = new ClienteRegular("Cteste", "login", "123");
+        clienteTeste2 = new ClienteRegular("Cteste2","usuario1", "1234");
+        clienteTeste3 = new ClienteRegular("Cteste3","usuario2", "12345");
 
         //Series
         serieTeste = new Serie(4,"you", "drama", "ingles", "20", 10);
@@ -252,8 +252,8 @@ public class PlataformaStreamingTest {
     @Test
     public void testGetClientes(){
         HashMap<String, Cliente> expectedClientes = new HashMap<>();
-        Cliente cliente1 = new Cliente("Breno", "breno1", "breno123");
-        Cliente cliente2 = new Cliente("Arthur", "arthur1", "arthur123");
+        Cliente cliente1 = new ClienteRegular("Breno", "breno1", "breno123");
+        Cliente cliente2 = new ClienteRegular("Arthur", "arthur1", "arthur123");
         String chave1 = cliente1.getUsuario() + ":" + cliente1.getSenha();
         String chave2 = cliente2.getUsuario() + ":" + cliente2.getSenha();
         String chave3 = clienteTeste.getUsuario() + ":" + clienteTeste.getSenha();
