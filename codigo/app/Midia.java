@@ -1,8 +1,6 @@
 package codigo.app;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 
 /**
  * Midia: tem nome, gênero, idioma e audiência. Classe abstrata que recebe por parâmetro os valores necessários da classe filha.
@@ -18,7 +16,7 @@ public abstract class Midia implements ISalvar{
     private String dataDeLancamento;
 
     private HashSet<Avaliacao> avaliacoes;
-    private double nota;
+    private double media;
     private String tipoMidia;
 
     //#endregion
@@ -138,7 +136,7 @@ public abstract class Midia implements ISalvar{
         }
 
         this.avaliacoes.add(avaliacao);
-        this.nota = this.avaliacoes.stream().mapToDouble(f -> f.getAvaliacao()).average().orElse(0);
+        this.media = this.avaliacoes.stream().mapToDouble(f -> f.getAvaliacao()).average().orElse(0);
     }
 
     public int getId() {
@@ -147,6 +145,10 @@ public abstract class Midia implements ISalvar{
 
     public HashSet<Avaliacao> getAvaliacoes() {
         return avaliacoes;
+    }
+
+    public double getMedia() {
+        return media;
     }
 
 

@@ -274,7 +274,7 @@ public abstract class Cliente {
     }
 
     public List<Midia> getListaJaVistas() {
-        return listaJaVistas;
+        return List.copyOf(listaJaVistas);
     }
 
     public abstract void addAvaliacao(Midia midia, int nota) throws Exception;
