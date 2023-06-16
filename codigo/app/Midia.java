@@ -1,23 +1,21 @@
 package codigo.app;
 
 import java.util.HashSet;
+import java.util.Random;
 
 /**
  * Midia: tem nome, gênero, idioma e audiência. Classe abstrata que recebe por parâmetro os valores necessários da classe filha.
  */
 public abstract class Midia implements ISalvar{
     //#region atributos
-    private static final String[] GENEROS = {"aventura", "drama", "comedia", "romance", "terror"};
     private int id;
     private String nome;
-    private String genero;
-    private String idioma;
+    private Genero genero;
+    private Idioma idioma;
     private int audiencia;
     private String dataDeLancamento;
-
     private HashSet<Avaliacao> avaliacoes;
     private double media;
-    private String tipoMidia;
 
     //#endregion
 
@@ -32,11 +30,14 @@ public abstract class Midia implements ISalvar{
      * @param idioma           Idioma da midia
      * @param dataDeLancamento Data de lançamento da midia
      */
-    private void init(int id, String nome, String genero, String idioma, String dataDeLancamento) {
+    private void init(int id, String nome, Genero genero, Idioma idioma, String dataDeLancamento) {
+
+        Random random = new Random();
+
         this.id = id;
         this.nome = nome;
-        this.genero = verificaGenero(genero) ? genero : "indefinido";
-        this.idioma = idioma.isEmpty() ? "indefinido" : idioma;
+        this.genero = genero != null ? genero : Genero.values()[random.nextInt(Genero.values().length)];
+        this.idioma = idioma != null ? idioma : Idioma.values()[random.nextInt(Idioma.values().length)];
         this.audiencia = 0;
         this.dataDeLancamento = dataDeLancamento;
         avaliacoes = new HashSet<>();
@@ -50,27 +51,13 @@ public abstract class Midia implements ISalvar{
      * @param idioma           Idioma da midia
      * @param dataDeLancamento Data de lançamento da midia
      */
-    public Midia(int id, String nome, String genero, String idioma, String dataDeLancamento) {
+    public Midia(int id, String nome, Genero genero, Idioma idioma, String dataDeLancamento) {
         init(id, nome, genero, idioma, dataDeLancamento);
     }
 
     //#endregion
 
     //#region metodos da classe
-
-    /**
-     * verifica se genero existe
-     *
-     * @param genero Genero
-     */
-    private boolean verificaGenero(String genero) {
-        for (String g : GENEROS) {
-            if (genero.equals(g)) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     /**
      * Aumenta audiencia em +1 para cada vez que o cliente assiste
@@ -81,7 +68,7 @@ public abstract class Midia implements ISalvar{
 
     @Override
     public String toString() {
-        return definirTipoMidia() + ";" + this.id + ";" + this.nome + ";" + this.genero + ";" + this.idioma + ";" + this.dataDeLancamento;
+        return definirTipoMidia() + ";" + this.id + ";" + this.nome + ";" + this.dataDeLancamento + ";" + this.genero.getNome() + ";" + this.idioma.getNome();
     }
 
     public abstract String definirTipoMidia();
@@ -90,11 +77,11 @@ public abstract class Midia implements ISalvar{
         return this.nome;
     }
 
-    public String getGenero() {
+    public Genero getGenero() {
         return this.genero;
     }
 
-    public String getIdioma() {
+    public Idioma getIdioma() {
         return this.idioma;
     }
 
@@ -103,16 +90,12 @@ public abstract class Midia implements ISalvar{
     }
 
 
-    public boolean filtrarPorGenero(String genero){
-        if(this.genero.equals(genero))
-            return true;
-        return false;
+    public boolean filtrarPorGenero(Genero genero){
+        return this.genero.equals(genero);
     }
 
-    public boolean filtrarPorIdioma(String idioma){
-        if(this.idioma.equals(idioma))
-            return true;
-        return false;
+    public boolean filtrarPorIdioma(Idioma idioma){
+        return this.idioma.equals(idioma);
     }
 
     /**
@@ -136,7 +119,7 @@ public abstract class Midia implements ISalvar{
         }
 
         this.avaliacoes.add(avaliacao);
-        this.media = this.avaliacoes.stream().mapToDouble(f -> f.getAvaliacao()).average().orElse(0);
+        this.media = this.avaliacoes.stream().mapToDouble(Avaliacao::getAvaliacao).average().orElse(0);
     }
 
     public int getId() {

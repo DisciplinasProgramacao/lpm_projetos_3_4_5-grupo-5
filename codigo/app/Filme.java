@@ -2,13 +2,12 @@ package codigo.app;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.*;
 
 public class Filme extends Midia {
 
     //#region atributos
     private long duracao;
-    private String TIPO_MIDIA = "F";
+    private final String TIPO_MIDIA = "F";
     //#endregion
 
     //#region construtores
@@ -16,7 +15,7 @@ public class Filme extends Midia {
         this.duracao = duracaoMin;
     }
 
-    public Filme(int id, String nome, String genero, String idioma, String DataDeLancamento, int duracao) {
+    public Filme(int id, String nome, Genero genero, Idioma idioma, String DataDeLancamento, int duracao) {
         super(id, nome, genero, idioma, DataDeLancamento);
         init(duracao);
     }
@@ -51,7 +50,7 @@ public class Filme extends Midia {
             FileWriter writer = new FileWriter(caminhoArq, true);
 
             if (!caminhoArq.equals("")) {
-                writer.write(toString() + "\n");
+                writer.write(this + "\n");
             }
 
             writer.close();

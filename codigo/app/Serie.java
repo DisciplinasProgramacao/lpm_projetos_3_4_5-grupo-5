@@ -2,22 +2,16 @@ package codigo.app;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Scanner;
 
 public class Serie extends Midia {
 
     private int qtdEpisodios;
-    private String TIPO_MIDIA = "S";
+    private final String TIPO_MIDIA = "S";
     private void init(int qtdEpisodios) {
         this.qtdEpisodios = qtdEpisodios;
     }
 
-    public Serie(int id, String nome, String genero, String idioma, String DataDeLancamento, int qtdEpisodios) {
+    public Serie(int id, String nome, Genero genero, Idioma idioma, String DataDeLancamento, int qtdEpisodios) {
         super(id, nome, genero, idioma, DataDeLancamento);
         init(qtdEpisodios);
     }
@@ -44,9 +38,7 @@ public class Serie extends Midia {
     }
 
     public boolean filtrarPorQtdEpisodios(int qtdEpisodios) {
-        if (this.qtdEpisodios == qtdEpisodios)
-            return true;
-        return false;
+        return this.qtdEpisodios == qtdEpisodios;
     }
 
     public void salvar(String caminhoArq) {
@@ -54,7 +46,7 @@ public class Serie extends Midia {
             FileWriter writer = new FileWriter(caminhoArq, true);
 
             if (!caminhoArq.equals("")) {
-                writer.write(toString() + "\n");
+                writer.write(this + "\n");
             }
 
             writer.close();

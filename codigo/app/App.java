@@ -1,11 +1,12 @@
 package codigo.app;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
 public class App {
-    static Scanner teclado = new Scanner(System.in);
+    private static final Scanner teclado = new Scanner(System.in);
 
     private static int menu() {
         limparTela();
@@ -74,9 +75,81 @@ public class App {
     /**
      * Pausa para leitura de mensagens
      */
-    static void pausa() {
+    private static void pausa() {
         System.out.println("Enter para continuar.");
         teclado.nextLine();
+    }
+
+    private static Genero escolherGenero() {
+
+        System.out.println("Gêneros: \n---------------------");
+        for (Genero genero : Genero.values()) {
+            System.out.println(genero.getNome());
+        }
+        System.out.println("---------------------");
+
+        System.out.println("\nEscolha um gênero:");
+        String generoDigitado = teclado.nextLine();
+
+        Genero generoEscolhido = null;
+        for (Genero genero : Genero.values()) {
+            if (genero.getNome().equalsIgnoreCase(generoDigitado)) {
+                generoEscolhido = genero;
+                break;
+            }
+        }
+
+        return generoEscolhido;
+    }
+
+    private static Idioma escolherIdioma() {
+
+        System.out.println("Idiomas: \n---------------------");
+        for (Idioma idioma : Idioma.values()) {
+            System.out.println(idioma.getNome());
+        }
+        System.out.println("---------------------");
+
+        System.out.println("\nEscolha um idioma:");
+        String idiomaDigitado = teclado.nextLine();
+
+        Idioma idiomaEscolhido = null;
+        for (Idioma idioma : Idioma.values()) {
+            if (idioma.getNome().equalsIgnoreCase(idiomaDigitado)) {
+                idiomaEscolhido = idioma;
+                break;
+            }
+        }
+
+        return idiomaEscolhido;
+
+    }
+
+    private static void listaParaVer(Cliente cliente) {
+        List<Midia> lista = cliente.getListaParaVer();
+        if (lista.isEmpty()) System.out.println("Não há nenhuma mídia cadastrada no seu 'Para Ver'!");
+        else lista.forEach(System.out::println);
+    }
+
+    private static Midia buscarMidia(PlataformaStreaming plataformaStreaming) {
+        System.out.println("Digite o nome da midia:");
+        String aux = teclado.nextLine();
+
+        Midia midia = plataformaStreaming.buscarMidia(aux);
+        if (midia != null) System.out.println("Mídia encontrada: " + midia);
+        return midia;
+    }
+
+    private static void historico(Cliente cliente) {
+        List<Midia> lista = cliente.getListaJaVistas();
+        if (lista.isEmpty()) System.out.println("Não há nenhuma mídia cadastrada no seu histórico!");
+        else lista.forEach(System.out::println);
+    }
+
+    private static void listarMidias(PlataformaStreaming plataformaStreaming) {
+        HashMap<String, Midia> lista = plataformaStreaming.getMidias();
+        if (lista.isEmpty()) System.out.println("Não há nenhuma mídia cadastrada na plataforma!");
+        else lista.values().forEach(System.out::println);
     }
 
     /**
@@ -91,10 +164,8 @@ public class App {
         int id = Integer.parseInt(teclado.nextLine());
         System.out.println("Digite o nome:");
         String nome = teclado.nextLine();
-        System.out.println("Digite o gênero:");
-        String genero = teclado.nextLine();
-        System.out.println("Digite o idioma:");
-        String idioma = teclado.nextLine();
+        Genero genero = escolherGenero();
+        Idioma idioma = escolherIdioma();
         System.out.println("Digite a data de lançamento:");
         String dtLancamento = teclado.nextLine();
         System.out.println("Digite a quantidade de episodios:");
@@ -115,10 +186,8 @@ public class App {
         int id = Integer.parseInt(teclado.nextLine());
         System.out.println("Digite o nome:");
         String nome = teclado.nextLine();
-        System.out.println("Digite o gênero:");
-        String genero = teclado.nextLine();
-        System.out.println("Digite o idioma:");
-        String idioma = teclado.nextLine();
+        Genero genero = escolherGenero();
+        Idioma idioma = escolherIdioma();
         System.out.println("Digite a data de lançamento:");
         String dtLancamento = teclado.nextLine();
         System.out.println("Digite duração em minutos:");
@@ -141,14 +210,14 @@ public class App {
         String login = teclado.nextLine();
         System.out.println("Digite a senha:");
         String senha = teclado.nextLine();
-        return null;
-      //  return new Cliente(nome, login, senha);
+
+        return new ClienteRegular(nome, login, senha);
     }
 
     /**
      * "Limpa" a tela (códigos de terminal VT-100)
      */
-    public static void limparTela() {
+    private static void limparTela() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
@@ -185,8 +254,6 @@ public class App {
                     cliente = plataformaStreaming.login(nameUser, senha);
                     if (cliente != null)
                         System.out.println("Bem vindo(a) " + cliente.getUsuario());
-                    else
-                        System.out.println("Usuário não encontrado!");
                     pausa();
                     break;
 
@@ -197,10 +264,11 @@ public class App {
                     switch (alteracao) {
                         case 0 -> {
                         }
-                        case 1 -> System.out.println(plataformaStreaming.getMidias().toString());
+                        case 1 -> {
+                            listarMidias(plataformaStreaming);
+                        }
                         case 2 -> {
-                            plataformaStreaming.carregarMidias("docs/arquivos/POO_Filmes.csv");
-                            plataformaStreaming.carregarMidias("docs/arquivos/POO_Series.csv");
+                            plataformaStreaming.carregarMidias("docs/arquivos/POO_Midias.csv");
                             System.out.println("Cadastro de mídias por arquivo concluído!");
                         }
                         case 3 -> {
@@ -208,56 +276,63 @@ public class App {
                             System.out.println("Cadastro de usuários por arquivo concluído!");
                         }
                         case 4 -> {
+                            plataformaStreaming.carregarClientes("docs/arquivos/POO_Espectadores.csv"); // se audiencia não achar os ids não vai cadastrar nada
                             plataformaStreaming.carregarAudiencia("docs/arquivos/POO_Audiencia.csv");
                             System.out.println("Cadastro de audiência por arquivo concluído!");
                         }
                         case 5 -> {
-                            Midia serie = cadastrarSerie();
-                            plataformaStreaming.adicionarMidia(serie);
+                            plataformaStreaming.adicionarMidia(cadastrarSerie());
+                            System.out.println("Série cadastrada!");
                         }
                         case 6 -> {
-                            Midia filme = cadastrarFilme();
-                            plataformaStreaming.adicionarMidia(filme);
+                            plataformaStreaming.adicionarMidia(cadastrarFilme());
+                            System.out.println("Filme cadastrado!");
                         }
                         case 7 -> {
-                            usuario = cadastrarUsuario();
-                            plataformaStreaming.adicionarCliente(usuario);
+                            plataformaStreaming.adicionarCliente(cadastrarUsuario());
+                            System.out.println("Usuário cadastrado!");
                         }
                         case 8 -> {
                             try {
-                                plataformaStreaming.salvarMidias("Midias");
+                                plataformaStreaming.salvarMidias("PS_Midias.csv");
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
                             }
                         }
                         case 9 -> {
                             try {
-                                plataformaStreaming.salvarClientes("Usuarios");
+                                plataformaStreaming.salvarClientes("PS_Usuarios.csv");
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
                             }
                         }
                         case 10 -> {
-                            System.out.println("Digite o nome da midia:");
-                            aux = teclado.nextLine();
-                            System.out.println(plataformaStreaming.buscarMidia(aux).toString());
-                            //revisar
+                            buscarMidia(plataformaStreaming);
                         }
                         case 11 -> {
-                            System.out.println("Digite o gênero:");
-                            aux = teclado.nextLine();
-                            System.out.println(plataformaStreaming.filtrarPorGenero(aux));
+                            Genero generoEscolhido = escolherGenero();
+
+                            if (generoEscolhido != null) {
+                                List<Midia> lista = plataformaStreaming.filtrarPorGenero(generoEscolhido);
+                                if (!(lista.isEmpty())) lista.forEach(System.out::println);
+                            } else System.out.println("Gênero inválido!");
                         }
                         case 12 -> {
-                            System.out.println("Digite o idioma:");
-                            aux = teclado.nextLine();
-                            System.out.println(plataformaStreaming.filtrarPorIdioma(aux));
+                            Idioma idiomaEscolhido = escolherIdioma();
+
+                            if (idiomaEscolhido != null) {
+                                List<Midia> lista = plataformaStreaming.filtrarPorIdioma(idiomaEscolhido);
+                                if (!(lista.isEmpty())) lista.forEach(System.out::println);
+                            } else System.out.println("Idioma inválido!");
                         }
                         case 13 -> {
                             System.out.println("Digite a quantidade de episódios:");
                             int qtdEp = Integer.parseInt(teclado.nextLine());
-                            System.out.println(plataformaStreaming.filtrarPorQtdEpisodio(qtdEp));
+
+                            List<Serie> listaFiltrada = plataformaStreaming.filtrarPorQtdEpisodio(qtdEp);
+                            if (!(listaFiltrada.isEmpty())) listaFiltrada.forEach(System.out::println);
                         }
+                        default -> throw new Exception("Algo inesperado ocorreu! Tente novamente");
                     }
                     pausa();
                     break;
@@ -268,64 +343,71 @@ public class App {
                         int alt = subMenuCliente();
 
                         switch (alt) {
-                            case 0:
-                                break;
-                            case 1:
-                                System.out.println(cliente.getListaJaVistas().toString());
-                                break;
-                            case 2:
-                                System.out.println(cliente.getListaParaVer().toString());
-                                break;
-                            case 3:
-                                System.out.println("Digite o gênero:");
-                                String genero = teclado.nextLine();
-                                System.out.println(cliente.filtrarPorGenero(genero));
-                                break;
-                            case 4:
-                                System.out.println("Digite o idioma:");
-                                String idioma = teclado.nextLine();
-                                System.out.println(cliente.filtrarPorIdioma(idioma));
-                                break;
-                            case 5:
+                            case 0 -> {
+                            }
+                            case 1 -> {
+                                historico(cliente);
+                            }
+                            case 2 -> {
+                                listaParaVer(cliente);
+                            }
+                            case 3 -> {
+                                Genero genero = escolherGenero();
+                                if (genero != null) {
+                                    List<Midia> lista = cliente.filtrarPorGenero(genero);
+                                    if (!(lista.isEmpty())) lista.forEach(System.out::println);
+                                } else System.out.println("Gênero inválido!");
+                            }
+                            case 4 -> {
+                                Idioma idioma = escolherIdioma();
+
+                                if (idioma != null) {
+                                    List<Midia> lista = cliente.filtrarPorIdioma(idioma);
+                                    if (!(lista.isEmpty())) lista.forEach(System.out::println);
+                                } else System.out.println("Idioma inválido!");
+                            }
+                            case 5 -> {
                                 System.out.println("Digite a quantidade de episódios:");
                                 int qtdEp = Integer.parseInt(teclado.nextLine());
-                                System.out.println(cliente.filtrarPorQtdEpisodios(qtdEp));
-                                break;
-                            case 6:
-                                System.out.println(cliente.getListaJaVistas().toString());
-                                System.out.println("Digite o nome da mídia:");
-                                aux = teclado.nextLine();
-                                Midia midia = plataformaStreaming.buscarMidia(aux);
-                                System.out.println("Digite uma nota de 0 a 10 para a mídia:");
-                                int nota = teclado.nextInt();
-                                System.out.println("Digite um comentário:");
-                                String comentario = teclado.nextLine();
-                                Avaliacao avaliacao = new Avaliacao(cliente.getUsuario(), nota, comentario);
-                                midia.addAvaliacao(avaliacao);
-                                break;
-                            case 7:
-                                System.out.println(plataformaStreaming.getMidias().toString());
-                                System.out.println("Digite o nome da mídia para ser adicionada na lista:");
-                                String nomeMidia = teclado.nextLine();
-                                cliente.adicionarNaLista(plataformaStreaming.buscarMidia(nomeMidia));
-                                break;
-                            case 8:
-                                System.out.println(cliente.getListaParaVer().toString());
+
+                                List<Serie> lista = cliente.filtrarPorQtdEpisodios(qtdEp);
+                                if (!(lista.isEmpty())) lista.forEach(System.out::println);
+                            }
+                            case 6 -> {
+                                historico(cliente);
+                                if (!(cliente.getListaJaVistas().isEmpty())) {
+                                    Midia midia = buscarMidia(plataformaStreaming);
+                                    if (midia != null) {
+                                        System.out.println("Digite uma nota de 0 a 10 para a mídia:");
+                                        int nota = teclado.nextInt();
+                                        System.out.println("Digite um comentário:");
+                                        String comentario = teclado.nextLine();
+                                        cliente.addAvaliacao(midia, nota, comentario);
+                                    }
+                                }
+                            }
+                            case 7 -> {
+                                listarMidias(plataformaStreaming);
+                                Midia midia = buscarMidia(plataformaStreaming);
+                                if (midia != null) cliente.adicionarNaLista(midia);
+                            }
+                            case 8 -> {
+                                listaParaVer(cliente);
                                 System.out.println("Digite o nome da mídia para ser removida da lista:");
-                                nomeMidia = teclado.nextLine();
+                                String nomeMidia = teclado.nextLine();
                                 cliente.retirarNaLista(nomeMidia);
-                                break;
-                            case 9:
-                                System.out.println("Lista de Mídias:");
-                                System.out.println(plataformaStreaming.getMidias().toString());
-                                System.out.println("Digite o NOME da mídia para assistir:");
-                                nomeMidia = teclado.nextLine();
-                                cliente.adicionarNaListaJaVistas(plataformaStreaming.buscarMidia(nomeMidia));
-                                break;
-                            case 10:
+                            }
+                            case 9 -> {
+                                listarMidias(plataformaStreaming);
+                                if (!(plataformaStreaming.getMidias().isEmpty())) {
+                                    Midia midia = buscarMidia(plataformaStreaming);
+                                    if (midia != null) cliente.adicionarNaListaJaVistas(midia);
+                                }
+                            }
+                            case 10 -> {
                                 plataformaStreaming.logoff();
                                 cliente = null;
-                                break;
+                            }
                         }
                     } else
                         System.out.println("Não há nenhum usuário logado.");

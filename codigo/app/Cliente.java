@@ -8,6 +8,7 @@ import java.util.*;
 
 public abstract class Cliente {
     protected String nomeDeUsuario;
+
     protected String login;
     protected String senha;
     protected List<Midia> listaParaVer;
@@ -62,11 +63,18 @@ public abstract class Cliente {
      * @param nomeMidia Nome da midia a ser removida da lista
      */
     public void retirarNaLista(String nomeMidia) {
-        for (Midia midia : listaParaVer) {
-            if (midia.getNome().equals(nomeMidia)) {
-                this.listaParaVer.remove(midia);
-                return;
+        try {
+
+            for (Midia midia : listaParaVer) {
+                if (midia.getNome().equals(nomeMidia)) {
+                    this.listaParaVer.remove(midia);
+                    return;
+                }
             }
+
+            throw new Exception("Essa mídia não existe na sua lista 'Para Ver'!");
+        } catch (Exception e) {
+            System.out.println(e.toString());
         }
     }
 
@@ -76,12 +84,20 @@ public abstract class Cliente {
      * @param nomeMidia Nome da midia a ser removida da lista
      */
     public void retirarNaListaJaVistas(String nomeMidia) {
-        for (Midia midia : listaJaVistas) {
-            if (midia.getNome().equals(nomeMidia)) {
-                this.listaJaVistas.remove(midia);
-                return;
+        try {
+
+            for (Midia midia : listaJaVistas) {
+                if (midia.getNome().equals(nomeMidia)) {
+                    this.listaJaVistas.remove(midia);
+                    return;
+                }
             }
+
+            throw new Exception("Essa mídia não existe no seu 'Histórico'!");
+        } catch (Exception e) {
+            System.out.println(e.toString());
         }
+
     }
 
     /**
@@ -89,19 +105,28 @@ public abstract class Cliente {
      *
      * @param genero
      */
-    public List<Midia> filtrarPorGenero(String genero) {
+    public List<Midia> filtrarPorGenero(Genero genero) {
         List<Midia> listaFiltrada = new ArrayList<>();
 
-        for (Midia midia : listaParaVer) {
-            if (midia.getGenero().equals(genero) && !(listaFiltrada.contains(midia)))
-                listaFiltrada.add(midia);
-        }
+        try {
 
-        for (Midia midia : listaJaVistas) {
-            if (midia.getGenero().equals(genero) && !(listaFiltrada.contains(midia)))
-                listaFiltrada.add(midia);
-        }
+            for (Midia midia : listaParaVer) {
+                if (midia.getGenero().equals(genero) && !(listaFiltrada.contains(midia)))
+                    listaFiltrada.add(midia);
+            }
 
+            for (Midia midia : listaJaVistas) {
+                if (midia.getGenero().equals(genero) && !(listaFiltrada.contains(midia)))
+                    listaFiltrada.add(midia);
+            }
+
+            if (!(listaFiltrada.isEmpty()))
+                return listaFiltrada;
+
+            throw new Exception("Não há mídias para essa seleção nas suas listas 'Para Ver' e 'Histórico'!");
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
         return listaFiltrada;
     }
 
@@ -110,19 +135,28 @@ public abstract class Cliente {
      *
      * @param idioma
      */
-    public List<Midia> filtrarPorIdioma(String idioma) {
+    public List<Midia> filtrarPorIdioma(Idioma idioma) {
         List<Midia> listaFiltrada = new ArrayList<>();
 
-        for (Midia midia : listaParaVer) {
-            if (midia.getIdioma().equals(idioma) && !(listaFiltrada.contains(midia)))
-                listaFiltrada.add(midia);
-        }
+        try {
 
-        for (Midia midia : listaJaVistas) {
-            if (midia.getIdioma().equals(idioma) && !(listaFiltrada.contains(midia)))
-                listaFiltrada.add(midia);
-        }
+            for (Midia midia : listaParaVer) {
+                if (midia.getIdioma().equals(idioma) && !(listaFiltrada.contains(midia)))
+                    listaFiltrada.add(midia);
+            }
 
+            for (Midia midia : listaJaVistas) {
+                if (midia.getIdioma().equals(idioma) && !(listaFiltrada.contains(midia)))
+                    listaFiltrada.add(midia);
+            }
+
+            if (!(listaFiltrada.isEmpty()))
+                return listaFiltrada;
+
+            throw new Exception("Não há mídias para essa seleção nas suas listas 'Para Ver' e 'Histórico'!");
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
         return listaFiltrada;
     }
 
@@ -134,28 +168,37 @@ public abstract class Cliente {
     public List<Serie> filtrarPorQtdEpisodios(int quantEpisodios) {
         List<Serie> listaFiltrada = new ArrayList<>();
 
-        for (Midia midia : listaParaVer) {
-            try {
-                if (midia instanceof Serie) {
-                    Serie serie = (Serie) midia;
-                    if (serie.filtrarPorQtdEpisodios(quantEpisodios) && !(listaFiltrada.contains(midia)))
-                        listaFiltrada.add(serie);
-                }
-            } catch (ClassCastException e) {
-            }
-        }
+        try {
 
-        for (Midia midia : listaJaVistas) {
-            try {
-                if (midia instanceof Serie) {
-                    Serie serie = (Serie) midia;
-                    if (serie.filtrarPorQtdEpisodios(quantEpisodios) && !(listaFiltrada.contains(midia)))
-                        listaFiltrada.add(serie);
+            for (Midia midia : listaParaVer) {
+                try {
+                    if (midia instanceof Serie) {
+                        Serie serie = (Serie) midia;
+                        if (serie.filtrarPorQtdEpisodios(quantEpisodios) && !(listaFiltrada.contains(midia)))
+                            listaFiltrada.add(serie);
+                    }
+                } catch (ClassCastException e) {
                 }
-            } catch (ClassCastException e) {
             }
-        }
 
+            for (Midia midia : listaJaVistas) {
+                try {
+                    if (midia instanceof Serie) {
+                        Serie serie = (Serie) midia;
+                        if (serie.filtrarPorQtdEpisodios(quantEpisodios) && !(listaFiltrada.contains(midia)))
+                            listaFiltrada.add(serie);
+                    }
+                } catch (ClassCastException e) {
+                }
+            }
+
+            if (!(listaFiltrada.isEmpty()))
+                return listaFiltrada;
+
+            throw new Exception("Não há mídias para essa seleção nas suas listas 'Para Ver' e 'Histórico'!");
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
         return listaFiltrada;
     }
 
@@ -238,10 +281,17 @@ public abstract class Cliente {
 
         Avaliacao avaliacao = new Avaliacao(this.nomeDeUsuario, nota, comentario);
         int index = listaJaVistas.indexOf(midia);
-        if (index != -1) {
-            midia.addAvaliacao(avaliacao);
-            return;
-        } // comentar com 2 (se cair no catch) e interface com 3 caso o cast dê certo
+
+        try {
+            if (index != -1)
+                midia.addAvaliacao(avaliacao);
+            else
+                throw new Exception("Não foi possível avaliar pois a mídia não foi assistida!");
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        // comentar com 2 (se cair no catch) e interface com 3 caso o cast dê certo
+
     }
 
     public String getUsuario() {
@@ -270,7 +320,7 @@ public abstract class Cliente {
     }
 
     public List<Midia> getListaParaVer() {
-        return listaParaVer;
+        return List.copyOf(listaParaVer);
     }
 
     public List<Midia> getListaJaVistas() {
@@ -278,7 +328,6 @@ public abstract class Cliente {
     }
 
     public abstract void addAvaliacao(Midia midia, int nota) throws Exception;
-
 
 
 }

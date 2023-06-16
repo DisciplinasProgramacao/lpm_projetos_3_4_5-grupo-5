@@ -1,13 +1,8 @@
 package codigo.app;
 
-import com.sun.tools.jconsole.JConsoleContext;
-
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.SQLClientInfoException;
-import java.sql.SQLOutput;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -18,8 +13,8 @@ public class PlataformaStreaming {
     private Cliente clienteAtual;
     private HashMap<String, Midia> midias;
     private HashMap<String, Cliente> clientes;
-//    private Map<Cliente, List<Midia>> seriesPorCliente;
     DecimalFormat formatter = new DecimalFormat("#.0");
+
     /**
      * Criar uma nova plataforma
      * Cria uma tabela hash vazia
@@ -30,8 +25,6 @@ public class PlataformaStreaming {
         this.nome = nome;
         clientes = new HashMap<>();
         midias = new HashMap<>();
-//        seriesPorCliente = new HashMap<>();
-        this.clienteAtual = clienteAtual;
     }
 
     /**
@@ -60,13 +53,23 @@ public class PlataformaStreaming {
      * Encontrar um cliente que possui a mesma chave que essa pesquisa: concatenação entre usuario e senha fornecidos por parametro
      *
      * @param nomeUsuario Nome de usuario
-     * @param senha senha
+     * @param senha       senha
      * @return Cliente da plataforma
      */
     public Cliente login(String nomeUsuario, String senha) {
         String chave = nomeUsuario + ":" + senha;
-        clienteAtual = clientes.get(chave);
-        return clienteAtual;
+
+        try {
+            clienteAtual = clientes.get(chave);
+            if (clienteAtual != null)
+                return clienteAtual;
+
+            throw new Exception("Usuário não encontrado!");
+
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        return null;
     }
 
     /**
@@ -77,12 +80,22 @@ public class PlataformaStreaming {
      * @param genero para filtrar as midias
      * @return Lista com midias do genero selecionado
      */
-    public List<Midia> filtrarPorGenero(String genero) {
+    public List<Midia> filtrarPorGenero(Genero genero) {
         List<Midia> midiasPorGenero = new ArrayList<>();
-        for (Map.Entry<String, Midia> entrada : midias.entrySet()) {
-            Midia midia = entrada.getValue();
-            if (midia.filtrarPorGenero(genero))
-                midiasPorGenero.add(midia);
+
+        try {
+            for (Map.Entry<String, Midia> entrada : midias.entrySet()) {
+                Midia midia = entrada.getValue();
+                if (midia.filtrarPorGenero(genero))
+                    midiasPorGenero.add(midia);
+            }
+
+            if (!(midiasPorGenero.isEmpty()))
+                return midiasPorGenero;
+
+            throw new Exception("Não há mídias para essa seleção!");
+        } catch (Exception e) {
+            System.out.println(e.toString());
         }
         return midiasPorGenero;
     }
@@ -95,12 +108,22 @@ public class PlataformaStreaming {
      * @param idioma para filtrar as midias
      * @return Lista com midias do idioma selecionado
      */
-    public List<Midia> filtrarPorIdioma(String idioma) {
+    public List<Midia> filtrarPorIdioma(Idioma idioma) {
         List<Midia> midiasPorIdioma = new ArrayList<>();
-        for (Map.Entry<String, Midia> entrada : midias.entrySet()) {
-            Midia midia = entrada.getValue();
-            if (midia.filtrarPorIdioma(idioma))
-                midiasPorIdioma.add(midia);
+
+        try {
+            for (Map.Entry<String, Midia> entrada : midias.entrySet()) {
+                Midia midia = entrada.getValue();
+                if (midia.filtrarPorIdioma(idioma))
+                    midiasPorIdioma.add(midia);
+            }
+
+            if (!(midiasPorIdioma.isEmpty()))
+                return midiasPorIdioma;
+
+            throw new Exception("Não há mídias para essa seleção!");
+        } catch (Exception e) {
+            System.out.println(e.toString());
         }
         return midiasPorIdioma;
     }
@@ -115,16 +138,26 @@ public class PlataformaStreaming {
      */
     public List<Serie> filtrarPorQtdEpisodio(int quantidadeEpisodios) {
         List<Serie> seriesPorEpisodio = new ArrayList<>();
-        for (Map.Entry<String, Midia> entrada : midias.entrySet()) {
-            try {
-                Midia midia = entrada.getValue();
-                if (midia instanceof Serie) {
-                    Serie serie = (Serie) midia;
-                    if (serie.filtrarPorQtdEpisodios(quantidadeEpisodios))
-                        seriesPorEpisodio.add(serie);
+
+        try {
+
+            for (Map.Entry<String, Midia> entrada : midias.entrySet()) {
+                try {
+                    Midia midia = entrada.getValue();
+                    if (midia instanceof Serie serie) {
+                        if (serie.filtrarPorQtdEpisodios(quantidadeEpisodios))
+                            seriesPorEpisodio.add(serie);
+                    }
+                } catch (ClassCastException e) {
                 }
-            } catch (ClassCastException e) {
             }
+
+            if (!(seriesPorEpisodio.isEmpty()))
+                return seriesPorEpisodio;
+
+            throw new Exception("Não há séries para essa seleção!");
+        } catch (Exception e) {
+            System.out.println(e.toString());
         }
         return seriesPorEpisodio;
     }
@@ -138,11 +171,17 @@ public class PlataformaStreaming {
      * @return Midia com o nome selecionado
      */
     public Midia buscarMidia(String nome) {
-        for (Map.Entry<String, Midia> entrada : midias.entrySet()) {
-            Midia midia = entrada.getValue();
-            if (midia.getNome().equalsIgnoreCase(nome)) {
-                return midia;
+
+        try {
+            for (Map.Entry<String, Midia> entrada : midias.entrySet()) {
+                Midia midia = entrada.getValue();
+                if (midia.getNome().equalsIgnoreCase(nome)) {
+                    return midia;
+                }
             }
+            throw new Exception("Mídia não encontrada!");
+        } catch (Exception e) {
+            System.out.println(e.toString());
         }
         return null;
     }
@@ -173,8 +212,6 @@ public class PlataformaStreaming {
      * @throws IOException
      */
     public void salvarMidias(String caminho) throws IOException {
-        FileWriter writer = new FileWriter(caminho, false);
-
         for (Map.Entry<String, Midia> entrada : midias.entrySet()) {
             Midia midia = entrada.getValue();
             midia.salvar(caminho);
@@ -188,7 +225,7 @@ public class PlataformaStreaming {
      * @param caminho
      */
     public void salvarClientes(String caminho) throws IOException {
-        FileWriter writer = new FileWriter(caminho, false);
+//        FileWriter writer = new FileWriter(caminho, false);
 
         for (Map.Entry<String, Cliente> entrada : clientes.entrySet()) {
             Cliente cliente = entrada.getValue();
@@ -204,22 +241,42 @@ public class PlataformaStreaming {
     public void carregarMidias(String arquivo) throws FileNotFoundException {
 
         Scanner scanner = new Scanner(new File(arquivo));
-        scanner.nextLine();
 
         while (scanner.hasNextLine()) {
             String linha = scanner.nextLine();
             String[] campos = linha.split(";");
-            int id = Integer.parseInt(campos[0]);
-            String nome = campos[1];
-            String lancamento = campos[2];
+            String tipo = campos[0];
+            int id = Integer.parseInt(campos[1]);
+            String nome = campos[2];
+            String lancamento = campos[3];
 
-            if (arquivo.equals("docs/arquivos/POO_Filmes.csv")) {
-                int duracao = Integer.parseInt(campos[3]);
-                Midia filme = new Filme(id, nome, "", "", lancamento, duracao);
+            Genero genero = null;
+            String generoDigitado = campos[4];
+
+            for (Genero valor : Genero.values()) {
+                if (valor.getNome().equalsIgnoreCase(generoDigitado)) {
+                    genero = valor;
+                    break;
+                }
+            }
+
+            Idioma idioma = null;
+            String idiomaDigitado = campos[5];
+            for (Idioma valor : Idioma.values()) {
+                if (valor.getNome().equalsIgnoreCase(idiomaDigitado)) {
+                    idioma = valor;
+                    break;
+                }
+            }
+
+            if (tipo.equals("F")) {
+                int duracao = Integer.parseInt(campos[6]);
+                Midia filme = new Filme(id, nome, genero, idioma, lancamento, duracao);
                 adicionarMidia(filme);
 
-            } else if (arquivo.equals("docs/arquivos/POO_Series.csv")){
-                Midia serie = new Serie(id, nome, "", "", lancamento, 0);
+            } else if (tipo.equals("S")) {
+                int qtdEp = Integer.parseInt(campos[6]);
+                Midia serie = new Serie(id, nome, genero, idioma, lancamento, qtdEp);
                 adicionarMidia(serie);
             }
         }
@@ -229,7 +286,6 @@ public class PlataformaStreaming {
     /**
      * ler
      *
-     * @return
      * @throws FileNotFoundException
      * @author Breno
      */
@@ -291,10 +347,9 @@ public class PlataformaStreaming {
         scanner.close();
     }
 
-    public String relatorioClienteMaisMidias(){
-        int maisMidias = 0;
-        int numMidias = 0;
-        Cliente cliente = null;
+    public String relatorioClienteMaisMidias() {
+        int maisMidias = 0, numMidias;
+        Cliente cliente;
         String clienteMaisMidias = null;
 
         for (Map.Entry<String, Cliente> entrada : clientes.entrySet()) {
@@ -307,30 +362,16 @@ public class PlataformaStreaming {
             }
         }
 
-        StringBuilder aux = new StringBuilder( clienteMaisMidias +
+        StringBuilder aux = new StringBuilder(clienteMaisMidias +
                 ", " + maisMidias + " mídias assistidas");
         return aux.toString();
     }
 
-    public String relatorioClienteMaisAvaliacoes(){
+    public String relatorioClienteMaisAvaliacoes() {
         int maisAvaliacoes = 0;
-        Midia midia = null;
-        HashSet<Avaliacao> avaliacoes = null;
-        String  cliente = null;
-        String  clienteMaisAvaliacoes = null;
+        String clienteMaisAvaliacoes = null;
 
-        HashMap<String, Integer> frequencyMap = new HashMap<>();
-
-        for (Map.Entry<String, Midia> entrada : midias.entrySet()) {
-            midia = entrada.getValue();
-            avaliacoes = midia.getAvaliacoes();
-
-
-            for (Avaliacao avaliacao : avaliacoes) {
-                cliente = avaliacao.getNomeDeUsuario();
-                frequencyMap.put(cliente, frequencyMap.getOrDefault(cliente, 0) + 1);
-            }
-        }
+        HashMap<String, Integer> frequencyMap = getFrequencyMap();
 
         for (String nomeCliente : frequencyMap.keySet()) {
             int frequency = frequencyMap.get(nomeCliente);
@@ -344,13 +385,11 @@ public class PlataformaStreaming {
                 ", " + maisAvaliacoes + " avaliações");
         return aux.toString();
     }
-    public String relatorioClientes15Avaliacoes(){
-        Midia midia = null;
-        HashSet<Avaliacao> avaliacoes = null;
-        String  cliente = null;
-        Integer frequencia = null;
-        int cont = 0;
-        int numAvaliacoes = 15;
+
+    private HashMap<String, Integer> getFrequencyMap() {
+        Midia midia;
+        HashSet<Avaliacao> avaliacoes;
+        String cliente;
         HashMap<String, Integer> frequencyMap = new HashMap<>();
 
         for (Map.Entry<String, Midia> entrada : midias.entrySet()) {
@@ -363,11 +402,18 @@ public class PlataformaStreaming {
                 frequencyMap.put(cliente, frequencyMap.getOrDefault(cliente, 0) + 1);
             }
         }
+        return frequencyMap;
+    }
+
+    public String relatorioClientes15Avaliacoes() {
+        Integer frequencia;
+        int cont = 0, numAvaliacoes = 15;
+        HashMap<String, Integer> frequencyMap = getFrequencyMap();
 
         for (Map.Entry<String, Integer> entrada : frequencyMap.entrySet()) {
             frequencia = entrada.getValue();
 
-            if(frequencia >= numAvaliacoes)  {
+            if (frequencia >= numAvaliacoes) {
                 cont++;
             }
         }

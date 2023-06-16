@@ -1,9 +1,6 @@
 package codigo.test;
 
-import codigo.app.Avaliacao;
-import codigo.app.Cliente;
-import codigo.app.ClienteRegular;
-import codigo.app.Serie;
+import codigo.app.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,18 +20,18 @@ public class ClienteRegularTest {
     @BeforeEach
     public void prepare(){
         clienteTeste = new ClienteRegular("Cteste", "login", "123");
-        serieTerror1 = new Serie(1,"SerieTerror1", "terror", "portugues", "10", 10);
-        serieTerror2 = new Serie(2,"SerieTerror2", "terror", "ingles", "12",58);
-        serieComedia = new Serie(3,"SerieComedia", "comedia", "portugues", "10",10);
-        serieComedia2 = new Serie(4,"SerieComedia2", "comedia", "portugues", "10",10);
-        serieComedia3 = new Serie(5,"SerieComedia3", "comedia", "portugues", "10",10);
+        serieTerror1 = new Serie(1,"SerieTerror1", Genero.TERROR, Idioma.PORTUGUES, "10", 10);
+        serieTerror2 = new Serie(2,"SerieTerror2", Genero.TERROR, Idioma.INGLES, "12",58);
+        serieComedia = new Serie(3,"SerieComedia", Genero.COMEDIA, Idioma.PORTUGUES, "10",10);
+        serieComedia2 = new Serie(4,"SerieComedia2", Genero.COMEDIA, Idioma.PORTUGUES, "10",10);
+        serieComedia3 = new Serie(5,"SerieComedia3", Genero.COMEDIA, Idioma.PORTUGUES, "10",10);
         clienteTeste.adicionarNaLista(serieTerror1);
         clienteTeste.adicionarNaLista(serieTerror2);
         clienteTeste.adicionarNaLista(serieComedia);
 
-        s1 = new Serie(6, "F.R.I.E.N.D.S", "comedia", "inglês", "22/09/1994", 236);
-        s2 = new Serie(7, "Stranger Things", "drama", "inglês", "15/06/2016", 38);
-        s3 = new Serie(8, "Game of Thrones", "Drama", "inglês", "17/04/2011", 73);
+        s1 = new Serie(6, "F.R.I.E.N.D.S", Genero.COMEDIA, Idioma.INGLES, "22/09/1994", 236);
+        s2 = new Serie(7, "Stranger Things", Genero.DRAMA, Idioma.INGLES, "15/06/2016", 38);
+        s3 = new Serie(8, "Game of Thrones", Genero.DRAMA, Idioma.INGLES, "17/04/2011", 73);
         clienteTeste.adicionarNaListaJaVistas(s1);
         clienteTeste.adicionarNaListaJaVistas(s2);
         clienteTeste.adicionarNaListaJaVistas(s3);
@@ -42,7 +39,7 @@ public class ClienteRegularTest {
 
     @Test
     public void deveAdicionarSerie(){
-        Serie serieTerror3 = new Serie(4,"SerieTerror3", "terror", "portugues", "10",5);
+        Serie serieTerror3 = new Serie(4,"SerieTerror3", Genero.TERROR, Idioma.PORTUGUES, "10",5);
         clienteTeste.adicionarNaLista(serieTerror3);
         assertEquals(4, clienteTeste.getListaParaVer().size());
     }
@@ -66,12 +63,12 @@ public class ClienteRegularTest {
 
     @Test
     public void deveFiltrarGenero(){
-        assertEquals(2, clienteTeste.filtrarPorGenero("terror").size());
+        assertEquals(2, clienteTeste.filtrarPorGenero(Genero.TERROR).size());
     }
 
     @Test
     public void deveFiltrarIdioma(){
-        assertEquals(2, clienteTeste.filtrarPorIdioma("portugues").size());
+        assertEquals(2, clienteTeste.filtrarPorIdioma(Idioma.PORTUGUES).size());
     }
 
     @Test

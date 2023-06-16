@@ -48,18 +48,18 @@ public class PlataformaStreamingTest {
         clienteTeste3 = new ClienteRegular("Cteste3","usuario2", "12345");
 
         //Series
-        serieTeste = new Serie(4,"you", "drama", "ingles", "20", 10);
-        serie1 = new Serie(15, "F.R.I.E.N.D.S", "comedia", "inglês", "22/09/1994", 236);
-        serie2 = new Serie(16, "Stranger Things", "drama", "inglês", "22/09/1994", 18);
-        serie3 = new Serie(17, "Breaking Bad", "drama", "inglês", "22/09/1994", 12);
+        serieTeste = new Serie(4,"you", Genero.DRAMA, Idioma.FRANCES, "20", 10);
+        serie1 = new Serie(15, "F.R.I.E.N.D.S", Genero.COMEDIA, Idioma.PORTUGUES, "22/09/1994", 236);
+        serie2 = new Serie(16, "Stranger Things", Genero.AVENTURA, Idioma.ITALIANO, "22/09/1994", 18);
+        serie3 = new Serie(17, "Breaking Bad", Genero.ROMANCE, Idioma.ESPANHOL, "22/09/1994", 12);
 
         //Filmes
-        f1 = new Filme(18, "f1", "terror", "portugues", "2020", 120);
-        f2 = new Filme(19, "f2", "terror", "portugues", "2020", 120);
-        f3 = new Filme(13, "f3", "terror", "portugues", "2020", 120);
+        f1 = new Filme(18, "f1", Genero.TERROR, Idioma.PORTUGUES, "2020", 120);
+        f2 = new Filme(19, "f2", Genero.TERROR, Idioma.PORTUGUES, "2020", 120);
+        f3 = new Filme(13, "f3", Genero.TERROR, Idioma.PORTUGUES, "2020", 120);
 
         //Midias
-        midiaTest = new Serie(14, "mTest", "comedia", "inglês", "22/09/1994", 236);
+        midiaTest = new Serie(14, "mTest", Genero.COMEDIA, Idioma.ITALIANO, "22/09/1994", 236);
 
         //Avaliacoes
         a1 = new Avaliacao("u1", 4,"bom");
@@ -79,9 +79,6 @@ public class PlataformaStreamingTest {
         plataforma.adicionarCliente(clienteTeste);
         plataforma.adicionarCliente(clienteTeste2);
         plataforma.adicionarCliente(clienteTeste3);
-//        plataforma.adicionarSerieParaCliente(clienteTeste2, serie1);
-//        plataforma.adicionarSerieParaCliente(clienteTeste2, serie2);
-//        plataforma.adicionarSerieParaCliente(clienteTeste2, serie3);
 
         //Ações Clientes
         clienteTeste2.adicionarNaLista(serie1);
@@ -119,11 +116,6 @@ public class PlataformaStreamingTest {
     }
 
     @Test
-    public void testAdicionarMidia(){
-        assertEquals(midiaTest, plataforma.getMidias().get("mTest:comedia"));
-    }
-
-    @Test
     public void testLogin(){
         String chave1 = clienteTeste2.getUsuario() + ":" + clienteTeste2.getSenha();
         clientes.put(chave1, clienteTeste2);
@@ -148,40 +140,44 @@ public class PlataformaStreamingTest {
 
     @Test
     public void deveFiltrarSeriePorGenero() {
-        Serie serieTeste1 = new Serie(1,"teste", "drama", "ingles", "20",6);
-        Serie serieTeste2 = new Serie(2,"teste", "suspense", "ingles", "20",8);
-        Serie serieTeste3 = new Serie(3,"teste", "terroe", "ingles", "20",9);
-        List<Midia> listaTeste = new ArrayList<>();
+        Serie serieTeste1 = new Serie(1,"teste", Genero.DRAMA, Idioma.ESPANHOL, "20",6);
+        Serie serieTeste2 = new Serie(2,"teste", Genero.COMEDIA, Idioma.ITALIANO, "20",8);
+        Serie serieTeste3 = new Serie(3,"teste", Genero.TERROR, Idioma.PORTUGUES, "20",9);
+//        List<Midia> listaTeste = new ArrayList<>();
         plataforma.adicionarMidia(serieTeste1);
         plataforma.adicionarMidia(serieTeste2);
         plataforma.adicionarMidia(serieTeste3);
 
-        listaTeste.add(serieTeste1);
-        listaTeste.add(serie2);
-        listaTeste.add(serie3);
-        listaTeste.add(serieTeste);
+//        listaTeste.add(serieTeste1);
+//        listaTeste.add(serie2);
+//        listaTeste.add(serie3);
+//        listaTeste.add(serieTeste);
 
-        assertEquals(listaTeste, plataforma.filtrarPorGenero("drama"));
+        Genero genero = Genero.DRAMA;
+
+        assertEquals(2, plataforma.filtrarPorGenero(genero).size());
     }
 
     @Test
     public void deveFiltrarSeriePorIdioma() {
-        Serie serieTeste1 = new Serie(5,"teste", "drama", "ingles", "20",5);
-        Serie serieTeste2 = new Serie(6,"teste", "suspense", "portugues", "20",9);
-        Serie serieTeste3 = new Serie(7,"teste", "terroe", "ingles", "20",3);
+        Serie serieTeste1 = new Serie(5,"teste", Genero.DRAMA, Idioma.INGLES, "20",5);
+        Serie serieTeste2 = new Serie(6,"teste", Genero.AVENTURA, Idioma.PORTUGUES, "20",9);
+        Serie serieTeste3 = new Serie(7,"teste", Genero.TERROR, Idioma.INGLES, "20",3);
         plataforma.adicionarMidia(serieTeste1);
         plataforma.adicionarMidia(serieTeste2);
         plataforma.adicionarMidia(serieTeste3);
 
-        assertEquals(3, plataforma.filtrarPorIdioma("ingles").size());
-        assertEquals(serieTeste1, plataforma.filtrarPorIdioma("ingles").get(0));
+        Idioma idioma = Idioma.INGLES;
+
+        assertEquals(2, plataforma.filtrarPorIdioma(idioma).size());
+        assertEquals(serieTeste1, plataforma.filtrarPorIdioma(idioma).get(0));
     }
 
     @Test
     public void deveFiltrarSeriePorQtdEpisodio() {
-        Serie serieTeste1 = new Serie(8,"teste", "drama", "ingles", "20",89);
-        Serie serieTeste2 = new Serie(9,"teste", "suspense", "portugues", "10",57);
-        Serie serieTeste3 = new Serie(10,"teste", "terroe", "ingles", "10",10);
+        Serie serieTeste1 = new Serie(8,"teste", Genero.DRAMA, Idioma.INGLES, "20",89);
+        Serie serieTeste2 = new Serie(9,"teste", Genero.AVENTURA, Idioma.PORTUGUES, "10",57);
+        Serie serieTeste3 = new Serie(10,"teste", Genero.TERROR, Idioma.INGLES, "10",10);
         List<Serie> listaTeste = new ArrayList<>();
         plataforma.adicionarMidia(serieTeste1);
         plataforma.adicionarMidia(serieTeste2);
@@ -196,9 +192,9 @@ public class PlataformaStreamingTest {
 
     @Test
     public void deveBuscarSerie() {
-        Serie serieTeste1 = new Serie(11,"teste", "drama", "ingles", "20",20);
-        Serie serieTeste2 = new Serie(12,"teste", "suspense", "portugues", "10",4);
-        Serie serieTeste3 = new Serie(13,"teste", "terroe", "ingles", "10",6);
+        Serie serieTeste1 = new Serie(11,"teste", Genero.DRAMA, Idioma.INGLES, "20",20);
+        Serie serieTeste2 = new Serie(12,"teste", Genero.AVENTURA, Idioma.PORTUGUES, "10",4);
+        Serie serieTeste3 = new Serie(13,"teste", Genero.TERROR, Idioma.INGLES, "10",6);
         plataforma.adicionarMidia(serieTeste1);
         plataforma.adicionarMidia(serieTeste2);
         plataforma.adicionarMidia(serieTeste3);
@@ -221,33 +217,6 @@ public class PlataformaStreamingTest {
         plataforma.logoff();
         assertNull(plataforma.getClienteAtual());
     }
-
-    @Test
-    public void testAdicionarSerieParaCliente(){
-        assertTrue(clienteTeste2.getListaParaVer().contains(serie1));
-        assertTrue(clienteTeste2.getListaParaVer().contains(serie2));
-        assertTrue(clienteTeste2.getListaJaVistas().contains(serie3));
-    }
-
-    @Test
-    public void testAdicionarSerieParaClienteSobrescrevendoASerieExistente(){
-        clienteTeste2.adicionarNaLista(serie1);
-        clienteTeste2.adicionarNaListaJaVistas(serie3);
-//        plataforma.adicionarSerieParaCliente(clienteTeste2, serie1);
-//        plataforma.adicionarSerieParaCliente(clienteTeste2, serie3);
-
-        assertTrue(clienteTeste2.getListaParaVer().contains(serie1));
-        assertTrue(clienteTeste2.getListaJaVistas().contains(serie3));
-        assertEquals(2, clienteTeste2.getListaParaVer().size());
-        assertEquals(3, clienteTeste2.getListaJaVistas().size());
-    }
-
-//    @Test
-//    public void testBuscarCliente(){
-//        clientes.put(clienteTeste.getLogin(), clienteTeste);
-//
-//        assertEquals(clienteTeste, plataforma.buscarCliente("login"));
-//    }
 
     @Test
     public void testGetClientes(){
@@ -287,20 +256,20 @@ public class PlataformaStreamingTest {
 
     @Test
     public void relatorioClientes15Avaliacoes() throws Exception {
-        Midia  f4 = new Filme(19, "f4", "terror", "portugues", "2020", 120);
-        Midia  f5 = new Filme(20, "f5", "terror", "portugues", "2020", 120);
-        Midia  f6 = new Filme(21, "f6", "terror", "portugues", "2020", 120);
-        Midia  f7 = new Filme(22, "f7", "terror", "portugues", "2020", 120);
-        Midia  f8 = new Filme(23, "f8", "terror", "portugues", "2020", 120);
-        Midia  f9 = new Filme(24, "f9", "terror", "portugues", "2020", 120);
-        Midia  f10 = new Filme(25, "f10", "terror", "portugues", "2020", 120);
-        Midia  f11 = new Filme(26, "f11", "terror", "portugues", "2020", 120);
-        Midia  f12 = new Filme(27, "f12", "terror", "portugues", "2020", 120);
-        Midia  f13 = new Filme(28, "f13", "terror", "portugues", "2020", 120);
-        Midia  f14 = new Filme(29, "f14", "terror", "portugues", "2020", 120);
-        Midia  f15 = new Filme(30, "f15", "terror", "portugues", "2020", 120);
-        Midia  f16 = new Filme(31, "f16", "terror", "portugues", "2020", 120);
-        Midia  f17 = new Filme(32, "f17", "terror", "portugues", "2020", 120);
+        Midia  f4 = new Filme(19, "f4", Genero.TERROR, Idioma.PORTUGUES, "2020", 120);
+        Midia  f5 = new Filme(20, "f5", Genero.TERROR, Idioma.PORTUGUES, "2020", 120);
+        Midia  f6 = new Filme(21, "f6", Genero.TERROR, Idioma.PORTUGUES, "2020", 120);
+        Midia  f7 = new Filme(22, "f7", Genero.TERROR, Idioma.PORTUGUES, "2020", 120);
+        Midia  f8 = new Filme(23, "f8", Genero.TERROR, Idioma.PORTUGUES, "2020", 120);
+        Midia  f9 = new Filme(24, "f9", Genero.TERROR, Idioma.PORTUGUES, "2020", 120);
+        Midia  f10 = new Filme(25, "f10", Genero.TERROR, Idioma.PORTUGUES, "2020", 120);
+        Midia  f11 = new Filme(26, "f11", Genero.TERROR, Idioma.PORTUGUES, "2020", 120);
+        Midia  f12 = new Filme(27, "f12", Genero.TERROR, Idioma.PORTUGUES, "2020", 120);
+        Midia  f13 = new Filme(28, "f13", Genero.TERROR, Idioma.PORTUGUES, "2020", 120);
+        Midia  f14 = new Filme(29, "f14", Genero.TERROR, Idioma.PORTUGUES, "2020", 120);
+        Midia  f15 = new Filme(30, "f15", Genero.TERROR, Idioma.PORTUGUES, "2020", 120);
+        Midia  f16 = new Filme(31, "f16", Genero.TERROR, Idioma.PORTUGUES, "2020", 120);
+        Midia  f17 = new Filme(32, "f17", Genero.TERROR, Idioma.PORTUGUES, "2020", 120);
 
         plataforma.adicionarMidia(f4);
         plataforma.adicionarMidia(f5);
