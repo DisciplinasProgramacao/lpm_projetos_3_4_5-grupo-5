@@ -1,12 +1,12 @@
 package codigo.app;
 
 public enum Idioma {
-    INGLES("Ingles"),
-    PORTUGUES("Portugues"),
+    INGLES("Inglês"),
+    PORTUGUES("Português"),
     ESPANHOL("Espanhol"),
     RUSSO("Russo"),
     ITALIANO("Italiano"),
-    FRANCES("Frances");
+    FRANCES("Francês");
 
     private final String nome;
 

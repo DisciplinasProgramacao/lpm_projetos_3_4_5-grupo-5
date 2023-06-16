@@ -27,22 +27,21 @@ public class Avaliacao {
      * @param comentario
      */
     public Avaliacao(String nomeDeUsuario, int avaliacao, String comentario) throws Exception {
-//        this(nomeDeUsuario,avaliacao);
-        this.nomeDeUsuario = nomeDeUsuario;
-        if (validaAvaliacao(avaliacao))
+        if (validaAvaliacao(avaliacao)) {
+            this.nomeDeUsuario = nomeDeUsuario;
             this.avaliacao = avaliacao;
-        this.comentario=comentario;
+            this.comentario = comentario;
+        }
     }
 
     public boolean validaAvaliacao(int avaliacao) {
         try {
-            if (avaliacao >= 0 && avaliacao <= 10)
+            if (avaliacao >= 1 && avaliacao <= 5)
                 return true;
             else
-                throw new Exception("Valor inválido. A avaliação deve ser um número inteiro entre 0 e 10.");
+                throw new Exception("Valor inválido. A avaliação deve ser um número inteiro entre 1 e 5.");
         } catch (Exception e) {
             System.out.println(e.toString());
-            System.exit(1);
         }
         return false;
     }

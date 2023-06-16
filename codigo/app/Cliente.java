@@ -277,18 +277,27 @@ public abstract class Cliente {
      * @param midia Mídia a ser avaliada
      * @param nota  Avaliacao da mídia (número inteiro de 0 a 10)
      */
-    public void addAvaliacao(Midia midia, int nota, String comentario) throws Exception {
+    public void addAvaliacao(Midia midia, int nota, String comentario) {
 
-        Avaliacao avaliacao = new Avaliacao(this.nomeDeUsuario, nota, comentario);
-        int index = listaJaVistas.indexOf(midia);
-
+        Avaliacao avaliacao = null;
         try {
-            if (index != -1)
-                midia.addAvaliacao(avaliacao);
-            else
-                throw new Exception("Não foi possível avaliar pois a mídia não foi assistida!");
+            avaliacao = new Avaliacao(this.nomeDeUsuario, nota, comentario);
+
+            if(avaliacao.getNomeDeUsuario() == null) return;
+
+            int index = listaJaVistas.indexOf(midia);
+
+            try {
+                if (index != -1)
+                    midia.addAvaliacao(avaliacao);
+                else
+                    throw new Exception("Não foi possível avaliar pois a mídia não foi assistida!");
+            } catch (Exception e) {
+                System.out.println(e.toString());
+            }
+
         } catch (Exception e) {
-            System.out.println(e.toString());
+            throw new RuntimeException(e);
         }
         // comentar com 2 (se cair no catch) e interface com 3 caso o cast dê certo
 

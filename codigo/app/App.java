@@ -378,8 +378,8 @@ public class App {
                                 if (!(cliente.getListaJaVistas().isEmpty())) {
                                     Midia midia = buscarMidia(plataformaStreaming);
                                     if (midia != null) {
-                                        System.out.println("Digite uma nota de 0 a 10 para a mídia:");
-                                        int nota = teclado.nextInt();
+                                        System.out.println("Digite uma nota de 1 a 5 para a mídia:");
+                                        int nota = Integer.parseInt(teclado.nextLine());
                                         System.out.println("Digite um comentário:");
                                         String comentario = teclado.nextLine();
                                         cliente.addAvaliacao(midia, nota, comentario);

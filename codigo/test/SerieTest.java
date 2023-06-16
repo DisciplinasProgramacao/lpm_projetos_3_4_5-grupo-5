@@ -15,7 +15,7 @@ public class SerieTest {
 
     @BeforeEach
     public void prepare() {
-        s1 = new Serie(1, "nome", Genero.TERROR, Idioma.PORTUGUES, "2", 6);
+        s1 = new Serie(1, "nome", Genero.DRAMA, Idioma.PORTUGUES, "2", 6);
         s2 = new Serie(2, "F.R.I.E.N.D.S", Genero.COMEDIA, Idioma.INGLES, "22/09/1994", 236);
     }
 

@@ -8,8 +8,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ClienteTest {
     Cliente clienteTeste;
-    Serie serieTerror1;
-    Serie serieTerror2;
+    Serie serieDRAMA1;
+    Serie serieDRAMA2;
     Serie serieComedia;
     Serie serieComedia2;
     Serie serieComedia3;
@@ -20,13 +20,13 @@ public class ClienteTest {
     @BeforeEach
     public void prepare(){
         clienteTeste = new ClienteRegular("Cteste", "login", "123");
-        serieTerror1 = new Serie(1,"SerieTerror1", Genero.TERROR, Idioma.PORTUGUES, "10", 10);
-        serieTerror2 = new Serie(2,"SerieTerror2", Genero.TERROR, Idioma.INGLES, "12",58);
+        serieDRAMA1 = new Serie(1,"SerieDRAMA1", Genero.DRAMA, Idioma.PORTUGUES, "10", 10);
+        serieDRAMA2 = new Serie(2,"SerieDRAMA2", Genero.DRAMA, Idioma.INGLES, "12",58);
         serieComedia = new Serie(3,"SerieComedia", Genero.COMEDIA, Idioma.PORTUGUES, "10",10);
         serieComedia2 = new Serie(4,"SerieComedia2", Genero.COMEDIA, Idioma.PORTUGUES, "10",10);
         serieComedia3 = new Serie(5,"SerieComedia3", Genero.COMEDIA, Idioma.PORTUGUES, "10",10);
-        clienteTeste.adicionarNaLista(serieTerror1);
-        clienteTeste.adicionarNaLista(serieTerror2);
+        clienteTeste.adicionarNaLista(serieDRAMA1);
+        clienteTeste.adicionarNaLista(serieDRAMA2);
         clienteTeste.adicionarNaLista(serieComedia);
 
         s1 = new Serie(6, "F.R.I.E.N.D.S", Genero.COMEDIA, Idioma.INGLES, "22/09/1994", 236);
@@ -39,8 +39,8 @@ public class ClienteTest {
 
     @Test
     public void deveAdicionarSerie(){
-        Serie serieTerror3 = new Serie(4,"SerieTerror3", Genero.TERROR, Idioma.PORTUGUES, "10",5);
-        clienteTeste.adicionarNaLista(serieTerror3);
+        Serie serieDRAMA3 = new Serie(4,"SerieDRAMA3", Genero.DRAMA, Idioma.PORTUGUES, "10",5);
+        clienteTeste.adicionarNaLista(serieDRAMA3);
         assertEquals(4, clienteTeste.getListaParaVer().size());
     }
 
@@ -51,7 +51,7 @@ public class ClienteTest {
 
     @Test
     public void deveRetirarSerie(){
-        clienteTeste.retirarNaLista("SerieTerror1");
+        clienteTeste.retirarNaLista("SerieDRAMA1");
         assertEquals(2, clienteTeste.getListaParaVer().size());
     }
 
@@ -63,7 +63,7 @@ public class ClienteTest {
 
     @Test
     public void deveFiltrarGenero(){
-        assertEquals(2, clienteTeste.filtrarPorGenero(Genero.TERROR).size());
+        assertEquals(2, clienteTeste.filtrarPorGenero(Genero.DRAMA).size());
     }
 
     @Test
@@ -78,21 +78,21 @@ public class ClienteTest {
 
     @Test
     public void deveAdicionarMidiaJaVista(){
-        clienteTeste.registrarPorAudiencia(serieTerror1,"1999-08-01");
+        clienteTeste.registrarPorAudiencia(serieDRAMA1,"1999-08-01");
         assertEquals(1,clienteTeste.getDataQueFoiVista().size());
 
     }
 
     @Test
     public void testIsEspecalistaComApenasUmaMidiaAssistida(){
-        clienteTeste.registrarPorAudiencia(serieTerror1,"1999-04-01");
+        clienteTeste.registrarPorAudiencia(serieDRAMA1,"1999-04-01");
         assertFalse(clienteTeste.isEspecialista());
     }
 
     @Test
     public void testIsEspecalistaComMaisDeCincoMidiasAssistidas(){
-        clienteTeste.registrarPorAudiencia(serieTerror1,"2023-04-23");
-        clienteTeste.registrarPorAudiencia(serieTerror2,"2023-04-24");
+        clienteTeste.registrarPorAudiencia(serieDRAMA1,"2023-04-23");
+        clienteTeste.registrarPorAudiencia(serieDRAMA2,"2023-04-24");
         clienteTeste.registrarPorAudiencia(serieComedia,"2023-04-25");
         clienteTeste.registrarPorAudiencia(serieComedia2,"2023-04-26");
         clienteTeste.registrarPorAudiencia(serieComedia3,"2023-04-27");

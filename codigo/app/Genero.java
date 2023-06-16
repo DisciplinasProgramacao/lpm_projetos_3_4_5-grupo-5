@@ -1,11 +1,15 @@
 package codigo.app;
 
 public enum Genero {
+    ACAO("Ação"),
+    ANIME("Anime"),
     AVENTURA("Aventura"),
+    COMEDIA("Comédia"),
+    DOCUMENTARIO("Documentário"),
     DRAMA("Drama"),
-    COMEDIA("Comedia"),
+    POLICIAL("Policial"),
     ROMANCE("Romance"),
-    TERROR("Terror");
+    SUSPENSE("Suspense");
 
     private final String nome;
 
