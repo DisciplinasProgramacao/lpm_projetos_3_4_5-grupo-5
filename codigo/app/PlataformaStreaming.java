@@ -301,7 +301,7 @@ public class PlataformaStreaming {
             String login = dados[1];
             String senha = dados[2];
 
-            Cliente novoCliente = new ClienteRegular(nomeDeUsuario, login, senha);
+            Cliente novoCliente = new Cliente(nomeDeUsuario, login, senha);
 
             adicionarCliente(novoCliente);
         }

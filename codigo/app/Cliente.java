@@ -6,7 +6,7 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public abstract class Cliente {
+public  class Cliente {
     protected String nomeDeUsuario;
 
     protected String login;
@@ -15,11 +15,12 @@ public abstract class Cliente {
     protected List<Midia> listaJaVistas;
     protected Map<Integer, LocalDate> dataQueFoiVista;
     protected boolean logado;
+    protected IClienteState state;
 
 
     /**
      * Cria um novo usuario
-     *
+     *inicialmente todos os clientes são regulares
      * @param nomeDeUsuario Nome de usuario pode ter ate 30 caracteres
      * @param login         Login pode ter até 20 caracteres
      * @param senha         Senha pode ter ate 10 caracteres
@@ -35,6 +36,7 @@ public abstract class Cliente {
         this.listaJaVistas = new ArrayList<>();
         this.dataQueFoiVista = new HashMap<>();
         this.logado = false;
+        this.state= new ClienteRegular();
     }
 
     /**
@@ -205,7 +207,6 @@ public abstract class Cliente {
     /**
      * Adiciona midia na lista de midias assistidas
      * Associa midia assistida com a data em que foi assistida
-     *
      * @param midia
      * @param dataVista insere a data em que o usuario assistiu a midia
      */
@@ -217,24 +218,36 @@ public abstract class Cliente {
             midia.registrarAudiencia();
             this.dataQueFoiVista.put(midia.getId(), data);
         }
+        this.verificarEstado();
     }
-
+    /**
+     * o usuario vira cliente profissional
+     * depois que o cliente vira profissinal ele não pode sofrer downgrade
+     */
+    public void upgradeParaProfissional(){
+        this.state = new ClienteProfissional();
+    }
     /**
      * Verifica se é um cliente especialista
      * Caso tenha assistido  5 ou mais midias mes passado, retornara true
+     * sempre verifica o estado do cliente caso tenha se tornado especialista.
+     *
      */
-    public boolean isEspecialista() {
+    public void verificarEstado(){
         // Pega a data atual e subtrai um mês para obter a data de um mês atrás
         LocalDate umMesAtras = LocalDate.now().minusMonths(1);
 
-        // Conta quantas mídias foram assistidas no mês anterior
-        long totalMidiasUltimoMes = dataQueFoiVista.values().stream()
-                .filter(date -> date.getYear() == umMesAtras.getYear() && date.getMonthValue() == umMesAtras.getMonthValue())
-                .count();
 
-        // Retorna true se 5 ou mais mídias foram assistidas no mês anterior
-        return totalMidiasUltimoMes >= 5;
+         long   totalMidiasUltimoMes = dataQueFoiVista.values().stream()
+                    .filter(date -> date.getYear() == umMesAtras.getYear() && date.getMonthValue() == umMesAtras.getMonthValue())
+                    .count();
+
+        if(!(this.state instanceof ClienteProfissional) && totalMidiasUltimoMes>=5){
+            this.state=new ClienteEspecialista();
+        }
     }
+
+
 
     @Override
     public String toString() {
@@ -272,36 +285,47 @@ public abstract class Cliente {
     }
 
     /**
-     * Adiciona avaliação à uma mídia, contanto que ela já tenha sido assistida pelo usuário
-     *
-     * @param midia Mídia a ser avaliada
-     * @param nota  Avaliacao da mídia (número inteiro de 0 a 10)
+     * Adiciona a avaliação de acordo com o state do cliente
+     * @param midia
+     * @param comentario
+     * @author jordana
      */
-    public void addAvaliacao(Midia midia, int nota, String comentario) {
-
-        Avaliacao avaliacao = null;
-        try {
-            avaliacao = new Avaliacao(this.nomeDeUsuario, nota, comentario);
-
-            if(avaliacao.getNomeDeUsuario() == null) return;
-
-            int index = listaJaVistas.indexOf(midia);
-
-            try {
-                if (index != -1)
-                    midia.addAvaliacao(avaliacao);
-                else
-                    throw new Exception("Não foi possível avaliar pois a mídia não foi assistida!");
-            } catch (Exception e) {
-                System.out.println(e.toString());
-            }
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        // comentar com 2 (se cair no catch) e interface com 3 caso o cast dê certo
-
+    public void addAvaliacao(Midia midia, int nota, String comentario) throws Exception {
+        this.verificarEstado();
+        state.addAvaliacao(this.nomeDeUsuario,midia, nota, comentario);
     }
+
+//    /**
+//     * Adiciona avaliação à uma mídia, contanto que ela já tenha sido assistida pelo usuário
+//     *
+//     * @param midia Mídia a ser avaliada
+//     * @param nota  Avaliacao da mídia (número inteiro de 0 a 10)
+//     */
+//    public void addAvaliacao(Midia midia, int nota, String comentario) {
+//
+//        Avaliacao avaliacao = null;
+//        try {
+//            avaliacao = new Avaliacao(this.nomeDeUsuario, nota, comentario);
+//
+//            if(avaliacao.getNomeDeUsuario() == null) return;
+//
+//            int index = listaJaVistas.indexOf(midia);
+//
+//            try {
+//                if (index != -1)
+//                    midia.addAvaliacao(avaliacao);
+//                else
+//                    throw new Exception("Não foi possível avaliar pois a mídia não foi assistida!");
+//            } catch (Exception e) {
+//                System.out.println(e.toString());
+//            }
+//
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+//        // comentar com 2 (se cair no catch) e interface com 3 caso o cast dê certo
+//
+//    }
 
     public String getUsuario() {
         return this.nomeDeUsuario;
@@ -310,7 +334,9 @@ public abstract class Cliente {
     public String getLogin() {
         return this.login;
     }
-
+    public IClienteState getState(){
+        return this.state;
+    }
     public boolean isLogado() {
         return logado;
     }
@@ -318,6 +344,7 @@ public abstract class Cliente {
     public void setLogado(boolean logado) {
         this.logado = logado;
     }
+
 
 
     public Map<Integer, LocalDate> getDataQueFoiVista() {
@@ -336,7 +363,7 @@ public abstract class Cliente {
         return List.copyOf(listaJaVistas);
     }
 
-    public abstract void addAvaliacao(Midia midia, int nota) throws Exception;
+
 
 
 }

@@ -1,22 +1,19 @@
 package codigo.app;
 
-public class ClienteProfissional extends Cliente {
+public class ClienteProfissional implements IClienteState {
 
-    public ClienteProfissional(String nomeDeUsuario,String login,String senha){
-        super(nomeDeUsuario,login,senha);
+    public  void addAvaliacao(String nomeDeUsuario, Midia midia, int nota, String comentario) throws Exception {
+        Avaliacao avaliacao = new Avaliacao( nomeDeUsuario, nota, " ");
+        midia.addAvaliacao(avaliacao);
     }
+
+
+
 
     /**
      * Como o cliente profissional nunca sera especialista, o metodo sobrescreve ao da classe cliente
      * @return falso
      */
-    @Override
-    public boolean isEspecialista() {
-        return false;
-    }
 
-    @Override
-    public void addAvaliacao(Midia midia, int nota) throws Exception {
 
-    }
 }

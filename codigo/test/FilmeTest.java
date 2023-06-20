@@ -30,11 +30,11 @@ public class FilmeTest {
 
     @Test
     public void testMedia() throws Exception {
-        Cliente usuario = new ClienteRegular("nome", "login", "senha");
+        Cliente usuario = new Cliente("nome", "login", "senha");
         Avaliacao avaliacao = new Avaliacao("nome",4,"Bom");
-        Cliente usuario2 = new ClienteRegular("nome2", "login2", "senha");
+        Cliente usuario2 = new Cliente("nome2", "login2", "senha");
         Avaliacao avaliacao2 = new Avaliacao("nome2",5,"Top");
-        Cliente usuario3 = new ClienteRegular("nome3", "login3", "senha");
+        Cliente usuario3 = new Cliente("nome3", "login3", "senha");
         Avaliacao avaliacao3 = new Avaliacao("nome3",3,"Dahora");
         f1.addAvaliacao(avaliacao);
         f1.addAvaliacao(avaliacao2);

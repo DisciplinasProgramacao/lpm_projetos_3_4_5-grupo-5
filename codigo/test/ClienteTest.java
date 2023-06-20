@@ -19,7 +19,7 @@ public class ClienteTest {
 
     @BeforeEach
     public void prepare(){
-        clienteTeste = new ClienteRegular("Cteste", "login", "123");
+        clienteTeste = new Cliente("Cteste", "login", "123");
         serieDRAMA1 = new Serie(1,"SerieDRAMA1", Genero.DRAMA, Idioma.PORTUGUES, "10", 10);
         serieDRAMA2 = new Serie(2,"SerieDRAMA2", Genero.DRAMA, Idioma.INGLES, "12",58);
         serieComedia = new Serie(3,"SerieComedia", Genero.COMEDIA, Idioma.PORTUGUES, "10",10);
@@ -86,36 +86,41 @@ public class ClienteTest {
     @Test
     public void testIsEspecalistaComApenasUmaMidiaAssistida(){
         clienteTeste.registrarPorAudiencia(serieDRAMA1,"1999-04-01");
-        assertFalse(clienteTeste.isEspecialista());
+        clienteTeste.verificarEstado();
+
+        assertTrue(clienteTeste.getState() instanceof ClienteRegular);
     }
 
     @Test
     public void testIsEspecalistaComMaisDeCincoMidiasAssistidas(){
-        clienteTeste.registrarPorAudiencia(serieDRAMA1,"2023-04-23");
-        clienteTeste.registrarPorAudiencia(serieDRAMA2,"2023-04-24");
-        clienteTeste.registrarPorAudiencia(serieComedia,"2023-04-25");
-        clienteTeste.registrarPorAudiencia(serieComedia2,"2023-04-26");
-        clienteTeste.registrarPorAudiencia(serieComedia3,"2023-04-27");
+        clienteTeste.registrarPorAudiencia(serieDRAMA1,"2023-05-23");
+        clienteTeste.registrarPorAudiencia(serieDRAMA2,"2023-05-24");
+        clienteTeste.registrarPorAudiencia(serieComedia,"2023-05-25");
+        clienteTeste.registrarPorAudiencia(serieComedia2,"2023-05-26");
+        clienteTeste.registrarPorAudiencia(serieComedia3,"2023-05-27");
         clienteTeste.registrarPorAudiencia(s1, "2023-05-28");
-        assertTrue(clienteTeste.isEspecialista());
+
+        assertTrue(clienteTeste.getState() instanceof ClienteEspecialista);
     }
 
     @Test
     public void testIsEspecialistaComNenhumaMidiaAssistida(){
-        assertFalse(clienteTeste.isEspecialista());
+        assertTrue(clienteTeste.getState() instanceof ClienteRegular);
     }
 
     @Test
     public void testToStringCliente(){
-        Cliente c1 = new ClienteRegular("Breno", "breno1", "breno123");
+        Cliente c1 = new Cliente("Breno", "breno1", "breno123");
         assertEquals(c1.toString(), "Breno;breno1;breno123");
     }
 
 
-//    @Test
-//    public void deveAdicionarAvaliacao() throws Exception {
-//        clienteTeste.registrarPorAudiencia(serieComedia,String dataVista);
-//        clienteTeste.addAvaliacao(serieComedia, 5);
-//    }
+    @Test
+    public void deveAdicionarAvaliacao() throws Exception {
+        clienteTeste.registrarPorAudiencia(serieDRAMA1,"2023-05-23");
+        clienteTeste.addAvaliacao(serieDRAMA1,3, "testeteste");
+        assertEquals(1,serieDRAMA1.getAvaliacoes().size());
+    }
+
 
 }

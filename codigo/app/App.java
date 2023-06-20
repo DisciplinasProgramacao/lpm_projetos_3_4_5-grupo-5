@@ -211,7 +211,7 @@ public class App {
         System.out.println("Digite a senha:");
         String senha = teclado.nextLine();
 
-        return new ClienteRegular(nome, login, senha);
+        return new Cliente(nome, login, senha);
     }
 
     /**
