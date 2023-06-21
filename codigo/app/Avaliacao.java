@@ -21,6 +21,11 @@ public class Avaliacao {
         }
     }
 
+    /**
+     * Verifica se a avaliacao esta entre 1 e 5
+     * @param avaliacao
+     * @return
+     */
     public boolean validaAvaliacao(int avaliacao) {
         try {
             if (avaliacao >= 1 && avaliacao <= 5)

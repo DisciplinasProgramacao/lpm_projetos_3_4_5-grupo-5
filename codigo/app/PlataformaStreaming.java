@@ -235,6 +235,9 @@ public class PlataformaStreaming {
 
 
     /**
+     * Le arquivo e separa cada atributo
+     * cria midia, sendo filme e serie
+     * Adiciona cada tipo de midia ao hash
      * @param arquivo
      * @throws FileNotFoundException
      */

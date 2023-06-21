@@ -37,10 +37,20 @@ public class Serie extends Midia {
         return qtdEpisodios;
     }
 
+    /**
+     * filtra as series que tem certa qtd de episodio
+     * @param qtdEpisodios
+     * @return
+     */
     public boolean filtrarPorQtdEpisodios(int qtdEpisodios) {
         return this.qtdEpisodios == qtdEpisodios;
     }
 
+
+    /**
+     * Salva serie no arquivo
+     * @param caminhoArq
+     */
     public void salvar(String caminhoArq) {
         try {
             FileWriter writer = new FileWriter(caminhoArq, true);
