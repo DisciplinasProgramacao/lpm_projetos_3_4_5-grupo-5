@@ -27,7 +27,7 @@ public class SerieTest {
 
     @Test
     void testToString() {
-        String expected = "S;2;F.R.I.E.N.D.S;22/09/1994;Comedia;Ingles;236";
+        String expected = "S;2;F.R.I.E.N.D.S;22/09/1994;Comédia;Inglês;236";
         Assertions.assertEquals(expected, s2.toString());
     }
 

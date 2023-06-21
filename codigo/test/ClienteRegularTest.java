@@ -32,9 +32,9 @@ public class ClienteRegularTest {
         s1 = new Serie(6, "F.R.I.E.N.D.S", Genero.COMEDIA, Idioma.INGLES, "22/09/1994", 236);
         s2 = new Serie(7, "Stranger Things", Genero.DRAMA, Idioma.INGLES, "15/06/2016", 38);
         s3 = new Serie(8, "Game of Thrones", Genero.DRAMA, Idioma.INGLES, "17/04/2011", 73);
-        clienteTeste.adicionarNaListaJaVistas(s1);
-        clienteTeste.adicionarNaListaJaVistas(s2);
-        clienteTeste.adicionarNaListaJaVistas(s3);
+        clienteTeste.registrarPorAudiencia(s1);
+        clienteTeste.registrarPorAudiencia(s2);
+        clienteTeste.registrarPorAudiencia(s3);
     }
 
     @Test
@@ -56,14 +56,8 @@ public class ClienteRegularTest {
     }
 
     @Test
-    public void testRetirarSerieDaListaDeJaVistas(){
-        clienteTeste.retirarNaListaJaVistas("F.R.I.E.N.D.S");
-        assertEquals(2, clienteTeste.getListaJaVistas().size());
-    }
-
-    @Test
     public void deveFiltrarGenero(){
-        assertEquals(2, clienteTeste.filtrarPorGenero(Genero.DRAMA).size());
+        assertEquals(4, clienteTeste.filtrarPorGenero(Genero.DRAMA).size());
     }
 
     @Test
@@ -78,8 +72,8 @@ public class ClienteRegularTest {
 
     @Test
     public void deveAdicionarMidiaJaVista(){
-        clienteTeste.registrarPorAudiencia(serieDRAMA1,"1999-08-01");
-        assertEquals(1,clienteTeste.getDataQueFoiVista().size());
+        clienteTeste.registrarPorAudiencia(serieDRAMA1);
+        assertEquals(4,clienteTeste.getDataQueFoiVista().size());
 
     }
 

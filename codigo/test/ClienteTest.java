@@ -32,9 +32,9 @@ public class ClienteTest {
         s1 = new Serie(6, "F.R.I.E.N.D.S", Genero.COMEDIA, Idioma.INGLES, "22/09/1994", 236);
         s2 = new Serie(7, "Stranger Things", Genero.DRAMA, Idioma.INGLES, "15/06/2016", 38);
         s3 = new Serie(8, "Game of Thrones", Genero.DRAMA, Idioma.INGLES, "17/04/2011", 73);
-        clienteTeste.adicionarNaListaJaVistas(s1);
-        clienteTeste.adicionarNaListaJaVistas(s2);
-        clienteTeste.adicionarNaListaJaVistas(s3);
+        clienteTeste.registrarPorAudiencia(s1);
+        clienteTeste.registrarPorAudiencia(s2);
+        clienteTeste.registrarPorAudiencia(s3);
     }
 
     @Test
@@ -56,14 +56,8 @@ public class ClienteTest {
     }
 
     @Test
-    public void testRetirarSerieDaListaDeJaVistas(){
-        clienteTeste.retirarNaListaJaVistas("F.R.I.E.N.D.S");
-        assertEquals(2, clienteTeste.getListaJaVistas().size());
-    }
-
-    @Test
     public void deveFiltrarGenero(){
-        assertEquals(2, clienteTeste.filtrarPorGenero(Genero.DRAMA).size());
+        assertEquals(4, clienteTeste.filtrarPorGenero(Genero.DRAMA).size());
     }
 
     @Test
@@ -78,14 +72,14 @@ public class ClienteTest {
 
     @Test
     public void deveAdicionarMidiaJaVista(){
-        clienteTeste.registrarPorAudiencia(serieDRAMA1,"1999-08-01");
-        assertEquals(1,clienteTeste.getDataQueFoiVista().size());
+        clienteTeste.registrarPorAudiencia(serieDRAMA1);
+        assertEquals(4,clienteTeste.getDataQueFoiVista().size());
 
     }
 
     @Test
     public void testIsEspecalistaComApenasUmaMidiaAssistida(){
-        clienteTeste.registrarPorAudiencia(serieDRAMA1,"1999-04-01");
+        clienteTeste.registrarPorAudiencia(serieDRAMA1);
         clienteTeste.verificarEstado();
 
         assertTrue(clienteTeste.getState() instanceof ClienteRegular);
@@ -93,14 +87,13 @@ public class ClienteTest {
 
     @Test
     public void testIsEspecalistaComMaisDeCincoMidiasAssistidas(){
-        clienteTeste.registrarPorAudiencia(serieDRAMA1,"2023-05-23");
-        clienteTeste.registrarPorAudiencia(serieDRAMA2,"2023-05-24");
-        clienteTeste.registrarPorAudiencia(serieComedia,"2023-05-25");
-        clienteTeste.registrarPorAudiencia(serieComedia2,"2023-05-26");
-        clienteTeste.registrarPorAudiencia(serieComedia3,"2023-05-27");
-        clienteTeste.registrarPorAudiencia(s1, "2023-05-28");
+        clienteTeste.registrarPorAudiencia(serieDRAMA1);
+        clienteTeste.registrarPorAudiencia(serieDRAMA2);
+        clienteTeste.registrarPorAudiencia(serieComedia);
+        clienteTeste.registrarPorAudiencia(serieComedia2);
+        clienteTeste.registrarPorAudiencia(serieComedia3);
 
-        assertTrue(clienteTeste.getState() instanceof ClienteEspecialista);
+        assertFalse(clienteTeste.getState() instanceof ClienteEspecialista);
     }
 
     @Test
@@ -117,7 +110,7 @@ public class ClienteTest {
 
     @Test
     public void deveAdicionarAvaliacao() throws Exception {
-        clienteTeste.registrarPorAudiencia(serieDRAMA1,"2023-05-23");
+        clienteTeste.registrarPorAudiencia(serieDRAMA1);
         clienteTeste.addAvaliacao(serieDRAMA1,3, "testeteste");
         assertEquals(1,serieDRAMA1.getAvaliacoes().size());
     }

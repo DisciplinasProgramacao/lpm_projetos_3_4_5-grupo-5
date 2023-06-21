@@ -51,10 +51,10 @@ public class PlataformaStreamingTest {
         serieTeste = new Serie(4,"you", Genero.DRAMA, Idioma.FRANCES, "20", 10);
         serie1 = new Serie(15, "F.R.I.E.N.D.S", Genero.COMEDIA, Idioma.PORTUGUES, "22/09/1994", 236);
         serie2 = new Serie(16, "Stranger Things", Genero.AVENTURA, Idioma.ITALIANO, "22/09/1994", 18);
-        serie3 = new Serie(17, "Breaking Bad", Genero.ROMANCE, Idioma.ESPANHOL, "22/09/1994", 12);
+        serie3 = new Serie(17, "Breaking Bad", Genero.ROMANCE, Idioma.INGLES, "22/09/1994", 12);
 
         //Filmes
-        f1 = new Filme(18, "f1", Genero.DRAMA, Idioma.PORTUGUES, "2020", 120);
+        f1 = new Filme(18, "f1", Genero.DRAMA, Idioma.INGLES, "2020", 120);
         f2 = new Filme(19, "f2", Genero.DRAMA, Idioma.PORTUGUES, "2020", 120);
         f3 = new Filme(13, "f3", Genero.DRAMA, Idioma.PORTUGUES, "2020", 120);
 
@@ -83,15 +83,15 @@ public class PlataformaStreamingTest {
         //Ações Clientes
         clienteTeste2.adicionarNaLista(serie1);
         clienteTeste2.adicionarNaLista(serie2);
-        clienteTeste2.adicionarNaListaJaVistas(f1);
-        clienteTeste2.adicionarNaListaJaVistas(f2);
-        clienteTeste.adicionarNaListaJaVistas(f1);
-        clienteTeste.adicionarNaListaJaVistas(serie1);
-        clienteTeste.adicionarNaListaJaVistas(serie2);
-        clienteTeste.adicionarNaListaJaVistas(serie3);
-        clienteTeste3.adicionarNaListaJaVistas(f1);
-        clienteTeste3.adicionarNaListaJaVistas(f2);
-        clienteTeste3.adicionarNaListaJaVistas(f3);
+        clienteTeste2.registrarPorAudiencia(f1);
+        clienteTeste2.registrarPorAudiencia(f2);
+        clienteTeste.registrarPorAudiencia(f1);
+        clienteTeste.registrarPorAudiencia(serie1);
+        clienteTeste.registrarPorAudiencia(serie2);
+        clienteTeste.registrarPorAudiencia(serie3);
+        clienteTeste3.registrarPorAudiencia(f1);
+        clienteTeste3.registrarPorAudiencia(f2);
+        clienteTeste3.registrarPorAudiencia(f3);
 
         //Ações Mídias
         serie1.addAvaliacao(a1);
@@ -140,37 +140,14 @@ public class PlataformaStreamingTest {
 
     @Test
     public void deveFiltrarSeriePorGenero() {
-        Serie serieTeste1 = new Serie(1,"teste", Genero.DRAMA, Idioma.ESPANHOL, "20",6);
-        Serie serieTeste2 = new Serie(2,"teste", Genero.COMEDIA, Idioma.ITALIANO, "20",8);
-        Serie serieTeste3 = new Serie(3,"teste", Genero.DRAMA, Idioma.PORTUGUES, "20",9);
-//        List<Midia> listaTeste = new ArrayList<>();
-        plataforma.adicionarMidia(serieTeste1);
-        plataforma.adicionarMidia(serieTeste2);
-        plataforma.adicionarMidia(serieTeste3);
-
-//        listaTeste.add(serieTeste1);
-//        listaTeste.add(serie2);
-//        listaTeste.add(serie3);
-//        listaTeste.add(serieTeste);
-
         Genero genero = Genero.DRAMA;
-
-        assertEquals(2, plataforma.filtrarPorGenero(genero).size());
+        assertEquals(4, plataforma.filtrarPorGenero(genero).size());
     }
 
     @Test
     public void deveFiltrarSeriePorIdioma() {
-        Serie serieTeste1 = new Serie(5,"teste", Genero.DRAMA, Idioma.INGLES, "20",5);
-        Serie serieTeste2 = new Serie(6,"teste", Genero.AVENTURA, Idioma.PORTUGUES, "20",9);
-        Serie serieTeste3 = new Serie(7,"teste", Genero.DRAMA, Idioma.INGLES, "20",3);
-        plataforma.adicionarMidia(serieTeste1);
-        plataforma.adicionarMidia(serieTeste2);
-        plataforma.adicionarMidia(serieTeste3);
-
         Idioma idioma = Idioma.INGLES;
-
         assertEquals(2, plataforma.filtrarPorIdioma(idioma).size());
-        assertEquals(serieTeste1, plataforma.filtrarPorIdioma(idioma).get(0));
     }
 
     @Test

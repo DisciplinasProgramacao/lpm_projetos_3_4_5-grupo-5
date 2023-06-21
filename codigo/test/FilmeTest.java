@@ -19,7 +19,7 @@ public class FilmeTest {
 
     @Test
     public void testToStringFilme(){
-        assertEquals(f1.toString(), "F;1;Inception;16/07/2010;Aventura;Portugues;120");
+        assertEquals(f1.toString(), "F;1;Inception;16/07/2010;Aventura;Português;120");
     }
 
     @Test

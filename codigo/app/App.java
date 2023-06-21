@@ -37,7 +37,7 @@ public class App {
                 4 - Filtrar midias por idioma
                 5 - Filtrar séries por quantidade de episódios
                 6 - Avaliar mídia
-                7 - Adicionar mídia na lista 'Para Ver'
+                7 - Adicionar mídia na lista 'Para Ver'//'Desejos'
                 8 - Remover mídia da lista 'Para Ver'
                 9 - Assistir mídia (adiciona no hitórico)
                 10 - Logoff
@@ -226,27 +226,24 @@ public class App {
     public static void main(String[] args) throws Exception {
         PlataformaStreaming plataformaStreaming = new PlataformaStreaming("Plataforma de Streaming");
         Cliente cliente = null;
-        String aux;
         int opcao;
 
         do {
             opcao = menu();
 
             switch (opcao) {
-                case 1:
+                case 1 -> {
                     Cliente usuario = cadastrarUsuario();
                     plataformaStreaming.adicionarCliente(usuario);
                     System.out.println("Usuário cadastrado!");
                     pausa();
-                    break;
-
-                case 2:
+                }
+                case 2 -> {
                     plataformaStreaming.carregarClientes("docs/arquivos/POO_Espectadores.csv");
                     System.out.println("Cadastro de usuários por arquivo concluído!");
                     pausa();
-                    break;
-
-                case 3:
+                }
+                case 3 -> {
                     System.out.println("Digite o nome de usuário:");
                     String nameUser = teclado.nextLine();
                     System.out.println("Digite a senha:");
@@ -255,18 +252,15 @@ public class App {
                     if (cliente != null)
                         System.out.println("Bem vindo(a) " + cliente.getUsuario());
                     pausa();
-                    break;
+                }
 
                 // menu plataforma streaming
-                case 4:
+                case 4 -> {
                     int alteracao = subMenuPlataformaStreaming();
-
                     switch (alteracao) {
                         case 0 -> {
                         }
-                        case 1 -> {
-                            listarMidias(plataformaStreaming);
-                        }
+                        case 1 -> listarMidias(plataformaStreaming);
                         case 2 -> {
                             plataformaStreaming.carregarMidias("docs/arquivos/POO_Midias.csv");
                             System.out.println("Cadastro de mídias por arquivo concluído!");
@@ -306,9 +300,7 @@ public class App {
                                 throw new RuntimeException(e);
                             }
                         }
-                        case 10 -> {
-                            buscarMidia(plataformaStreaming);
-                        }
+                        case 10 -> buscarMidia(plataformaStreaming);
                         case 11 -> {
                             Genero generoEscolhido = escolherGenero();
 
@@ -335,22 +327,18 @@ public class App {
                         default -> throw new Exception("Algo inesperado ocorreu! Tente novamente");
                     }
                     pausa();
-                    break;
+                }
 
                 // menu usuario
-                case 5:
+                case 5 -> {
                     if (cliente != null) {
                         int alt = subMenuCliente();
 
                         switch (alt) {
                             case 0 -> {
                             }
-                            case 1 -> {
-                                historico(cliente);
-                            }
-                            case 2 -> {
-                                listaParaVer(cliente);
-                            }
+                            case 1 -> historico(cliente);
+                            case 2 -> listaParaVer(cliente);
                             case 3 -> {
                                 Genero genero = escolherGenero();
                                 if (genero != null) {
@@ -401,7 +389,7 @@ public class App {
                                 listarMidias(plataformaStreaming);
                                 if (!(plataformaStreaming.getMidias().isEmpty())) {
                                     Midia midia = buscarMidia(plataformaStreaming);
-                                    if (midia != null) cliente.adicionarNaListaJaVistas(midia);
+                                    if (midia != null) cliente.registrarPorAudiencia(midia);
                                 }
                             }
                             case 10 -> {
@@ -412,8 +400,7 @@ public class App {
                     } else
                         System.out.println("Não há nenhum usuário logado.");
                     pausa();
-                    break;
-
+                }
             }
         } while (opcao != 0);
     }

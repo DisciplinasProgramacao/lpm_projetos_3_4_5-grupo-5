@@ -334,11 +334,7 @@ public class PlataformaStreaming {
 
                     else if (dados[1].equals("A")) { // historico
 
-                        Date dataAtual = new Date();
-                        SimpleDateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy");
-                        String dataFormatada = formatoData.format(dataAtual);
-
-                        cliente.registrarPorAudiencia(midia, dataFormatada);
+                        cliente.registrarPorAudiencia(midia);
                     }
                 }
 

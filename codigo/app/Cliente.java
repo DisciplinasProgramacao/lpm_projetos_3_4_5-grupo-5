@@ -1,14 +1,14 @@
 package codigo.app;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public  class Cliente {
+public class Cliente {
     protected String nomeDeUsuario;
-
     protected String login;
     protected String senha;
     protected List<Midia> listaParaVer;
@@ -20,7 +20,8 @@ public  class Cliente {
 
     /**
      * Cria um novo usuario
-     *inicialmente todos os clientes são regulares
+     * inicialmente todos os clientes são regulares
+     *
      * @param nomeDeUsuario Nome de usuario pode ter ate 30 caracteres
      * @param login         Login pode ter até 20 caracteres
      * @param senha         Senha pode ter ate 10 caracteres
@@ -36,7 +37,7 @@ public  class Cliente {
         this.listaJaVistas = new ArrayList<>();
         this.dataQueFoiVista = new HashMap<>();
         this.logado = false;
-        this.state= new ClienteRegular();
+        this.state = new ClienteRegular();
     }
 
     /**
@@ -47,16 +48,6 @@ public  class Cliente {
     public void adicionarNaLista(Midia midia) {
         if ((!this.listaParaVer.contains(midia)))
             this.listaParaVer.add(midia);
-    }
-
-    /**
-     * Adiciona midia na lista de mídias "Ja Vistas"
-     *
-     * @param midia Midia a ser adicionada na lista ja vistas
-     */
-    public void adicionarNaListaJaVistas(Midia midia) {
-        if ((!this.listaJaVistas.contains(midia)))
-            this.listaJaVistas.add(midia);
     }
 
     /**
@@ -78,28 +69,6 @@ public  class Cliente {
         } catch (Exception e) {
             System.out.println(e.toString());
         }
-    }
-
-    /**
-     * Retira midia da lista de mídias "Ja Vistas"
-     *
-     * @param nomeMidia Nome da midia a ser removida da lista
-     */
-    public void retirarNaListaJaVistas(String nomeMidia) {
-        try {
-
-            for (Midia midia : listaJaVistas) {
-                if (midia.getNome().equals(nomeMidia)) {
-                    this.listaJaVistas.remove(midia);
-                    return;
-                }
-            }
-
-            throw new Exception("Essa mídia não existe no seu 'Histórico'!");
-        } catch (Exception e) {
-            System.out.println(e.toString());
-        }
-
     }
 
     /**
@@ -207,46 +176,50 @@ public  class Cliente {
     /**
      * Adiciona midia na lista de midias assistidas
      * Associa midia assistida com a data em que foi assistida
+     *
      * @param midia
-     * @param dataVista insere a data em que o usuario assistiu a midia
      */
-    public void registrarPorAudiencia(Midia midia, String dataVista) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate data = LocalDate.parse(dataVista, formatter);
-        if (!(this.listaJaVistas.contains(midia))) {
-            this.listaJaVistas.add(midia);
-            midia.registrarAudiencia();
-            this.dataQueFoiVista.put(midia.getId(), data);
+    public void registrarPorAudiencia(Midia midia) {
+        try {
+            if (!(this.listaJaVistas.contains(midia))) {
+                this.listaJaVistas.add(midia);
+                midia.registrarAudiencia();
+                this.dataQueFoiVista.put(midia.getId(), LocalDate.now());
+            } else throw new Exception("Mídia já assistida!");
+
+            this.verificarEstado();
+
+        } catch (Exception e) {
+            System.out.println(e.toString());
         }
-        this.verificarEstado();
     }
+
     /**
      * o usuario vira cliente profissional
      * depois que o cliente vira profissinal ele não pode sofrer downgrade
      */
-    public void upgradeParaProfissional(){
+    public void upgradeParaProfissional() {
         this.state = new ClienteProfissional();
     }
+
     /**
      * Verifica se é um cliente especialista
      * Caso tenha assistido  5 ou mais midias mes passado, retornara true
      * sempre verifica o estado do cliente caso tenha se tornado especialista.
-     *
      */
-    public void verificarEstado(){
+    public void verificarEstado() {
         // Pega a data atual e subtrai um mês para obter a data de um mês atrás
         LocalDate umMesAtras = LocalDate.now().minusMonths(1);
 
 
-         long   totalMidiasUltimoMes = dataQueFoiVista.values().stream()
-                    .filter(date -> date.getYear() == umMesAtras.getYear() && date.getMonthValue() == umMesAtras.getMonthValue())
-                    .count();
+        long totalMidiasUltimoMes = dataQueFoiVista.values().stream()
+                .filter(date -> date.getYear() == umMesAtras.getYear() && date.getMonthValue() == umMesAtras.getMonthValue())
+                .count();
 
-        if(!(this.state instanceof ClienteProfissional) && totalMidiasUltimoMes>=5){
-            this.state=new ClienteEspecialista();
+        if (!(this.state instanceof ClienteProfissional) && totalMidiasUltimoMes >= 5) {
+            this.state = new ClienteEspecialista();
         }
     }
-
 
 
     @Override
@@ -286,13 +259,14 @@ public  class Cliente {
 
     /**
      * Adiciona a avaliação de acordo com o state do cliente
+     *
      * @param midia
      * @param comentario
      * @author jordana
      */
     public void addAvaliacao(Midia midia, int nota, String comentario) throws Exception {
         this.verificarEstado();
-        state.addAvaliacao(this.nomeDeUsuario,midia, nota, comentario);
+        state.addAvaliacao(this.nomeDeUsuario, midia, nota, comentario);
     }
 
 //    /**
@@ -334,9 +308,11 @@ public  class Cliente {
     public String getLogin() {
         return this.login;
     }
-    public IClienteState getState(){
+
+    public IClienteState getState() {
         return this.state;
     }
+
     public boolean isLogado() {
         return logado;
     }
@@ -344,7 +320,6 @@ public  class Cliente {
     public void setLogado(boolean logado) {
         this.logado = logado;
     }
-
 
 
     public Map<Integer, LocalDate> getDataQueFoiVista() {
@@ -362,8 +337,6 @@ public  class Cliente {
     public List<Midia> getListaJaVistas() {
         return List.copyOf(listaJaVistas);
     }
-
-
 
 
 }
