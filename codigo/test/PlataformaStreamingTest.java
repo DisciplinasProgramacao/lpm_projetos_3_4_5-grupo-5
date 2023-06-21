@@ -4,10 +4,7 @@ import codigo.app.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -62,9 +59,9 @@ public class PlataformaStreamingTest {
         midiaTest = new Serie(14, "mTest", Genero.COMEDIA, Idioma.ITALIANO, "22/09/1994",  EstadoMidia.MODIFICAVEL, 236);
 
         //Avaliacoes
-        a1 = new Avaliacao("u1", 4,"bom");
-        a2 = new Avaliacao("u2", 4,"bom");
-        a3 = new Avaliacao("u3", 4,"bom");
+        a1 = new Avaliacao("u1", 2,"bom");
+        a2 = new Avaliacao("u2", 3,"bom");
+        a3 = new Avaliacao("u3", 5,"bom");
 
 
         //Ações Plataforma
@@ -120,7 +117,7 @@ public class PlataformaStreamingTest {
         String chave1 = clienteTeste2.getUsuario() + ":" + clienteTeste2.getSenha();
         clientes.put(chave1, clienteTeste2);
         plataforma.adicionarCliente(clienteTeste2);
-        plataforma.loginCliente("Cteste2", "1234");
+        plataforma.login("Cteste2", "1234");
         assertEquals(clienteTeste2, plataforma.getClienteAtual());
     }
 
@@ -128,7 +125,7 @@ public class PlataformaStreamingTest {
     @Test
     public void deveFazerLogin() {
         plataforma.adicionarCliente(clienteTeste);
-        plataforma.loginCliente("Cteste", "123");
+        plataforma.login("Cteste", "123");
         assertEquals(clienteTeste, plataforma.getClienteAtual());
     }
 
@@ -190,8 +187,8 @@ public class PlataformaStreamingTest {
 
     @Test
     public void testaLogoff() {
-        plataforma.loginCliente("Cteste", "123");
-        plataforma.logoffCliente();
+        plataforma.login("Cteste", "123");
+        plataforma.logoff();
         assertNull(plataforma.getClienteAtual());
     }
 
@@ -218,13 +215,13 @@ public class PlataformaStreamingTest {
     }
 
     @Test
-    public void relatorioClienteMaisMidiasAssistidas(){
+    public void relatorioClienteMaisMidias(){
         assertTrue(plataforma.relatorioClienteMaisMidias().contains(
                 "Cteste, 4 mídias assistidas"
         ));
     }
 
-   @Test
+    @Test
     public void relatorioClienteMaisAvalicoes(){
         assertTrue(plataforma.relatorioClienteMaisAvaliacoes().contains(
                 "u2, 3 avaliações"
@@ -232,21 +229,21 @@ public class PlataformaStreamingTest {
     }
 
     @Test
-    public void relatorioClientes15Avaliacoes() throws Exception {
-        Midia  f4 = new Filme(19, "f4", Genero.DRAMA, Idioma.PORTUGUES, "2020",  EstadoMidia.MODIFICAVEL, 120);
-        Midia  f5 = new Filme(20, "f5", Genero.DRAMA, Idioma.PORTUGUES, "2020",  EstadoMidia.MODIFICAVEL, 120);
-        Midia  f6 = new Filme(21, "f6", Genero.DRAMA, Idioma.PORTUGUES, "2020", EstadoMidia.MODIFICAVEL,  120);
-        Midia  f7 = new Filme(22, "f7", Genero.DRAMA, Idioma.PORTUGUES, "2020", EstadoMidia.MODIFICAVEL,  120);
-        Midia  f8 = new Filme(23, "f8", Genero.DRAMA, Idioma.PORTUGUES, "2020", EstadoMidia.MODIFICAVEL,  120);
-        Midia  f9 = new Filme(24, "f9", Genero.DRAMA, Idioma.PORTUGUES, "2020", EstadoMidia.MODIFICAVEL,  120);
-        Midia  f10 = new Filme(25, "f10", Genero.DRAMA, Idioma.PORTUGUES, "2020", EstadoMidia.MODIFICAVEL,  120);
-        Midia  f11 = new Filme(26, "f11", Genero.DRAMA, Idioma.PORTUGUES, "2020",  EstadoMidia.MODIFICAVEL, 120);
-        Midia  f12 = new Filme(27, "f12", Genero.DRAMA, Idioma.PORTUGUES, "2020",  EstadoMidia.MODIFICAVEL, 120);
-        Midia  f13 = new Filme(28, "f13", Genero.DRAMA, Idioma.PORTUGUES, "2020",  EstadoMidia.MODIFICAVEL, 120);
-        Midia  f14 = new Filme(29, "f14", Genero.DRAMA, Idioma.PORTUGUES, "2020", EstadoMidia.MODIFICAVEL,  120);
-        Midia  f15 = new Filme(30, "f15", Genero.DRAMA, Idioma.PORTUGUES, "2020", EstadoMidia.MODIFICAVEL,  120);
-        Midia  f16 = new Filme(31, "f16", Genero.DRAMA, Idioma.PORTUGUES, "2020",  EstadoMidia.MODIFICAVEL, 120);
-        Midia  f17 = new Filme(32, "f17", Genero.DRAMA, Idioma.PORTUGUES, "2020",  EstadoMidia.MODIFICAVEL, 120);
+    public void relatorioClientesPorNumeroAvaliacoes() throws Exception {
+        Midia  f4 = new Filme(19, "f4", Genero.DRAMA, Idioma.PORTUGUES, "2020", EstadoMidia.MODIFICAVEL,120);
+        Midia  f5 = new Filme(20, "f5", Genero.DRAMA, Idioma.PORTUGUES, "2020", EstadoMidia.MODIFICAVEL,120);
+        Midia  f6 = new Filme(21, "f6", Genero.DRAMA, Idioma.PORTUGUES, "2020", EstadoMidia.MODIFICAVEL,120);
+        Midia  f7 = new Filme(22, "f7", Genero.DRAMA, Idioma.PORTUGUES, "2020", EstadoMidia.MODIFICAVEL,120);
+        Midia  f8 = new Filme(23, "f8", Genero.DRAMA, Idioma.PORTUGUES, "2020", EstadoMidia.MODIFICAVEL,120);
+        Midia  f9 = new Filme(24, "f9", Genero.DRAMA, Idioma.PORTUGUES, "2020", EstadoMidia.MODIFICAVEL,120);
+        Midia  f10 = new Filme(25, "f10", Genero.DRAMA, Idioma.PORTUGUES, "2020", EstadoMidia.MODIFICAVEL,120);
+        Midia  f11 = new Filme(26, "f11", Genero.DRAMA, Idioma.PORTUGUES, "2020", EstadoMidia.MODIFICAVEL,120);
+        Midia  f12 = new Filme(27, "f12", Genero.DRAMA, Idioma.PORTUGUES, "2020", EstadoMidia.MODIFICAVEL,120);
+        Midia  f13 = new Filme(28, "f13", Genero.DRAMA, Idioma.PORTUGUES, "2020", EstadoMidia.MODIFICAVEL,120);
+        Midia  f14 = new Filme(29, "f14", Genero.DRAMA, Idioma.PORTUGUES, "2020", EstadoMidia.MODIFICAVEL,120);
+        Midia  f15 = new Filme(30, "f15", Genero.DRAMA, Idioma.PORTUGUES, "2020", EstadoMidia.MODIFICAVEL,120);
+        Midia  f16 = new Filme(31, "f16", Genero.DRAMA, Idioma.PORTUGUES, "2020", EstadoMidia.MODIFICAVEL,120);
+        Midia  f17 = new Filme(32, "f17", Genero.DRAMA, Idioma.PORTUGUES, "2020", EstadoMidia.MODIFICAVEL,120);
 
         plataforma.adicionarMidia(f4);
         plataforma.adicionarMidia(f5);
@@ -316,8 +313,154 @@ public class PlataformaStreamingTest {
 
         f17.addAvaliacao(a2);
 
-        assertTrue(plataforma.relatorioClientes15Avaliacoes().contains(
-                "66,7% dos clientes possuem 15 ou mais avaliações"
+        assertTrue(plataforma.relatorioClientesPorNumeroAvaliacoes(15).contains(
+                "66,67% dos clientes possuem 15 ou mais avaliações"
+        ));
+    }
+
+    @Test
+    public void relatorioMidiasMaisBemAvaliadas() throws Exception {
+        Avaliacao a4 = new Avaliacao("u4", 4,"bom");
+        Avaliacao a5 = new Avaliacao("u5", 5,"bom");
+        Avaliacao a6 = new Avaliacao("u6", 1,"bom");
+
+        f1.addAvaliacao(a1);
+        f1.addAvaliacao(a2);
+        f1.addAvaliacao(a3);
+        f1.addAvaliacao(a4);
+
+        f2.addAvaliacao(a2);
+        f2.addAvaliacao(a3);
+        f2.addAvaliacao(a1);
+        f2.addAvaliacao(a4);
+        f2.addAvaliacao(a5);
+        f2.addAvaliacao(a6);
+
+        f3.addAvaliacao(a2);
+        f3.addAvaliacao(a3);
+        f3.addAvaliacao(a1);
+        f3.addAvaliacao(a4);
+        f3.addAvaliacao(a5);
+
+        serie1.addAvaliacao(a4);
+
+        serie2.addAvaliacao(a4);
+        serie2.addAvaliacao(a5);
+
+        serie3.addAvaliacao(a4);
+        serie3.addAvaliacao(a5);
+        serie3.addAvaliacao(a6);
+
+        serieTeste.addAvaliacao(a2);
+        midiaTest.addAvaliacao(a1);
+
+        assertTrue(plataforma.relatorioMidiasMaisBemAvaliadas(6, 4).contains(
+                "f3\nBreaking Bad\nf2"
+        ));
+    }
+
+    @Test
+    public void relatorioMidiasMaisVizualizadas(){
+        plataforma.registrarAudiencia(f1);
+        plataforma.registrarAudiencia(f1);
+        plataforma.registrarAudiencia(f1);
+        plataforma.registrarAudiencia(f1);
+
+        plataforma.registrarAudiencia(f2);
+        plataforma.registrarAudiencia(f2);
+
+        plataforma.registrarAudiencia(f3);
+        plataforma.registrarAudiencia(f3);
+
+        plataforma.registrarAudiencia(serie1);
+        plataforma.registrarAudiencia(serie1);
+        plataforma.registrarAudiencia(serie1);
+        plataforma.registrarAudiencia(serie1);
+        plataforma.registrarAudiencia(serie1);
+
+        plataforma.registrarAudiencia(serie2);
+
+        plataforma.registrarAudiencia(serie3);
+        plataforma.registrarAudiencia(serie3);
+        plataforma.registrarAudiencia(serie3);
+        plataforma.registrarAudiencia(serie3);
+
+        assertTrue(plataforma.relatorioMidiasMaisVizualizadas(5).contains(
+                "f1 - 7\nF.R.I.E.N.D.S - 6\nBreaking Bad - 5\n"
+        ));
+    }
+
+    @Test
+    public void relatorioMidiasFiltradasPorGeneroMaisBemAvaliadas() throws Exception {
+        Avaliacao a4 = new Avaliacao("u4", 4,"bom");
+        Avaliacao a5 = new Avaliacao("u5", 5,"bom");
+        Avaliacao a6 = new Avaliacao("u6", 1,"bom");
+
+        f1.addAvaliacao(a1);
+        f1.addAvaliacao(a2);
+        f1.addAvaliacao(a3);
+        f1.addAvaliacao(a4);
+
+        f2.addAvaliacao(a2);
+        f2.addAvaliacao(a3);
+        f2.addAvaliacao(a1);
+        f2.addAvaliacao(a4);
+        f2.addAvaliacao(a5);
+        f2.addAvaliacao(a6);
+
+
+        f3.addAvaliacao(a2);
+        f3.addAvaliacao(a3);
+        f3.addAvaliacao(a1);
+        f3.addAvaliacao(a4);
+        f3.addAvaliacao(a5);
+
+        serie1.addAvaliacao(a4);
+
+        serie2.addAvaliacao(a4);
+        serie2.addAvaliacao(a5);
+
+        serie3.addAvaliacao(a4);
+        serie3.addAvaliacao(a5);
+        serie3.addAvaliacao(a6);
+
+        serieTeste.addAvaliacao(a2);
+        midiaTest.addAvaliacao(a1);
+
+        assertTrue(plataforma.relatorioMidiasMaisBemAvaliadas(6, 4, Genero.DRAMA).contains(
+                "f3\n"
+        ));
+    }
+
+    @Test
+    public void relatorioMidiasFiltradasPorGeneroMaisVizualizadas(){
+        plataforma.registrarAudiencia(f1);
+        plataforma.registrarAudiencia(f1);
+        plataforma.registrarAudiencia(f1);
+        plataforma.registrarAudiencia(f1);
+
+        plataforma.registrarAudiencia(f2);
+        plataforma.registrarAudiencia(f2);
+
+        plataforma.registrarAudiencia(f3);
+        plataforma.registrarAudiencia(f3);
+        plataforma.registrarAudiencia(f3);
+
+        plataforma.registrarAudiencia(serie1);
+        plataforma.registrarAudiencia(serie1);
+        plataforma.registrarAudiencia(serie1);
+        plataforma.registrarAudiencia(serie1);
+        plataforma.registrarAudiencia(serie1);
+
+        plataforma.registrarAudiencia(serie2);
+
+        plataforma.registrarAudiencia(serie3);
+        plataforma.registrarAudiencia(serie3);
+        plataforma.registrarAudiencia(serie3);
+        plataforma.registrarAudiencia(serie3);
+
+        assertTrue(plataforma.relatorioMidiasMaisVizualizadas(5, Genero.DRAMA).contains(
+                "f1 - 7\nf3 - 4\nf2 - 4"
         ));
     }
 }
