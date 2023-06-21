@@ -20,25 +20,50 @@ public class Cliente {
 
     /**
      * Cria um novo usuario
-     * inicialmente todos os clientes são regulares
-     *
+     *inicialmente todos os clientes são regulares
      * @param nomeDeUsuario Nome de usuario pode ter ate 30 caracteres
      * @param login         Login pode ter até 20 caracteres
      * @param senha         Senha pode ter ate 10 caracteres
      */
     public Cliente(String nomeDeUsuario, String login, String senha) {
+        if (validaParametrosConstrutor(nomeDeUsuario,login,senha))
+            this.listaParaVer = new ArrayList<>();
+        this.listaJaVistas = new ArrayList<>();
+        this.dataQueFoiVista = new HashMap<>();
+        this.logado = false;
+        this.state= new ClienteRegular();
+    }
+    /**
+     * Cria um novo usuario
+     *inicialmente todos os clientes são regulares
+     * @param nomeDeUsuario Nome de usuario pode ter ate 30 caracteres
+     * @param login         Login pode ter até 20 caracteres
+     * @param senha         Senha pode ter ate 10 caracteres
+     * @param profissional valida se o cliente deverá ser criado como profissional
+     */
+    public Cliente(String nomeDeUsuario, String login, String senha, boolean profissional) {
+        if (validaParametrosConstrutor(nomeDeUsuario,login,senha))
+            this.listaParaVer = new ArrayList<>();
+        this.listaJaVistas = new ArrayList<>();
+        this.dataQueFoiVista = new HashMap<>();
+        this.logado = false;
+        this.state= new ClienteProfissional();
+    }
+    /**
+     * valida parametros para criar um novo cliente
+     * @param nomeDeUsuario Nome de usuario pode ter ate 30 caracteres
+     * @param login         Login pode ter até 20 caracteres
+     * @param senha         Senha pode ter ate 10 caracteres
+     *
+     */
+    public boolean validaParametrosConstrutor(String nomeDeUsuario, String login, String senha){
         if (!(login.isEmpty() || login.length() > 20))
             this.login = login;
         if (!(nomeDeUsuario.isEmpty() || nomeDeUsuario.length() > 30))
             this.nomeDeUsuario = nomeDeUsuario;
         if (!(senha.isEmpty() || senha.length() > 10))
             this.senha = senha;
-        this.listaParaVer = new ArrayList<>();
-        this.listaJaVistas = new ArrayList<>();
-        this.dataQueFoiVista = new HashMap<>();
-        this.logado = false;
-
-        this.state = new ClienteRegular();
+        return true;
     }
 
     /**
