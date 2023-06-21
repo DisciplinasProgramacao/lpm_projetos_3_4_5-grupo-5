@@ -20,18 +20,18 @@ public class ClienteTest {
     @BeforeEach
     public void prepare(){
         clienteTeste = new Cliente("Cteste", "login", "123");
-        serieDRAMA1 = new Serie(1,"SerieDRAMA1", Genero.DRAMA, Idioma.PORTUGUES, "10", 10);
-        serieDRAMA2 = new Serie(2,"SerieDRAMA2", Genero.DRAMA, Idioma.INGLES, "12",58);
-        serieComedia = new Serie(3,"SerieComedia", Genero.COMEDIA, Idioma.PORTUGUES, "10",10);
-        serieComedia2 = new Serie(4,"SerieComedia2", Genero.COMEDIA, Idioma.PORTUGUES, "10",10);
-        serieComedia3 = new Serie(5,"SerieComedia3", Genero.COMEDIA, Idioma.PORTUGUES, "10",10);
+        serieDRAMA1 = new Serie(1,"SerieDRAMA1", Genero.DRAMA, Idioma.PORTUGUES, "10",  EstadoMidia.MODIFICAVEL, 10);
+        serieDRAMA2 = new Serie(2,"SerieDRAMA2", Genero.DRAMA, Idioma.INGLES, "12", EstadoMidia.MODIFICAVEL, 58);
+        serieComedia = new Serie(3,"SerieComedia", Genero.COMEDIA, Idioma.PORTUGUES, "10", EstadoMidia.MODIFICAVEL, 10);
+        serieComedia2 = new Serie(4,"SerieComedia2", Genero.COMEDIA, Idioma.PORTUGUES, "10", EstadoMidia.MODIFICAVEL, 10);
+        serieComedia3 = new Serie(5,"SerieComedia3", Genero.COMEDIA, Idioma.PORTUGUES, "10", EstadoMidia.MODIFICAVEL, 10);
         clienteTeste.adicionarNaLista(serieDRAMA1);
         clienteTeste.adicionarNaLista(serieDRAMA2);
         clienteTeste.adicionarNaLista(serieComedia);
 
-        s1 = new Serie(6, "F.R.I.E.N.D.S", Genero.COMEDIA, Idioma.INGLES, "22/09/1994", 236);
-        s2 = new Serie(7, "Stranger Things", Genero.DRAMA, Idioma.INGLES, "15/06/2016", 38);
-        s3 = new Serie(8, "Game of Thrones", Genero.DRAMA, Idioma.INGLES, "17/04/2011", 73);
+        s1 = new Serie(6, "F.R.I.E.N.D.S", Genero.COMEDIA, Idioma.INGLES, "22/09/1994",  EstadoMidia.MODIFICAVEL, 236);
+        s2 = new Serie(7, "Stranger Things", Genero.DRAMA, Idioma.INGLES, "15/06/2016",  EstadoMidia.MODIFICAVEL, 38);
+        s3 = new Serie(8, "Game of Thrones", Genero.DRAMA, Idioma.INGLES, "17/04/2011",  EstadoMidia.MODIFICAVEL, 73);
         clienteTeste.registrarPorAudiencia(s1);
         clienteTeste.registrarPorAudiencia(s2);
         clienteTeste.registrarPorAudiencia(s3);
@@ -39,7 +39,7 @@ public class ClienteTest {
 
     @Test
     public void deveAdicionarSerie(){
-        Serie serieDRAMA3 = new Serie(4,"SerieDRAMA3", Genero.DRAMA, Idioma.PORTUGUES, "10",5);
+        Serie serieDRAMA3 = new Serie(4,"SerieDRAMA3", Genero.DRAMA, Idioma.PORTUGUES, "10", EstadoMidia.MODIFICAVEL, 5);
         clienteTeste.adicionarNaLista(serieDRAMA3);
         assertEquals(4, clienteTeste.getListaParaVer().size());
     }

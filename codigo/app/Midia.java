@@ -6,7 +6,7 @@ import java.util.Random;
 /**
  * Midia: tem nome, gênero, idioma e audiência. Classe abstrata que recebe por parâmetro os valores necessários da classe filha.
  */
-public abstract class Midia implements ISalvar{
+public abstract class Midia implements ISalvar {
     //#region atributos
     private int id;
     private String nome;
@@ -14,6 +14,7 @@ public abstract class Midia implements ISalvar{
     private Idioma idioma;
     private int audiencia;
     private String dataDeLancamento;
+    private EstadoMidia estadoMidia;
     private HashSet<Avaliacao> avaliacoes;
     private double media;
 
@@ -29,8 +30,9 @@ public abstract class Midia implements ISalvar{
      * @param genero           Gênero da midia, que pode ser: aventura, drama, comedia, romance ou terror
      * @param idioma           Idioma da midia
      * @param dataDeLancamento Data de lançamento da midia
+     * @param estadoMidia      Se é Lançamento
      */
-    private void init(int id, String nome, Genero genero, Idioma idioma, String dataDeLancamento) {
+    private void init(int id, String nome, Genero genero, Idioma idioma, String dataDeLancamento, EstadoMidia estadoMidia) {
 
         Random random = new Random();
 
@@ -40,19 +42,21 @@ public abstract class Midia implements ISalvar{
         this.idioma = idioma != null ? idioma : Idioma.values()[random.nextInt(Idioma.values().length)];
         this.audiencia = 0;
         this.dataDeLancamento = dataDeLancamento;
+        this.estadoMidia = estadoMidia;
         avaliacoes = new HashSet<>();
     }
 
     /**
-     * Construtor de mídia sem audiencia.
+     * Construtor de mídia.
      *
      * @param nome             Nome da midia
      * @param genero           Gênero da midia, que pode ser: aventura, drama, comedia, romance ou terror
      * @param idioma           Idioma da midia
      * @param dataDeLancamento Data de lançamento da midia
+     * @param estadoMidia      Se é Lançamento
      */
-    public Midia(int id, String nome, Genero genero, Idioma idioma, String dataDeLancamento) {
-        init(id, nome, genero, idioma, dataDeLancamento);
+    public Midia(int id, String nome, Genero genero, Idioma idioma, String dataDeLancamento, EstadoMidia estadoMidia) {
+        init(id, nome, genero, idioma, dataDeLancamento, estadoMidia);
     }
 
     //#endregion
@@ -68,7 +72,7 @@ public abstract class Midia implements ISalvar{
 
     @Override
     public String toString() {
-        return definirTipoMidia() + ";" + this.id + ";" + this.nome + ";" + this.dataDeLancamento + ";" + this.genero.getNome() + ";" + this.idioma.getNome();
+        return definirTipoMidia() + ";" + this.id + ";" + this.nome + ";" + this.dataDeLancamento + ";" + this.genero.getNome() + ";" + this.idioma.getNome() + ";" + this.estadoMidia.getNome() ;
     }
 
     public abstract String definirTipoMidia();
@@ -90,11 +94,11 @@ public abstract class Midia implements ISalvar{
     }
 
 
-    public boolean filtrarPorGenero(Genero genero){
+    public boolean filtrarPorGenero(Genero genero) {
         return this.genero.equals(genero);
     }
 
-    public boolean filtrarPorIdioma(Idioma idioma){
+    public boolean filtrarPorIdioma(Idioma idioma) {
         return this.idioma.equals(idioma);
     }
 
@@ -132,6 +136,11 @@ public abstract class Midia implements ISalvar{
 
     public double getMedia() {
         return media;
+    }
+
+
+    public EstadoMidia getEstadoMidia() {
+        return estadoMidia;
     }
 
 

@@ -1,5 +1,6 @@
 package codigo.test;
 
+import codigo.app.EstadoMidia;
 import codigo.app.Genero;
 import codigo.app.Idioma;
 import codigo.app.Serie;
@@ -15,8 +16,8 @@ public class SerieTest {
 
     @BeforeEach
     public void prepare() {
-        s1 = new Serie(1, "nome", Genero.DRAMA, Idioma.PORTUGUES, "2", 6);
-        s2 = new Serie(2, "F.R.I.E.N.D.S", Genero.COMEDIA, Idioma.INGLES, "22/09/1994", 236);
+        s1 = new Serie(1, "nome", Genero.DRAMA, Idioma.PORTUGUES, "2", EstadoMidia.MODIFICAVEL,  6);
+        s2 = new Serie(2, "F.R.I.E.N.D.S", Genero.COMEDIA, Idioma.INGLES, "22/09/1994",  EstadoMidia.MODIFICAVEL, 236);
     }
 
     @Test
@@ -27,7 +28,7 @@ public class SerieTest {
 
     @Test
     void testToString() {
-        String expected = "S;2;F.R.I.E.N.D.S;22/09/1994;Comédia;Inglês;236";
+        String expected = "S;2;F.R.I.E.N.D.S;22/09/1994;Comédia;Inglês;Modificável;236";
         Assertions.assertEquals(expected, s2.toString());
     }
 

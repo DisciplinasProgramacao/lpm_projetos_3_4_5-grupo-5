@@ -15,8 +15,8 @@ public class Filme extends Midia {
         this.duracao = duracaoMin;
     }
 
-    public Filme(int id, String nome, Genero genero, Idioma idioma, String DataDeLancamento, int duracao) {
-        super(id, nome, genero, idioma, DataDeLancamento);
+    public Filme(int id, String nome, Genero genero, Idioma idioma, String dataDeLancamento, EstadoMidia estadoMidia, int duracao) {
+        super(id, nome, genero, idioma, dataDeLancamento, estadoMidia);
         init(duracao);
     }
     //#endregion

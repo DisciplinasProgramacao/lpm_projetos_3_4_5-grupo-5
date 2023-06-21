@@ -11,8 +11,8 @@ public class Serie extends Midia {
         this.qtdEpisodios = qtdEpisodios;
     }
 
-    public Serie(int id, String nome, Genero genero, Idioma idioma, String DataDeLancamento, int qtdEpisodios) {
-        super(id, nome, genero, idioma, DataDeLancamento);
+    public Serie(int id, String nome, Genero genero, Idioma idioma, String dataDeLancamento, EstadoMidia estadoMidia, int qtdEpisodios) {
+        super(id, nome, genero, idioma, dataDeLancamento, estadoMidia);
         init(qtdEpisodios);
     }
 

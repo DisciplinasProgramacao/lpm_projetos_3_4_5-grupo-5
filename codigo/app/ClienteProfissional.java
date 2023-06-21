@@ -11,6 +11,7 @@ public class ClienteProfissional implements IClienteState {
      * @param comentario Comentario que acompanha a avaliação
      * @throws Exception
      */
+
     public  void addAvaliacao(String nomeDeUsuario, Midia midia, int nota, String comentario) throws Exception {
         Avaliacao avaliacao = new Avaliacao( nomeDeUsuario, nota, comentario);
         if(avaliacao.getNomeDeUsuario() == null) return;

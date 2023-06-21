@@ -14,11 +14,10 @@ public class App {
                 Menu:
                 ---------------------
                 0 - Sair
-                1 - Criar usuário
-                2 - Carregar Usuários
-                3 - Login
-                4 - menu Plataforma de Streaming
-                5 - menu Usuário
+                1 - Login
+                2 - Menu Plataforma de Streaming
+                3 - Menu Usuário
+                4 - Menu Administrador
                 ---------------------
                 Digite sua opção:\s""");
 
@@ -33,8 +32,8 @@ public class App {
                 0 - Voltar
                 1 - Visualizar histórico (mídias já assistidas)
                 2 - Visualizar lista de mídias 'Para Ver'
-                3 - Filtrar midias por genero
-                4 - Filtrar midias por idioma
+                3 - Filtrar mídias por gênero
+                4 - Filtrar mídias por idioma
                 5 - Filtrar séries por quantidade de episódios
                 6 - Avaliar mídia
                 7 - Adicionar mídia na lista 'Para Ver'//'Desejos'
@@ -56,15 +55,61 @@ public class App {
                 2 - Carregar mídias
                 3 - Carregar usuários
                 4 - Carregar audiência
-                5 - Cadastrar série
-                6 - Cadastrar filme
-                7 - Cadastrar usuário
-                8 - Salvar mídias
-                9 - Salvar usuários
-                10 - Buscar mídia
-                11 - Filtrar mídias por gênero
-                12 - Filtrar mídias por idioma
-                13 - Filtrar series por quantidade de episódios
+                5 - Salvar mídias
+                6 - Salvar usuários
+                7 - Buscar mídia
+                8 - Filtrar mídias por gênero
+                9 - Filtrar mídias por idioma
+                10 - Filtrar series por quantidade de episódios
+                11 - Relatórios
+                ---------------------
+                Digite sua opção:\s""");
+
+
+        return Integer.parseInt(teclado.nextLine());
+    }
+
+    private static int subMenuAdministrador() {
+        limparTela();
+        System.out.println("""
+                ---------------------
+                0 - Voltar
+                1 - Cadastrar série
+                2 - Cadastrar filme
+                3 - Cadastrar usuário
+                ---------------------
+                Digite sua opção:\s""");
+
+
+        return Integer.parseInt(teclado.nextLine());
+    }
+
+    private static int subMenuLogin() {
+        limparTela();
+        System.out.println("""
+                ---------------------
+                0 - Voltar
+                1 - Login usuário
+                2 - Login administrador
+                ---------------------
+                Digite sua opção:\s""");
+
+
+        return Integer.parseInt(teclado.nextLine());
+    }
+
+    private static int subMenuRelatorios() {
+        limparTela();
+        System.out.println("""
+                ---------------------
+                0 - Voltar
+                1 - Qual cliente assistiu mais mídias, e quantas mídias
+                2 - Qual cliente tem mais avaliações, e quantas avaliações
+                3 - Qual a porcentagem dos clientes com pelo menos 15 avaliações
+                4 - Quais são as 10 mídias de melhor avaliação, com pelo menos 100 avaliações, em ordem decrescente
+                5 - Quais são as 10 mídias com mais visualizações, em ordem decrescente
+                6 - Quais são as 10 mídias de melhor avaliação de um gênero específico, com pelo menos 100 avaliações, em ordem decrescente
+                7 - Quais são as 10 mídias com mais visualizações de um gênero específico, em ordem decrescente
                 ---------------------
                 Digite sua opção:\s""");
 
@@ -125,6 +170,29 @@ public class App {
 
     }
 
+    private static EstadoMidia escolherEstadoMidia() {
+
+        System.out.println("Tipos de mídia: \n---------------------");
+        for (EstadoMidia estadoMidia : EstadoMidia.values()) {
+            System.out.println(estadoMidia.getNome());
+        }
+        System.out.println("---------------------");
+
+        System.out.println("\nEscolha um estado:");
+        String estadoDigitado = teclado.nextLine();
+
+        EstadoMidia estadoEscolhido = null;
+        for (EstadoMidia estado : EstadoMidia.values()) {
+            if (estado.getNome().equalsIgnoreCase(estadoDigitado)) {
+                estadoEscolhido = estado;
+                break;
+            }
+        }
+
+        return estadoEscolhido;
+
+    }
+
     private static void listaParaVer(Cliente cliente) {
         List<Midia> lista = cliente.getListaParaVer();
         if (lista.isEmpty()) System.out.println("Não há nenhuma mídia cadastrada no seu 'Para Ver'!");
@@ -170,8 +238,9 @@ public class App {
         String dtLancamento = teclado.nextLine();
         System.out.println("Digite a quantidade de episodios:");
         int qtdEp = Integer.parseInt(teclado.nextLine());
+        EstadoMidia estadoMidia = escolherEstadoMidia();
 
-        return new Serie(id, nome, genero, idioma, dtLancamento, qtdEp);
+        return new Serie(id, nome, genero, idioma, dtLancamento, estadoMidia, qtdEp);
     }
 
     /**
@@ -192,8 +261,9 @@ public class App {
         String dtLancamento = teclado.nextLine();
         System.out.println("Digite duração em minutos:");
         int duracao = Integer.parseInt(teclado.nextLine());
+        EstadoMidia estadoMidia = escolherEstadoMidia();
 
-        return new Filme(id, nome, genero, idioma, dtLancamento, duracao);
+        return new Filme(id, nome, genero, idioma, dtLancamento, estadoMidia, duracao);
     }
 
     /**
@@ -226,36 +296,45 @@ public class App {
     public static void main(String[] args) throws Exception {
         PlataformaStreaming plataformaStreaming = new PlataformaStreaming("Plataforma de Streaming");
         Cliente cliente = null;
+        Administrador adm = null;
         int opcao;
 
         do {
             opcao = menu();
 
             switch (opcao) {
+
+                // login
                 case 1 -> {
-                    Cliente usuario = cadastrarUsuario();
-                    plataformaStreaming.adicionarCliente(usuario);
-                    System.out.println("Usuário cadastrado!");
-                    pausa();
-                }
-                case 2 -> {
-                    plataformaStreaming.carregarClientes("docs/arquivos/POO_Espectadores.csv");
-                    System.out.println("Cadastro de usuários por arquivo concluído!");
-                    pausa();
-                }
-                case 3 -> {
-                    System.out.println("Digite o nome de usuário:");
-                    String nameUser = teclado.nextLine();
-                    System.out.println("Digite a senha:");
-                    String senha = teclado.nextLine();
-                    cliente = plataformaStreaming.login(nameUser, senha);
-                    if (cliente != null)
-                        System.out.println("Bem vindo(a) " + cliente.getUsuario());
+                    int alter = subMenuLogin();
+                    switch (alter) {
+                        case 0 -> {
+                        }
+                        case 1 -> {
+                            System.out.println("Digite o nome de usuário:");
+                            String nameUser = teclado.nextLine();
+                            System.out.println("Digite a senha:");
+                            String senha = teclado.nextLine();
+                            cliente = plataformaStreaming.loginCliente(nameUser, senha);
+                            if (cliente != null)
+                                System.out.println("Bem vindo(a) " + cliente.getUsuario());
+                        }
+                        case 2 -> {
+                            System.out.println("Digite o nome de usuário:");
+                            String nameUser = teclado.nextLine();
+                            System.out.println("Digite a senha:");
+                            String senha = teclado.nextLine();
+                            adm = plataformaStreaming.loginAdministrador(nameUser, senha);
+                            if (adm != null)
+                                System.out.println("Bem vindo(a) " + adm.getUsuario());
+                        }
+                        default -> throw new Exception("Algo inesperado ocorreu! Tente novamente");
+                    }
                     pausa();
                 }
 
                 // menu plataforma streaming
-                case 4 -> {
+                case 2 -> {
                     int alteracao = subMenuPlataformaStreaming();
                     switch (alteracao) {
                         case 0 -> {
@@ -275,33 +354,21 @@ public class App {
                             System.out.println("Cadastro de audiência por arquivo concluído!");
                         }
                         case 5 -> {
-                            plataformaStreaming.adicionarMidia(cadastrarSerie());
-                            System.out.println("Série cadastrada!");
-                        }
-                        case 6 -> {
-                            plataformaStreaming.adicionarMidia(cadastrarFilme());
-                            System.out.println("Filme cadastrado!");
-                        }
-                        case 7 -> {
-                            plataformaStreaming.adicionarCliente(cadastrarUsuario());
-                            System.out.println("Usuário cadastrado!");
-                        }
-                        case 8 -> {
                             try {
                                 plataformaStreaming.salvarMidias("PS_Midias.csv");
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
                             }
                         }
-                        case 9 -> {
+                        case 6 -> {
                             try {
                                 plataformaStreaming.salvarClientes("PS_Usuarios.csv");
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
                             }
                         }
-                        case 10 -> buscarMidia(plataformaStreaming);
-                        case 11 -> {
+                        case 7 -> buscarMidia(plataformaStreaming);
+                        case 8 -> {
                             Genero generoEscolhido = escolherGenero();
 
                             if (generoEscolhido != null) {
@@ -309,7 +376,7 @@ public class App {
                                 if (!(lista.isEmpty())) lista.forEach(System.out::println);
                             } else System.out.println("Gênero inválido!");
                         }
-                        case 12 -> {
+                        case 9 -> {
                             Idioma idiomaEscolhido = escolherIdioma();
 
                             if (idiomaEscolhido != null) {
@@ -317,20 +384,37 @@ public class App {
                                 if (!(lista.isEmpty())) lista.forEach(System.out::println);
                             } else System.out.println("Idioma inválido!");
                         }
-                        case 13 -> {
+                        case 10 -> {
                             System.out.println("Digite a quantidade de episódios:");
                             int qtdEp = Integer.parseInt(teclado.nextLine());
 
                             List<Serie> listaFiltrada = plataformaStreaming.filtrarPorQtdEpisodio(qtdEp);
                             if (!(listaFiltrada.isEmpty())) listaFiltrada.forEach(System.out::println);
                         }
+
+
+                        // menu relatorio
+                        case 11 -> {
+
+                            int alt = subMenuRelatorios();
+                            switch (alt) {
+                                case 0 -> {
+                                }
+//                                case 1 -> method();
+//                                case 2 -> {}                                }
+                                default -> throw new Exception("Algo inesperado ocorreu! Tente novamente");
+                            }
+                            pausa();
+                        }
+
+
                         default -> throw new Exception("Algo inesperado ocorreu! Tente novamente");
                     }
                     pausa();
                 }
 
                 // menu usuario
-                case 5 -> {
+                case 3 -> {
                     if (cliente != null) {
                         int alt = subMenuCliente();
 
@@ -393,14 +477,42 @@ public class App {
                                 }
                             }
                             case 10 -> {
-                                plataformaStreaming.logoff();
+                                plataformaStreaming.logoffCliente();
                                 cliente = null;
                             }
                         }
-                    } else
-                        System.out.println("Não há nenhum usuário logado.");
+                    } else System.out.println("Não há nenhum usuário logado.");
                     pausa();
                 }
+
+                // menu administrador
+                case 4 -> {
+                    if (adm != null) {
+                        int alteracao = subMenuAdministrador();
+                        switch (alteracao) {
+                            case 0 -> {
+                            }
+                            case 1 -> {
+                                plataformaStreaming.adicionarMidia(cadastrarSerie());
+                                System.out.println("Série cadastrada!");
+                                plataformaStreaming.salvarMidias("docs/arquivos/POO_Midias.csv");
+                            }
+                            case 2 -> {
+                                plataformaStreaming.adicionarMidia(cadastrarFilme());
+                                System.out.println("Filme cadastrado!");
+                                plataformaStreaming.salvarMidias("docs/arquivos/POO_Midias.csv");
+                            }
+                            case 3 -> {
+                                plataformaStreaming.adicionarCliente(cadastrarUsuario());
+                                System.out.println("Usuário cadastrado!");
+                                plataformaStreaming.salvarClientes("docs/arquivos/POO_Espectadores.csv");
+                            }
+                            default -> throw new Exception("Algo inesperado ocorreu! Tente novamente");
+                        }
+                    } else System.out.println("Não há nenhum administrador logado.");
+                    pausa();
+                }
+
             }
         } while (opcao != 0);
     }

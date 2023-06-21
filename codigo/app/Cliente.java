@@ -1,10 +1,7 @@
 package codigo.app;
 
 import java.io.*;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Cliente {
@@ -14,55 +11,70 @@ public class Cliente {
     protected List<Midia> listaParaVer;
     protected List<Midia> listaJaVistas;
     protected Map<Integer, LocalDate> dataQueFoiVista;
-    protected boolean logado;
     protected IClienteState state;
 
 
     /**
      * Cria um novo usuario
-     *inicialmente todos os clientes são regulares
+     * inicialmente todos os clientes são regulares
+     *
      * @param nomeDeUsuario Nome de usuario pode ter ate 30 caracteres
      * @param login         Login pode ter até 20 caracteres
      * @param senha         Senha pode ter ate 10 caracteres
      */
     public Cliente(String nomeDeUsuario, String login, String senha) {
-        if (validaParametrosConstrutor(nomeDeUsuario,login,senha))
-            this.listaParaVer = new ArrayList<>();
-        this.listaJaVistas = new ArrayList<>();
-        this.dataQueFoiVista = new HashMap<>();
-        this.logado = false;
-        this.state= new ClienteRegular();
+        try {
+
+            if (validaParametrosConstrutor(nomeDeUsuario, login, senha)) {
+                this.listaParaVer = new ArrayList<>();
+                this.listaJaVistas = new ArrayList<>();
+                this.dataQueFoiVista = new HashMap<>();
+                this.state = new ClienteRegular();
+            }else throw new Exception("Não foi possível criar o usuário!");
+
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
     }
+
     /**
      * Cria um novo usuario
-     *inicialmente todos os clientes são regulares
+     * inicialmente todos os clientes são regulares
+     *
      * @param nomeDeUsuario Nome de usuario pode ter ate 30 caracteres
      * @param login         Login pode ter até 20 caracteres
      * @param senha         Senha pode ter ate 10 caracteres
-     * @param profissional valida se o cliente deverá ser criado como profissional
+     * @param profissional  valida se o cliente deverá ser criado como profissional
      */
     public Cliente(String nomeDeUsuario, String login, String senha, boolean profissional) {
-        if (validaParametrosConstrutor(nomeDeUsuario,login,senha))
-            this.listaParaVer = new ArrayList<>();
-        this.listaJaVistas = new ArrayList<>();
-        this.dataQueFoiVista = new HashMap<>();
-        this.logado = false;
-        this.state= new ClienteProfissional();
+        try {
+            if(!profissional) throw new Exception("Não foi possível criar o usuário profissional!");
+            if (validaParametrosConstrutor(nomeDeUsuario, login, senha)) {
+                this.listaParaVer = new ArrayList<>();
+                this.listaJaVistas = new ArrayList<>();
+                this.dataQueFoiVista = new HashMap<>();
+                this.state = new ClienteProfissional();
+            }else throw new Exception("Não foi possível criar o usuário profissional!");
+
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
     }
+
     /**
      * valida parametros para criar um novo cliente
+     *
      * @param nomeDeUsuario Nome de usuario pode ter ate 30 caracteres
      * @param login         Login pode ter até 20 caracteres
      * @param senha         Senha pode ter ate 10 caracteres
-     *
      */
-    public boolean validaParametrosConstrutor(String nomeDeUsuario, String login, String senha){
-        if (!(login.isEmpty() || login.length() > 20))
-            this.login = login;
-        if (!(nomeDeUsuario.isEmpty() || nomeDeUsuario.length() > 30))
-            this.nomeDeUsuario = nomeDeUsuario;
-        if (!(senha.isEmpty() || senha.length() > 10))
-            this.senha = senha;
+    public boolean validaParametrosConstrutor(String nomeDeUsuario, String login, String senha) {
+        if (!(login.isEmpty() || login.length() > 20)) this.login = login;
+        else return false;
+        if (!(nomeDeUsuario.isEmpty() || nomeDeUsuario.length() > 30)) this.nomeDeUsuario = nomeDeUsuario;
+        else return false;
+        if (!(senha.isEmpty() || senha.length() > 10)) this.senha = senha;
+        else return false;
         return true;
     }
 
@@ -206,23 +218,35 @@ public class Cliente {
      * @param midia
      */
     public void registrarPorAudiencia(Midia midia) {
-        try {
-            if (!(this.listaJaVistas.contains(midia))) {
-                this.listaJaVistas.add(midia);
-                midia.registrarAudiencia();
-                this.dataQueFoiVista.put(midia.getId(), LocalDate.now());
-            } else throw new Exception("Mídia já assistida!");
 
-            this.verificarEstado();
+        try {
+            if (midia.getEstadoMidia() == EstadoMidia.LANCAMENTO && !(this.state instanceof ClienteProfissional)) {
+                throw new Exception("Não foi possível assistir pois a mídia é lançamento e o usuário não é profissional!");
+            }
+
+            try {
+
+                if (!(this.listaJaVistas.contains(midia))) {
+                    this.listaJaVistas.add(midia);
+                    midia.registrarAudiencia();
+                    this.dataQueFoiVista.put(midia.getId(), LocalDate.now());
+                } else throw new Exception("Mídia já assistida!");
+
+                this.verificarEstado();
+
+            } catch (Exception e) {
+                System.out.println(e.toString());
+            }
 
         } catch (Exception e) {
             System.out.println(e.toString());
         }
+
     }
 
     /**
      * Verifica se é um cliente especialista
-     * Caso tenha assistido  5 ou mais midias mes passado, retornara true
+     * Caso tenha assistido 5 ou mais midias mes passado, retornara true
      * sempre verifica o estado do cliente caso tenha se tornado especialista.
      */
     public void verificarEstado() {
@@ -248,7 +272,6 @@ public class Cliente {
 
     /**
      * @param caminhoArq
-     * @author Breno
      */
     public void salvar(String caminhoArq) {
         try {
@@ -280,7 +303,6 @@ public class Cliente {
      *
      * @param midia
      * @param comentario
-     * @author jordana
      */
     public void addAvaliacao(Midia midia, int nota, String comentario) throws Exception {
         this.verificarEstado();
@@ -301,58 +323,13 @@ public class Cliente {
 
     }
 
-//    /**
-//     * Adiciona avaliação à uma mídia, contanto que ela já tenha sido assistida pelo usuário
-//     *
-//     * @param midia Mídia a ser avaliada
-//     * @param nota  Avaliacao da mídia (número inteiro de 0 a 10)
-//     */
-//    public void addAvaliacao(Midia midia, int nota, String comentario) {
-//
-//        Avaliacao avaliacao = null;
-//        try {
-//            avaliacao = new Avaliacao(this.nomeDeUsuario, nota, comentario);
-//
-//            if(avaliacao.getNomeDeUsuario() == null) return;
-//
-//            int index = listaJaVistas.indexOf(midia);
-//
-//            try {
-//                if (index != -1)
-//                    midia.addAvaliacao(avaliacao);
-//                else
-//                    throw new Exception("Não foi possível avaliar pois a mídia não foi assistida!");
-//            } catch (Exception e) {
-//                System.out.println(e.toString());
-//            }
-//
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
-//        // comentar com 2 (se cair no catch) e interface com 3 caso o cast dê certo
-//
-//    }
-
     public String getUsuario() {
         return this.nomeDeUsuario;
-    }
-
-    public String getLogin() {
-        return this.login;
     }
 
     public IClienteState getState() {
         return this.state;
     }
-
-    public boolean isLogado() {
-        return logado;
-    }
-
-    public void setLogado(boolean logado) {
-        this.logado = logado;
-    }
-
 
     public Map<Integer, LocalDate> getDataQueFoiVista() {
         return this.dataQueFoiVista;

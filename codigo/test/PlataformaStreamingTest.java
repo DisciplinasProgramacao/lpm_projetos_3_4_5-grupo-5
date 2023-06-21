@@ -48,18 +48,18 @@ public class PlataformaStreamingTest {
         clienteTeste3 = new Cliente("Cteste3","usuario2", "12345");
 
         //Series
-        serieTeste = new Serie(4,"you", Genero.DRAMA, Idioma.FRANCES, "20", 10);
-        serie1 = new Serie(15, "F.R.I.E.N.D.S", Genero.COMEDIA, Idioma.PORTUGUES, "22/09/1994", 236);
-        serie2 = new Serie(16, "Stranger Things", Genero.AVENTURA, Idioma.ITALIANO, "22/09/1994", 18);
-        serie3 = new Serie(17, "Breaking Bad", Genero.ROMANCE, Idioma.INGLES, "22/09/1994", 12);
+        serieTeste = new Serie(4,"you", Genero.DRAMA, Idioma.FRANCES, "20",  EstadoMidia.MODIFICAVEL, 10);
+        serie1 = new Serie(15, "F.R.I.E.N.D.S", Genero.COMEDIA, Idioma.PORTUGUES, "22/09/1994",  EstadoMidia.MODIFICAVEL, 236);
+        serie2 = new Serie(16, "Stranger Things", Genero.AVENTURA, Idioma.ITALIANO, "22/09/1994", EstadoMidia.MODIFICAVEL,  18);
+        serie3 = new Serie(17, "Breaking Bad", Genero.ROMANCE, Idioma.INGLES, "22/09/1994",  EstadoMidia.MODIFICAVEL, 12);
 
         //Filmes
-        f1 = new Filme(18, "f1", Genero.DRAMA, Idioma.INGLES, "2020", 120);
-        f2 = new Filme(19, "f2", Genero.DRAMA, Idioma.PORTUGUES, "2020", 120);
-        f3 = new Filme(13, "f3", Genero.DRAMA, Idioma.PORTUGUES, "2020", 120);
+        f1 = new Filme(18, "f1", Genero.DRAMA, Idioma.INGLES, "2020",  EstadoMidia.MODIFICAVEL, 120);
+        f2 = new Filme(19, "f2", Genero.DRAMA, Idioma.PORTUGUES, "2020",  EstadoMidia.MODIFICAVEL, 120);
+        f3 = new Filme(13, "f3", Genero.DRAMA, Idioma.PORTUGUES, "2020",  EstadoMidia.MODIFICAVEL, 120);
 
         //Midias
-        midiaTest = new Serie(14, "mTest", Genero.COMEDIA, Idioma.ITALIANO, "22/09/1994", 236);
+        midiaTest = new Serie(14, "mTest", Genero.COMEDIA, Idioma.ITALIANO, "22/09/1994",  EstadoMidia.MODIFICAVEL, 236);
 
         //Avaliacoes
         a1 = new Avaliacao("u1", 4,"bom");
@@ -120,7 +120,7 @@ public class PlataformaStreamingTest {
         String chave1 = clienteTeste2.getUsuario() + ":" + clienteTeste2.getSenha();
         clientes.put(chave1, clienteTeste2);
         plataforma.adicionarCliente(clienteTeste2);
-        plataforma.login("Cteste2", "1234");
+        plataforma.loginCliente("Cteste2", "1234");
         assertEquals(clienteTeste2, plataforma.getClienteAtual());
     }
 
@@ -128,7 +128,7 @@ public class PlataformaStreamingTest {
     @Test
     public void deveFazerLogin() {
         plataforma.adicionarCliente(clienteTeste);
-        plataforma.login("Cteste", "123");
+        plataforma.loginCliente("Cteste", "123");
         assertEquals(clienteTeste, plataforma.getClienteAtual());
     }
 
@@ -152,9 +152,9 @@ public class PlataformaStreamingTest {
 
     @Test
     public void deveFiltrarSeriePorQtdEpisodio() {
-        Serie serieTeste1 = new Serie(8,"teste", Genero.DRAMA, Idioma.INGLES, "20",89);
-        Serie serieTeste2 = new Serie(9,"teste", Genero.AVENTURA, Idioma.PORTUGUES, "10",57);
-        Serie serieTeste3 = new Serie(10,"teste", Genero.DRAMA, Idioma.INGLES, "10",10);
+        Serie serieTeste1 = new Serie(8,"teste", Genero.DRAMA, Idioma.INGLES, "20", EstadoMidia.MODIFICAVEL, 89);
+        Serie serieTeste2 = new Serie(9,"teste", Genero.AVENTURA, Idioma.PORTUGUES, "10", EstadoMidia.MODIFICAVEL, 57);
+        Serie serieTeste3 = new Serie(10,"teste", Genero.DRAMA, Idioma.INGLES, "10", EstadoMidia.MODIFICAVEL, 10);
         List<Serie> listaTeste = new ArrayList<>();
         plataforma.adicionarMidia(serieTeste1);
         plataforma.adicionarMidia(serieTeste2);
@@ -169,9 +169,9 @@ public class PlataformaStreamingTest {
 
     @Test
     public void deveBuscarSerie() {
-        Serie serieTeste1 = new Serie(11,"teste", Genero.DRAMA, Idioma.INGLES, "20",20);
-        Serie serieTeste2 = new Serie(12,"teste", Genero.AVENTURA, Idioma.PORTUGUES, "10",4);
-        Serie serieTeste3 = new Serie(13,"teste", Genero.DRAMA, Idioma.INGLES, "10",6);
+        Serie serieTeste1 = new Serie(11,"teste", Genero.DRAMA, Idioma.INGLES, "20", EstadoMidia.MODIFICAVEL, 20);
+        Serie serieTeste2 = new Serie(12,"teste", Genero.AVENTURA, Idioma.PORTUGUES, "10", EstadoMidia.MODIFICAVEL, 4);
+        Serie serieTeste3 = new Serie(13,"teste", Genero.DRAMA, Idioma.INGLES, "10", EstadoMidia.MODIFICAVEL, 6);
         plataforma.adicionarMidia(serieTeste1);
         plataforma.adicionarMidia(serieTeste2);
         plataforma.adicionarMidia(serieTeste3);
@@ -190,8 +190,8 @@ public class PlataformaStreamingTest {
 
     @Test
     public void testaLogoff() {
-        plataforma.login("Cteste", "123");
-        plataforma.logoff();
+        plataforma.loginCliente("Cteste", "123");
+        plataforma.logoffCliente();
         assertNull(plataforma.getClienteAtual());
     }
 
@@ -233,20 +233,20 @@ public class PlataformaStreamingTest {
 
     @Test
     public void relatorioClientes15Avaliacoes() throws Exception {
-        Midia  f4 = new Filme(19, "f4", Genero.DRAMA, Idioma.PORTUGUES, "2020", 120);
-        Midia  f5 = new Filme(20, "f5", Genero.DRAMA, Idioma.PORTUGUES, "2020", 120);
-        Midia  f6 = new Filme(21, "f6", Genero.DRAMA, Idioma.PORTUGUES, "2020", 120);
-        Midia  f7 = new Filme(22, "f7", Genero.DRAMA, Idioma.PORTUGUES, "2020", 120);
-        Midia  f8 = new Filme(23, "f8", Genero.DRAMA, Idioma.PORTUGUES, "2020", 120);
-        Midia  f9 = new Filme(24, "f9", Genero.DRAMA, Idioma.PORTUGUES, "2020", 120);
-        Midia  f10 = new Filme(25, "f10", Genero.DRAMA, Idioma.PORTUGUES, "2020", 120);
-        Midia  f11 = new Filme(26, "f11", Genero.DRAMA, Idioma.PORTUGUES, "2020", 120);
-        Midia  f12 = new Filme(27, "f12", Genero.DRAMA, Idioma.PORTUGUES, "2020", 120);
-        Midia  f13 = new Filme(28, "f13", Genero.DRAMA, Idioma.PORTUGUES, "2020", 120);
-        Midia  f14 = new Filme(29, "f14", Genero.DRAMA, Idioma.PORTUGUES, "2020", 120);
-        Midia  f15 = new Filme(30, "f15", Genero.DRAMA, Idioma.PORTUGUES, "2020", 120);
-        Midia  f16 = new Filme(31, "f16", Genero.DRAMA, Idioma.PORTUGUES, "2020", 120);
-        Midia  f17 = new Filme(32, "f17", Genero.DRAMA, Idioma.PORTUGUES, "2020", 120);
+        Midia  f4 = new Filme(19, "f4", Genero.DRAMA, Idioma.PORTUGUES, "2020",  EstadoMidia.MODIFICAVEL, 120);
+        Midia  f5 = new Filme(20, "f5", Genero.DRAMA, Idioma.PORTUGUES, "2020",  EstadoMidia.MODIFICAVEL, 120);
+        Midia  f6 = new Filme(21, "f6", Genero.DRAMA, Idioma.PORTUGUES, "2020", EstadoMidia.MODIFICAVEL,  120);
+        Midia  f7 = new Filme(22, "f7", Genero.DRAMA, Idioma.PORTUGUES, "2020", EstadoMidia.MODIFICAVEL,  120);
+        Midia  f8 = new Filme(23, "f8", Genero.DRAMA, Idioma.PORTUGUES, "2020", EstadoMidia.MODIFICAVEL,  120);
+        Midia  f9 = new Filme(24, "f9", Genero.DRAMA, Idioma.PORTUGUES, "2020", EstadoMidia.MODIFICAVEL,  120);
+        Midia  f10 = new Filme(25, "f10", Genero.DRAMA, Idioma.PORTUGUES, "2020", EstadoMidia.MODIFICAVEL,  120);
+        Midia  f11 = new Filme(26, "f11", Genero.DRAMA, Idioma.PORTUGUES, "2020",  EstadoMidia.MODIFICAVEL, 120);
+        Midia  f12 = new Filme(27, "f12", Genero.DRAMA, Idioma.PORTUGUES, "2020",  EstadoMidia.MODIFICAVEL, 120);
+        Midia  f13 = new Filme(28, "f13", Genero.DRAMA, Idioma.PORTUGUES, "2020",  EstadoMidia.MODIFICAVEL, 120);
+        Midia  f14 = new Filme(29, "f14", Genero.DRAMA, Idioma.PORTUGUES, "2020", EstadoMidia.MODIFICAVEL,  120);
+        Midia  f15 = new Filme(30, "f15", Genero.DRAMA, Idioma.PORTUGUES, "2020", EstadoMidia.MODIFICAVEL,  120);
+        Midia  f16 = new Filme(31, "f16", Genero.DRAMA, Idioma.PORTUGUES, "2020",  EstadoMidia.MODIFICAVEL, 120);
+        Midia  f17 = new Filme(32, "f17", Genero.DRAMA, Idioma.PORTUGUES, "2020",  EstadoMidia.MODIFICAVEL, 120);
 
         plataforma.adicionarMidia(f4);
         plataforma.adicionarMidia(f5);

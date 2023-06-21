@@ -12,14 +12,14 @@ public class FilmeTest {
     Midia f3;
     @BeforeEach
     public void prepare(){
-        f1 = new Filme(1,"Inception", Genero.AVENTURA, Idioma.PORTUGUES, "16/07/2010", 120);
-        f2 = new Filme(2,"The Shawshank Redemption", Genero.DRAMA, Idioma.PORTUGUES, "23/05/2010", 130);
-        f3 = new Filme(3,"The Dark Knight", Genero.AVENTURA, Idioma.PORTUGUES, "18/07/2008", 180);
+        f1 = new Filme(1,"Inception", Genero.AVENTURA, Idioma.PORTUGUES, "16/07/2010", EstadoMidia.MODIFICAVEL, 120);
+        f2 = new Filme(2,"The Shawshank Redemption", Genero.DRAMA, Idioma.PORTUGUES, "23/05/2010", EstadoMidia.MODIFICAVEL, 130);
+        f3 = new Filme(3,"The Dark Knight", Genero.AVENTURA, Idioma.PORTUGUES, "18/07/2008", EstadoMidia.MODIFICAVEL, 180);
     }
 
     @Test
     public void testToStringFilme(){
-        assertEquals(f1.toString(), "F;1;Inception;16/07/2010;Aventura;Português;120");
+        assertEquals(f1.toString(), "F;1;Inception;16/07/2010;Aventura;Português;Modificável;120");
     }
 
     @Test

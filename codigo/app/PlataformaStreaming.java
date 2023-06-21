@@ -4,15 +4,16 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class PlataformaStreaming {
 
     private final String nome;
     private Cliente clienteAtual;
+    private Administrador admAtual;
     private HashMap<String, Midia> midias;
     private HashMap<String, Cliente> clientes;
+    private HashMap<String, Administrador> administradores;
     DecimalFormat formatter = new DecimalFormat("#.0");
 
     /**
@@ -24,6 +25,7 @@ public class PlataformaStreaming {
     public PlataformaStreaming(String nome) {
         this.nome = nome;
         clientes = new HashMap<>();
+        administradores = new HashMap<>();
         midias = new HashMap<>();
     }
 
@@ -37,6 +39,18 @@ public class PlataformaStreaming {
         String chave = cliente.getUsuario() + ":" + cliente.getSenha();
         clientes.put(chave, cliente);
     }
+
+    /**
+     * gera uma chave aleatória a patir da concatenação de usuário e senha.
+     * adiciona na tabela hash uma chave associada ao administrador
+     *
+     * @param adm com os atributos senha e usuario
+     */
+    public void adicionarAdministrador(Administrador adm) {
+        String chave = adm.getUsuario() + ":" + adm.getSenha();
+        administradores.put(chave, adm);
+    }
+
 
     /**
      * Gera uma chave aleatória a patir da concatenação de nome e genero.
@@ -56,7 +70,7 @@ public class PlataformaStreaming {
      * @param senha       senha
      * @return Cliente da plataforma
      */
-    public Cliente login(String nomeUsuario, String senha) {
+    public Cliente loginCliente(String nomeUsuario, String senha) {
         String chave = nomeUsuario + ":" + senha;
 
         try {
@@ -65,6 +79,29 @@ public class PlataformaStreaming {
                 return clienteAtual;
 
             throw new Exception("Usuário não encontrado!");
+
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        return null;
+    }
+
+    /**
+     * Encontrar um administrador que possui a mesma chave que essa pesquisa: concatenação entre usuario e senha fornecidos por parametro
+     *
+     * @param nomeUsuario Nome de usuario
+     * @param senha       senha
+     * @return Administrador da plataforma
+     */
+    public Administrador loginAdministrador(String nomeUsuario, String senha) {
+        String chave = nomeUsuario + ":" + senha;
+
+        try {
+            admAtual = administradores.get(chave);
+            if (admAtual != null)
+                return admAtual;
+
+            throw new Exception("Administrador não encontrado!");
 
         } catch (Exception e) {
             System.out.println(e.toString());
@@ -203,8 +240,15 @@ public class PlataformaStreaming {
     /**
      * Quando o cliente fizer logout de sua conta, o clienteAtual será setado para null
      */
-    public void logoff() {
+    public void logoffCliente() {
         clienteAtual = null;
+    }
+
+    /**
+     * Quando o administrador fizer logout de sua conta
+     */
+    public void logoffAdministrador() {
+        admAtual = null;
     }
 
     /**
@@ -238,6 +282,7 @@ public class PlataformaStreaming {
      * Le arquivo e separa cada atributo
      * cria midia, sendo filme e serie
      * Adiciona cada tipo de midia ao hash
+     *
      * @param arquivo
      * @throws FileNotFoundException
      */
@@ -272,14 +317,23 @@ public class PlataformaStreaming {
                 }
             }
 
+            EstadoMidia estadoMidia = null;
+            String estadoDigitado = campos[6];
+            for (EstadoMidia valor : EstadoMidia.values()) {
+                if (valor.getNome().equalsIgnoreCase(estadoDigitado)) {
+                    estadoMidia = valor;
+                    break;
+                }
+            }
+
             if (tipo.equals("F")) {
-                int duracao = Integer.parseInt(campos[6]);
-                Midia filme = new Filme(id, nome, genero, idioma, lancamento, duracao);
+                int duracao = Integer.parseInt(campos[7]);
+                Midia filme = new Filme(id, nome, genero, idioma, lancamento, estadoMidia, duracao);
                 adicionarMidia(filme);
 
             } else if (tipo.equals("S")) {
-                int qtdEp = Integer.parseInt(campos[6]);
-                Midia serie = new Serie(id, nome, genero, idioma, lancamento, qtdEp);
+                int qtdEp = Integer.parseInt(campos[7]);
+                Midia serie = new Serie(id, nome, genero, idioma, lancamento, estadoMidia, qtdEp);
                 adicionarMidia(serie);
             }
         }
