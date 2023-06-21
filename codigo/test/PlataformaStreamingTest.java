@@ -113,6 +113,16 @@ public class PlataformaStreamingTest {
     }
 
     @Test
+    public void adicionarMidia_DeveAdicionarMidiaNaPlataforma() {
+        Serie serie = new Serie(33,"Serie1", Genero.DRAMA, Idioma.FRANCES, "20",  EstadoMidia.MODIFICAVEL, 10);
+        plataforma.adicionarMidia(serie);
+
+        Midia serieObtida = plataforma.buscarMidia("Serie1");
+
+        assertEquals(serie, serieObtida);
+    }
+
+    @Test
     public void testLogin(){
         String chave1 = clienteTeste2.getUsuario() + ":" + clienteTeste2.getSenha();
         clientes.put(chave1, clienteTeste2);
@@ -121,18 +131,11 @@ public class PlataformaStreamingTest {
         assertEquals(clienteTeste2, plataforma.getClienteAtual());
     }
 
-    // teste falhando
     @Test
     public void deveFazerLogin() {
         plataforma.adicionarCliente(clienteTeste);
         plataforma.loginCliente("Cteste", "123");
         assertEquals(clienteTeste, plataforma.getClienteAtual());
-    }
-
-    @Test
-    public void deveAdicionarSerie() {
-        String chave = serieTeste.getNome() + ":" + serieTeste.getGenero();
-//        assertNotNull(plataforma.getSeries().get(chave));
     }
 
     @Test
