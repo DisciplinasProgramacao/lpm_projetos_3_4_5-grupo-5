@@ -41,7 +41,7 @@ public class ClienteTest {
 
     @Test
     public void testValidaParametrosConstrutor() {
-        Cliente cliente = new Cliente("NomeDeUsuario", "login", "senha");
+        Cliente cliente = new Cliente("NomeDeUsuario", "login", "senha", false);
         assertTrue(cliente.validaParametrosConstrutor("NomeDeUsuario", "login", "senha"));
         assertFalse(cliente.validaParametrosConstrutor("NomeDeUsuario", "loginloginloginloginlogin", "senha"));
         assertFalse(cliente.validaParametrosConstrutor("NomeDeUsuarioNomeDeUsuarioNomeDeUsuario", "login", "senha"));

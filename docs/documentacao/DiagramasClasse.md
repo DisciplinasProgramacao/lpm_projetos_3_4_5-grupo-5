@@ -10,4 +10,5 @@ Diagrama 0.1
 
 ![lpm_projetos_3_4_5-grupo-5](https://github.com/DisciplinasProgramacao/lpm_projetos_3_4_5-grupo-5/assets/83847068/013aac42-cff0-44d6-a4f2-62f83fc99a32)
 
+![diagramaDeClassesVersaoFinal](docs/DiagramaDeClasses.png)
 [UML-PDF.pdf](https://github.com/DisciplinasProgramacao/lpm_projetos_3_4_5-grupo-5/files/11609299/UML-PDF.pdf)
