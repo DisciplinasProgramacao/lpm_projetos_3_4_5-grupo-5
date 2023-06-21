@@ -6,19 +6,6 @@ public class Avaliacao {
     private int avaliacao;
     private String comentario;
 
-//    /**
-//     * Adiciona avaliacao
-//     *
-//     * @param nomeDeUsuario
-//     * @param avaliacao
-//     */
-//    public Avaliacao(String nomeDeUsuario, int avaliacao) throws Exception {
-//        this.nomeDeUsuario = nomeDeUsuario;
-//        if (validaAvaliacao(avaliacao))
-//            this.avaliacao = avaliacao;
-//
-//    }
-
     /**
      * Adiciona avaliacao para clientes especialistas
      *

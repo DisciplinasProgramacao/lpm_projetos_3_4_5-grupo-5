@@ -37,6 +37,7 @@ public class Cliente {
         this.listaJaVistas = new ArrayList<>();
         this.dataQueFoiVista = new HashMap<>();
         this.logado = false;
+
         this.state = new ClienteRegular();
     }
 
@@ -195,14 +196,6 @@ public class Cliente {
     }
 
     /**
-     * o usuario vira cliente profissional
-     * depois que o cliente vira profissinal ele não pode sofrer downgrade
-     */
-    public void upgradeParaProfissional() {
-        this.state = new ClienteProfissional();
-    }
-
-    /**
      * Verifica se é um cliente especialista
      * Caso tenha assistido  5 ou mais midias mes passado, retornara true
      * sempre verifica o estado do cliente caso tenha se tornado especialista.
@@ -216,7 +209,7 @@ public class Cliente {
                 .filter(date -> date.getYear() == umMesAtras.getYear() && date.getMonthValue() == umMesAtras.getMonthValue())
                 .count();
 
-        if (!(this.state instanceof ClienteProfissional) && totalMidiasUltimoMes >= 5) {
+        if (!(this.state instanceof ClienteProfissional) && totalMidiasUltimoMes < 5 && (this.state instanceof ClienteEspecialista)) {
             this.state = new ClienteEspecialista();
         }
     }
@@ -266,7 +259,21 @@ public class Cliente {
      */
     public void addAvaliacao(Midia midia, int nota, String comentario) throws Exception {
         this.verificarEstado();
-        state.addAvaliacao(this.nomeDeUsuario, midia, nota, comentario);
+
+        try {
+            int index = listaJaVistas.indexOf(midia);
+            try {
+                if (index != -1)
+                    state.addAvaliacao(this.nomeDeUsuario, midia, nota, comentario);
+                else
+                    throw new Exception("Não foi possível avaliar pois a mídia não foi assistida!");
+            } catch (Exception e) {
+                System.out.println(e.toString());
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
 //    /**
