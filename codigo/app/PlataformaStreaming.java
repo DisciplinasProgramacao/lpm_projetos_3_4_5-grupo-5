@@ -452,11 +452,9 @@ public class PlataformaStreaming {
      */
     public String relatorioClienteMaisMidias() {
 
-//        Qual cliente assistiu mais mídias, e quantas mídias;
-
-        return this.clientes.entrySet().stream()
-                .map(Map.Entry::getValue)
+        return this.clientes.values().stream()
                 .max(Comparator.comparingInt(cliente -> cliente.getListaJaVistas().size()))
+                .filter(c -> !c.getListaJaVistas().isEmpty())
                 .map(cliente -> cliente.getUsuario() + ", " + cliente.getListaJaVistas().size() + " mídias assistidas")
                 .orElse("");
     }
@@ -466,6 +464,7 @@ public class PlataformaStreaming {
      */
     private Map<String, Integer> getFrequencyMap() {
         return midias.values().stream()
+                .filter(m -> !m.getAvaliacoes().isEmpty())
                 .flatMap(midia -> midia.getAvaliacoes().stream())
                 .collect(Collectors.groupingBy(Avaliacao::getNomeDeUsuario, Collectors.summingInt(e -> 1)));
     }
@@ -485,19 +484,21 @@ public class PlataformaStreaming {
 
     /**
      * Relatório de qual a porcentagem dos clientes com pelo menos x avaliações
-     *
      * @param qtdAvaliacoes quantidade de avaliações
      * @return String com a porcentagem dos clientes que possuem determinado número de avaliações
      */
     public String relatorioClientesPorNumeroAvaliacoes(int qtdAvaliacoes) {
         long cont = getFrequencyMap().values().stream()
-                .filter(frequencia -> frequencia >= qtdAvaliacoes)
+                .filter(frequencia -> frequencia >= qtdAvaliacoes )
                 .count();
 
         double totalClientes = getFrequencyMap().size();
         double porcentagem = (cont / totalClientes) * 100;
 
-        return String.format("%.2f", porcentagem) + "% dos clientes possuem " + qtdAvaliacoes + " ou mais avaliações";
+        if (Double.isNaN(porcentagem))
+            return "";
+        else return String.format("%.2f", porcentagem) + "% dos clientes possuem "
+                + qtdAvaliacoes + " ou mais avaliações";
     }
 
     /**
@@ -514,7 +515,10 @@ public class PlataformaStreaming {
                 .average().orElse(0);
 
         Deque<Midia> deque = this.midias.values().stream()
-                .filter(m -> m.getAvaliacoes().size() > qtdAavaliacoes && m.getMedia() > mediaAvaliacoesMidias)
+                .filter(
+                        m -> m.getAvaliacoes().size() > qtdAavaliacoes && m.getMedia() > mediaAvaliacoesMidias
+                                && !m.getAvaliacoes().isEmpty()
+                )
                 .sorted(Comparator.comparing(Midia::getMedia))
                 .collect(ArrayDeque::new, ArrayDeque::addFirst, ArrayDeque::addAll);
 
@@ -538,7 +542,10 @@ public class PlataformaStreaming {
                 .average().orElse(0);
 
         Deque<Midia> deque = midiasFiltradas.stream()
-                .filter(m -> m.getAvaliacoes().size() > qtdAavaliacoes && m.getMedia() > mediaAvaliacoesMidias)
+                .filter(
+                        m -> m.getAvaliacoes().size() > qtdAavaliacoes && m.getMedia() > mediaAvaliacoesMidias
+                                && !m.getAvaliacoes().isEmpty()
+                )
                 .sorted(Comparator.comparing(Midia::getMedia))
                 .collect(ArrayDeque::new, ArrayDeque::addFirst, ArrayDeque::addAll);
 
@@ -555,7 +562,8 @@ public class PlataformaStreaming {
     public String relatorioMidiasMaisVizualizadas(int qtdMidias) {
         StringBuilder aux = new StringBuilder();
 
-        Deque<Midia> deque = this.midias.values().stream().sorted(Comparator.comparing(Midia::getAudiencia))
+        Deque<Midia> deque = this.midias.values().stream().filter(m -> m.getAudiencia() > 0)
+                .sorted(Comparator.comparing(Midia::getAudiencia))
                 .collect(ArrayDeque::new, ArrayDeque::addFirst, ArrayDeque::addAll);
 
         deque.stream().limit(qtdMidias).forEach(m -> aux.append(m.getNome()).append(" - ")
@@ -575,7 +583,8 @@ public class PlataformaStreaming {
         StringBuilder aux = new StringBuilder();
         List<Midia> midiasFiltradas = filtrarPorGenero(genero);
 
-        Deque<Midia> deque = midiasFiltradas.stream().sorted(Comparator.comparing(Midia::getAudiencia))
+        Deque<Midia> deque = midiasFiltradas.stream().filter(m -> m.getAudiencia() > 0)
+                .sorted(Comparator.comparing(Midia::getAudiencia))
                 .collect(ArrayDeque::new, ArrayDeque::addFirst, ArrayDeque::addAll);
 
         deque.stream().limit(qtdMidias).forEach(m -> aux.append(m.getNome()).append(" - ")

@@ -278,11 +278,11 @@ public class Cliente {
             if (!caminhoArq.equals("")) {
 
                 for (Midia midia : listaParaVer) {
-                    writer.write(this.login + ";F;" + midia.getId() + "\n");
+                    writer.write(this.nomeDeUsuario + ";" + this.senha + ";F;" + midia.getNome() + ";" + midia.getId() + "\n");
                 }
 
                 for (Midia midia : listaJaVistas) {
-                    writer.write(this.login + ";A;" + midia.getId() + "\n");
+                    writer.write(this.nomeDeUsuario + ";" + this.senha + ";A;" + midia.getNome() + ";" + midia.getId() + "\n");
                 }
 
             }
