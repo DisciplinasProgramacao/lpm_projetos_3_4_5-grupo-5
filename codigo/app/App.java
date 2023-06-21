@@ -18,6 +18,7 @@ public class App {
                 2 - Menu Plataforma de Streaming
                 3 - Menu Usuário
                 4 - Menu Administrador
+                5 - Povoar base de dados
                 ---------------------
                 Digite sua opção:\s""");
 
@@ -58,12 +59,13 @@ public class App {
                 5 - Carregar audiência
                 6 - Salvar mídias
                 7 - Salvar usuários
-                8 - Buscar mídia
-                9 - Filtrar mídias por gênero
-                10 - Filtrar mídias por idioma
-                11 - Filtrar séries por quantidade de episódios
-                12 - Nota de uma mídia (média de avaliações)
-                13 - Relatórios
+                8 - Salvar audiência
+                9 - Buscar mídia
+                10 - Filtrar mídias por gênero
+                11 - Filtrar mídias por idioma
+                12 - Filtrar séries por quantidade de episódios
+                13 - Nota de uma mídia (média de avaliações)
+                14 - Relatórios
                 ---------------------
                 Digite sua opção:\s""");
 
@@ -405,8 +407,15 @@ public class App {
                                 throw new RuntimeException(e);
                             }
                         }
-                        case 8 -> buscarMidia(plataformaStreaming);
-                        case 9 -> {
+                        case 8 -> {
+                            try {
+                                plataformaStreaming.salvarAudiencia("PS_Audiencia.csv");
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                        case 9 -> buscarMidia(plataformaStreaming);
+                        case 10 -> {
                             Genero generoEscolhido = escolherGenero();
 
                             if (generoEscolhido != null) {
@@ -414,7 +423,7 @@ public class App {
                                 if (!(lista.isEmpty())) lista.forEach(System.out::println);
                             } else System.out.println("Gênero inválido!");
                         }
-                        case 10 -> {
+                        case 11 -> {
                             Idioma idiomaEscolhido = escolherIdioma();
 
                             if (idiomaEscolhido != null) {
@@ -422,14 +431,14 @@ public class App {
                                 if (!(lista.isEmpty())) lista.forEach(System.out::println);
                             } else System.out.println("Idioma inválido!");
                         }
-                        case 11 -> {
+                        case 12 -> {
                             System.out.println("Digite a quantidade de episódios:");
                             int qtdEp = Integer.parseInt(teclado.nextLine());
 
                             List<Serie> listaFiltrada = plataformaStreaming.filtrarPorQtdEpisodio(qtdEp);
                             if (!(listaFiltrada.isEmpty())) listaFiltrada.forEach(System.out::println);
                         }
-                        case 12 -> {
+                        case 13 -> {
                             listarMidias(plataformaStreaming);
                             Midia midia = buscarMidia(plataformaStreaming);
                             if (midia != null)
@@ -437,7 +446,7 @@ public class App {
                         }
 
                         // menu relatorio
-                        case 13 -> {
+                        case 14 -> {
 
                             if (verificaBDPlataforma(plataformaStreaming)) {
 
@@ -578,6 +587,15 @@ public class App {
                         }
                     } else System.out.println("Não há nenhum administrador logado.");
                     pausa();
+                }
+
+                // povar base de dados
+                case 5 -> {
+                    plataformaStreaming.carregarClientes("docs/arquivos/POO_Espectadores.csv");
+                    plataformaStreaming.carregarMidias("docs/arquivos/POO_Midias.csv");
+                    plataformaStreaming.carregarAdministradores("docs/arquivos/POO_Administradores.csv");
+                    plataformaStreaming.carregarAudiencia("docs/arquivos/POO_Audiencia.csv");
+                    System.out.println("O carregamento de arquivos foi concluído!");
                 }
 
             }

@@ -138,7 +138,6 @@ public abstract class Midia implements ISalvar {
         return media;
     }
 
-
     public EstadoMidia getEstadoMidia() {
         return estadoMidia;
     }

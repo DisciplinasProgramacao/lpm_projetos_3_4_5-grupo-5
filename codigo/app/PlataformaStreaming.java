@@ -59,7 +59,7 @@ public class PlataformaStreaming {
      * @param midia com os atributos nome, genero, idioma, audiencia, dataDeLancamento
      */
     public void adicionarMidia(Midia midia) {
-        String chave = midia.getNome() + ":" + midia.getGenero();
+        String chave = midia.getNome() + ":" + midia.getId();
         midias.put(chave, midia);
     }
 
@@ -264,15 +264,26 @@ public class PlataformaStreaming {
 
 
     /**
-     * Salvar Clientes da plataforma e suas respectivas listas de midias 'Para Ver' e historico de midias assistidas
+     * Salvar Clientes da plataforma
      *
      * @param caminho
      */
     public void salvarClientes(String caminho) throws IOException {
 
         for (Map.Entry<String, Cliente> entrada : clientes.entrySet()) {
-            Cliente cliente = entrada.getValue();
-            cliente.salvar(caminho);
+            entrada.getValue().salvarClientes(caminho);
+        }
+    }
+
+    /**
+     * Salvar listas de midias 'Para Ver' e historico de midias assistidas os clientes
+     *
+     * @param caminho
+     */
+    public void salvarAudiencia(String caminho) throws IOException {
+
+        for (Map.Entry<String, Cliente> entrada : clientes.entrySet()) {
+            entrada.getValue().salvarAudiencia(caminho);
         }
     }
 
@@ -370,7 +381,6 @@ public class PlataformaStreaming {
     }
 
     /**
-     *
      * @throws FileNotFoundException
      */
     public void carregarAdministradores(String arquivo) throws FileNotFoundException {
@@ -396,7 +406,6 @@ public class PlataformaStreaming {
     /**
      * @param arquivo
      * @throws FileNotFoundException
-     * @author Breno
      */
     public void carregarAudiencia(String arquivo) throws FileNotFoundException {
 
@@ -406,20 +415,29 @@ public class PlataformaStreaming {
             String linha = scanner.nextLine();
 
             String[] dados = linha.split(";");
-            Cliente cliente = buscarCliente(dados[0]);
+            Cliente cliente = buscarCliente(dados[0], dados[1]);
 
             if (cliente != null) {
 
-                Midia midia = midias.get(dados[2]);
+                Midia midia = buscarMidia(dados[3], Integer.parseInt(dados[4]));
                 if (midia != null) {
 
-                    if (dados[1].equals("F"))  // quero ver
-                        cliente.adicionarNaLista(midia);
+                    if (midia.getEstadoMidia() == EstadoMidia.LANCAMENTO && cliente.state instanceof ClienteProfissional) {
 
-                    else if (dados[1].equals("A")) { // historico
+                        if (dados[2].equals("F"))  // quero ver
+                            cliente.adicionarNaLista(midia);
 
-                        cliente.registrarPorAudiencia(midia);
-                    }
+                        else if (dados[2].equals("A")) { // historico
+                            cliente.registrarPorAudiencia(midia);
+                        }
+                    } else if (midia.getEstadoMidia() != EstadoMidia.LANCAMENTO)
+
+                        if (dados[2].equals("F"))  // quero ver
+                            cliente.adicionarNaLista(midia);
+
+                        else if (dados[2].equals("A")) { // historico
+                            cliente.registrarPorAudiencia(midia);
+                        }
                 }
 
             }
@@ -567,8 +585,14 @@ public class PlataformaStreaming {
         return aux.toString();
     }
 
-    public Cliente buscarCliente(String login) {
-        return clientes.get(login);
+    public Cliente buscarCliente(String nomeUsuario, String senha) {
+        String chave = nomeUsuario + ":" + senha;
+        return clientes.get(chave);
+    }
+
+    public Midia buscarMidia(String nome, int id) {
+        String chave = nome + ":" + id;
+        return midias.get(chave);
     }
 
     public HashMap<String, Cliente> getClientes() {

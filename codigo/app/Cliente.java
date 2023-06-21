@@ -254,21 +254,35 @@ public class Cliente {
     /**
      * @param caminhoArq
      */
-    public void salvar(String caminhoArq) {
+    public void salvarClientes(String caminhoArq) {
         try {
             FileWriter writer = new FileWriter(caminhoArq, true);
 
             if (!caminhoArq.equals("")) {
                 writer.write(this.toString() + "\n");
+            }
 
-                writer.write("Lista de midias 'PARA VER': \n");
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Erro ao salvar dados no arquivo.");
+        }
+    }
+
+    /**
+     * @param caminhoArq
+     */
+    public void salvarAudiencia(String caminhoArq) {
+        try {
+            FileWriter writer = new FileWriter(caminhoArq, true);
+
+            if (!caminhoArq.equals("")) {
+
                 for (Midia midia : listaParaVer) {
-                    writer.write(midia.toString() + "\n");
+                    writer.write(this.login + ";F;" + midia.getId() + "\n");
                 }
 
-                writer.write("Historico de midias: \n");
                 for (Midia midia : listaJaVistas) {
-                    writer.write(midia.toString() + "\n");
+                    writer.write(this.login + ";A;" + midia.getId() + "\n");
                 }
 
             }
@@ -326,6 +340,10 @@ public class Cliente {
 
     public List<Midia> getListaJaVistas() {
         return List.copyOf(listaJaVistas);
+    }
+
+    public String getLogin() {
+        return login;
     }
 
 
