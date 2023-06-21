@@ -41,7 +41,7 @@ public class ClienteTest {
 
     @Test
     public void testValidaParametrosConstrutor() {
-        Cliente cliente = new Cliente("NomeDeUsuario", "login", "senha");
+        Cliente cliente = new Cliente("NomeDeUsuario", "login", "senha", false);
         assertTrue(cliente.validaParametrosConstrutor("NomeDeUsuario", "login", "senha"));
         assertFalse(cliente.validaParametrosConstrutor("NomeDeUsuario", "loginloginloginloginlogin", "senha"));
         assertFalse(cliente.validaParametrosConstrutor("NomeDeUsuarioNomeDeUsuarioNomeDeUsuario", "login", "senha"));
@@ -94,7 +94,7 @@ public class ClienteTest {
     }
 
     @Test
-    public void testIsEspecalistaComApenasUmaMidiaAssistida(){
+    public void testVerificarEstadoComApenasUmaMidiaAssistida(){
         clienteTeste.registrarPorAudiencia(serieDRAMA1);
         clienteTeste.verificarEstado();
 
@@ -102,7 +102,7 @@ public class ClienteTest {
     }
 
     @Test
-    public void testIsEspecalistaComMaisDeCincoMidiasAssistidas(){
+    public void testVerificarEstadoComMaisDeCincoMidiasAssistidas(){
         clienteTeste.registrarPorAudiencia(serieDRAMA1);
         clienteTeste.registrarPorAudiencia(serieDRAMA2);
         clienteTeste.registrarPorAudiencia(serieComedia);
@@ -113,7 +113,7 @@ public class ClienteTest {
     }
 
     @Test
-    public void testIsEspecialistaComNenhumaMidiaAssistida(){
+    public void testVerificarEstadoComNenhumaMidiaAssistida(){
         assertTrue(clienteTeste.getState() instanceof ClienteRegular);
     }
 
