@@ -18,13 +18,4 @@ public class ClienteProfissional implements IClienteState {
         midia.addAvaliacao(avaliacao);
     }
 
-
-
-
-    /**
-     * Como o cliente profissional nunca sera especialista, o metodo sobrescreve ao da classe cliente
-     * @return falso
-     */
-
-
 }

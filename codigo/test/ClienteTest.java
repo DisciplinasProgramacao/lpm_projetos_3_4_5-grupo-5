@@ -19,7 +19,7 @@ public class ClienteTest {
 
     @BeforeEach
     public void prepare(){
-        clienteTeste = new Cliente("Cteste", "login", "123");
+        clienteTeste = new Cliente("Cteste", "login", "123", false);
         serieDRAMA1 = new Serie(1,"SerieDRAMA1", Genero.DRAMA, Idioma.PORTUGUES, "10",  EstadoMidia.MODIFICAVEL, 10);
         serieDRAMA2 = new Serie(2,"SerieDRAMA2", Genero.DRAMA, Idioma.INGLES, "12", EstadoMidia.MODIFICAVEL, 58);
         serieComedia = new Serie(3,"SerieComedia", Genero.COMEDIA, Idioma.PORTUGUES, "10", EstadoMidia.MODIFICAVEL, 10);
@@ -103,8 +103,8 @@ public class ClienteTest {
 
     @Test
     public void testToStringCliente(){
-        Cliente c1 = new Cliente("Breno", "breno1", "breno123");
-        assertEquals(c1.toString(), "Breno;breno1;breno123");
+        Cliente c1 = new Cliente("Breno", "breno1", "breno123", false);
+        assertEquals(c1.toString(), "Breno;breno1;breno123;Regular");
     }
 
 

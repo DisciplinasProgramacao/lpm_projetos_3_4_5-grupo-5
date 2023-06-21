@@ -13,33 +13,8 @@ public class Cliente {
     protected Map<Integer, LocalDate> dataQueFoiVista;
     protected IClienteState state;
 
-
     /**
      * Cria um novo usuario
-     * inicialmente todos os clientes são regulares
-     *
-     * @param nomeDeUsuario Nome de usuario pode ter ate 30 caracteres
-     * @param login         Login pode ter até 20 caracteres
-     * @param senha         Senha pode ter ate 10 caracteres
-     */
-    public Cliente(String nomeDeUsuario, String login, String senha) {
-        try {
-
-            if (validaParametrosConstrutor(nomeDeUsuario, login, senha)) {
-                this.listaParaVer = new ArrayList<>();
-                this.listaJaVistas = new ArrayList<>();
-                this.dataQueFoiVista = new HashMap<>();
-                this.state = new ClienteRegular();
-            }else throw new Exception("Não foi possível criar o usuário!");
-
-        } catch (Exception e) {
-            System.out.println(e.toString());
-        }
-    }
-
-    /**
-     * Cria um novo usuario
-     * inicialmente todos os clientes são regulares
      *
      * @param nomeDeUsuario Nome de usuario pode ter ate 30 caracteres
      * @param login         Login pode ter até 20 caracteres
@@ -48,13 +23,13 @@ public class Cliente {
      */
     public Cliente(String nomeDeUsuario, String login, String senha, boolean profissional) {
         try {
-            if(!profissional) throw new Exception("Não foi possível criar o usuário profissional!");
             if (validaParametrosConstrutor(nomeDeUsuario, login, senha)) {
                 this.listaParaVer = new ArrayList<>();
                 this.listaJaVistas = new ArrayList<>();
                 this.dataQueFoiVista = new HashMap<>();
-                this.state = new ClienteProfissional();
-            }else throw new Exception("Não foi possível criar o usuário profissional!");
+                if (profissional) this.state = new ClienteProfissional();
+                else this.state = new ClienteRegular();
+            } else throw new Exception("Não foi possível criar o usuário!");
 
         } catch (Exception e) {
             System.out.println(e.toString());
@@ -266,8 +241,14 @@ public class Cliente {
 
     @Override
     public String toString() {
-        StringBuilder aux = new StringBuilder((this.nomeDeUsuario + ";" + this.login + ";" + this.senha));
+        StringBuilder aux = new StringBuilder((this.nomeDeUsuario + ";" + this.login + ";" + this.senha + ";" + this.tipoCliente()));
         return aux.toString();
+    }
+
+    private String tipoCliente() {
+        if (this.state instanceof ClienteProfissional) return "Profissional";
+        else if (this.state instanceof ClienteEspecialista) return "Especialista";
+        return "Regular";
     }
 
     /**

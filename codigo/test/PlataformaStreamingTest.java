@@ -40,9 +40,9 @@ public class PlataformaStreamingTest {
         catalogoMidias = new ArrayList<>();
 
         //Clientes
-        clienteTeste = new Cliente("Cteste", "login", "123");
-        clienteTeste2 = new Cliente("Cteste2","usuario1", "1234");
-        clienteTeste3 = new Cliente("Cteste3","usuario2", "12345");
+        clienteTeste = new Cliente("Cteste", "login", "123", false);
+        clienteTeste2 = new Cliente("Cteste2","usuario1", "1234", false);
+        clienteTeste3 = new Cliente("Cteste3","usuario2", "12345", false);
 
         //Series
         serieTeste = new Serie(4,"you", Genero.DRAMA, Idioma.FRANCES, "20",  EstadoMidia.MODIFICAVEL, 10);
@@ -117,7 +117,7 @@ public class PlataformaStreamingTest {
         String chave1 = clienteTeste2.getUsuario() + ":" + clienteTeste2.getSenha();
         clientes.put(chave1, clienteTeste2);
         plataforma.adicionarCliente(clienteTeste2);
-        plataforma.login("Cteste2", "1234");
+        plataforma.loginCliente("Cteste2", "1234");
         assertEquals(clienteTeste2, plataforma.getClienteAtual());
     }
 
@@ -125,7 +125,7 @@ public class PlataformaStreamingTest {
     @Test
     public void deveFazerLogin() {
         plataforma.adicionarCliente(clienteTeste);
-        plataforma.login("Cteste", "123");
+        plataforma.loginCliente("Cteste", "123");
         assertEquals(clienteTeste, plataforma.getClienteAtual());
     }
 
@@ -187,16 +187,16 @@ public class PlataformaStreamingTest {
 
     @Test
     public void testaLogoff() {
-        plataforma.login("Cteste", "123");
-        plataforma.logoff();
+        plataforma.loginCliente("Cteste", "123");
+        plataforma.logoffCliente();
         assertNull(plataforma.getClienteAtual());
     }
 
     @Test
     public void testGetClientes(){
         HashMap<String, Cliente> expectedClientes = new HashMap<>();
-        Cliente cliente1 = new Cliente("Breno", "breno1", "breno123");
-        Cliente cliente2 = new Cliente("Arthur", "arthur1", "arthur123");
+        Cliente cliente1 = new Cliente("Breno", "breno1", "breno123", false);
+        Cliente cliente2 = new Cliente("Arthur", "arthur1", "arthur123", false);
         String chave1 = cliente1.getUsuario() + ":" + cliente1.getSenha();
         String chave2 = cliente2.getUsuario() + ":" + cliente2.getSenha();
         String chave3 = clienteTeste.getUsuario() + ":" + clienteTeste.getSenha();
