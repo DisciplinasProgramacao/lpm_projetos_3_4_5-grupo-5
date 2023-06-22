@@ -10,6 +10,7 @@ public class App {
 
     /**
      * primeiro menu, independente do login e do tipo de cliente
+     *
      * @return
      */
     private static int menu() {
@@ -30,6 +31,7 @@ public class App {
 
     /**
      * Menu para o cliente
+     *
      * @return
      */
     private static int subMenuCliente() {
@@ -56,6 +58,7 @@ public class App {
 
     /**
      * Menu com a opcoes da plataforma
+     *
      * @return
      */
     private static int subMenuPlataformaStreaming() {
@@ -82,6 +85,7 @@ public class App {
 
     /**
      * Menu do ADM
+     *
      * @return
      */
     private static int subMenuAdministrador() {
@@ -102,6 +106,7 @@ public class App {
 
     /**
      * Menu para escolher o tipo de cliente
+     *
      * @return
      */
     private static int subMenuLogin() {
@@ -120,6 +125,7 @@ public class App {
 
     /**
      * Menu com todos os relatorios
+     *
      * @return
      */
     private static int subMenuRelatorios() {
@@ -151,6 +157,7 @@ public class App {
 
     /**
      * Menu para escolher genero da midia
+     *
      * @return
      */
     private static Genero escolherGenero() {
@@ -177,6 +184,7 @@ public class App {
 
     /**
      * Menu para escolher idioma
+     *
      * @return
      */
     private static Idioma escolherIdioma() {
@@ -204,6 +212,7 @@ public class App {
 
     /**
      * Menu para escolher se a midia eh lancamento ou modificavel
+     *
      * @return
      */
     private static EstadoMidia escolherEstadoMidia() {
@@ -231,6 +240,7 @@ public class App {
 
     /**
      * Menu: adicionar a na lista para assistir
+     *
      * @param cliente
      */
     private static void listaParaVer(Cliente cliente) {
@@ -241,6 +251,7 @@ public class App {
 
     /**
      * Menu: buscar midia pelo nome
+     *
      * @param plataformaStreaming
      * @return
      */
@@ -256,6 +267,7 @@ public class App {
 
     /**
      * Menu: visualizar o historico do cliente
+     *
      * @param cliente
      */
     private static void historico(Cliente cliente) {
@@ -266,6 +278,7 @@ public class App {
 
     /**
      * verifica se a plataforma streaming foi povoada
+     *
      * @param plataformaStreaming
      * @return
      */
@@ -285,6 +298,7 @@ public class App {
 
     /**
      * verifica se relatorio eh null
+     *
      * @param relatorio
      */
     private static void relatorio(String relatorio) {
@@ -388,7 +402,7 @@ public class App {
 
         int opcao;
 
-        try{
+        try {
             do {
                 opcao = menu();
 
@@ -431,7 +445,8 @@ public class App {
                             }
                             case 1 -> {
                                 HashMap<String, Midia> lista = plataformaStreaming.getMidias();
-                                if (lista.isEmpty()) System.out.println("Não há nenhuma mídia cadastrada na plataforma!");
+                                if (lista.isEmpty())
+                                    System.out.println("Não há nenhuma mídia cadastrada na plataforma!");
                                 else lista.values().forEach(System.out::println);
                             }
                             case 2 -> {
@@ -557,8 +572,6 @@ public class App {
                                 case 6 -> {
                                     if (!(cliente.getListaJaVistas().isEmpty())) {
 
-                                        historico(cliente);
-
                                         Midia midia = buscarMidia(plataformaStreaming);
                                         if (midia != null) {
 
@@ -570,11 +583,10 @@ public class App {
                                                 System.out.println("Digite um comentário:");
                                                 String comentario = teclado.nextLine();
                                                 cliente.addAvaliacao(midia, nota, comentario);
-
                                             } else
                                                 System.out.println("Não foi possível avaliar pois a mídia não foi assistida!");
                                         }
-                                    }System.out.println("Não foi possível avaliar pois nenhuma mídia foi assistida!");
+                                    }
                                 }
                                 case 7 -> {
                                     Midia midia = buscarMidia(plataformaStreaming);

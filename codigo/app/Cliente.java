@@ -290,35 +290,6 @@ public class Cliente {
         }
     }
 
-//    public void salvarAa(String caminhoArq, HashMap<String, Midia> midias) {
-//        try {
-//            FileWriter writer = new FileWriter(caminhoArq, true);
-//
-//            if (!caminhoArq.equals("")) {
-//
-//                Random random = new Random();
-//                int quantidadeMidias = random.nextInt(101) + 100; // Gera um número aleatório entre 100 e 200
-//
-//                int contador = 0;
-//                for (Map.Entry<String, Midia> entrada : midias.entrySet()) {
-//                    if (entrada.getValue().getEstadoMidia() == EstadoMidia.MODIFICAVEL) {
-//                        String randomValue = random.nextBoolean() ? "A" : "F";
-//                        writer.write(this.login + ";" + this.senha + ";" + randomValue + ";" + entrada.getValue().getNome() + ";" + entrada.getValue().getId() + "\n");
-//                    }
-//                    contador++;
-//
-//                    if (contador == quantidadeMidias) {
-//                        break;
-//                    }
-//                }
-//            }
-//
-//            writer.close();
-//        } catch (IOException e) {
-//            System.out.println("Erro ao salvar dados no arquivo.");
-//        }
-//    }
-
     /**
      * Adiciona a avaliação de acordo com o state do cliente
      *
