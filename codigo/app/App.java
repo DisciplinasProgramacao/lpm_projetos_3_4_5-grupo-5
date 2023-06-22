@@ -18,7 +18,6 @@ public class App {
                 2 - Menu Plataforma de Streaming
                 3 - Menu Usuário
                 4 - Menu Administrador
-                5 - Povoar base de dados
                 ---------------------
                 Digite sua opção:\s""");
 
@@ -53,19 +52,15 @@ public class App {
                 ---------------------
                 0 - Voltar
                 1 - Listar mídias
-                2 - Carregar mídias
-                3 - Carregar usuários
-                4 - Carregar administradores
-                5 - Carregar audiência
-                6 - Salvar mídias
-                7 - Salvar usuários
-                8 - Salvar audiência
-                9 - Buscar mídia
-                10 - Filtrar mídias por gênero
-                11 - Filtrar mídias por idioma
-                12 - Filtrar séries por quantidade de episódios
-                13 - Nota de uma mídia (média de avaliações)
-                14 - Relatórios
+                2 - Salvar mídias
+                3 - Salvar usuários
+                4 - Salvar audiência
+                5 - Buscar mídia                
+                6 - Nota de uma mídia (média de avaliações)
+                7 - Filtrar mídias por gênero
+                8 - Filtrar mídias por idioma
+                9 - Filtrar séries por quantidade de episódios
+                10 - Relatórios
                 ---------------------
                 Digite sua opção:\s""");
 
@@ -220,12 +215,6 @@ public class App {
         else lista.forEach(System.out::println);
     }
 
-    private static void listarMidias(PlataformaStreaming plataformaStreaming) {
-        HashMap<String, Midia> lista = plataformaStreaming.getMidias();
-        if (lista.isEmpty()) System.out.println("Não há nenhuma mídia cadastrada na plataforma!");
-        else lista.values().forEach(System.out::println);
-    }
-
     private static boolean verificaBDPlataforma(PlataformaStreaming plataformaStreaming) {
 
         if (plataformaStreaming.getMidias().isEmpty()) {
@@ -333,6 +322,12 @@ public class App {
         PlataformaStreaming plataformaStreaming = new PlataformaStreaming("Plataforma de Streaming");
         Cliente cliente = null;
         Administrador adm = null;
+
+        plataformaStreaming.carregarClientes("docs/arquivos/POO_Espectadores.csv");
+        plataformaStreaming.carregarMidias("docs/arquivos/POO_Midias.csv");
+        plataformaStreaming.carregarAdministradores("docs/arquivos/POO_Administradores.csv");
+//        plataformaStreaming.carregarAudiencia("docs/arquivos/POO_Audiencia.csv");
+
         int opcao;
 
         do {
@@ -347,20 +342,20 @@ public class App {
                         case 0 -> {
                         }
                         case 1 -> {
-                            System.out.println("Digite o nome de usuário:");
-                            String nameUser = teclado.nextLine();
+                            System.out.println("Digite o login:");
+                            String login = teclado.nextLine();
                             System.out.println("Digite a senha:");
                             String senha = teclado.nextLine();
-                            cliente = plataformaStreaming.loginCliente(nameUser, senha);
+                            cliente = plataformaStreaming.loginCliente(login, senha);
                             if (cliente != null)
                                 System.out.println("Bem vindo(a) " + cliente.getUsuario());
                         }
                         case 2 -> {
-                            System.out.println("Digite o nome de usuário:");
-                            String nameUser = teclado.nextLine();
+                            System.out.println("Digite o login:");
+                            String login = teclado.nextLine();
                             System.out.println("Digite a senha:");
                             String senha = teclado.nextLine();
-                            adm = plataformaStreaming.loginAdministrador(nameUser, senha);
+                            adm = plataformaStreaming.loginAdministrador(login, senha);
                             if (adm != null)
                                 System.out.println("Bem vindo(a) " + adm.getUsuario());
                         }
@@ -375,47 +370,39 @@ public class App {
                     switch (alteracao) {
                         case 0 -> {
                         }
-                        case 1 -> listarMidias(plataformaStreaming);
+                        case 1 -> {
+                            HashMap<String, Midia> lista = plataformaStreaming.getMidias();
+                            if (lista.isEmpty()) System.out.println("Não há nenhuma mídia cadastrada na plataforma!");
+                            else lista.values().forEach(System.out::println);
+                        }
                         case 2 -> {
-                            plataformaStreaming.carregarMidias("docs/arquivos/POO_Midias.csv");
-                            System.out.println("Cadastro de mídias por arquivo concluído!");
-                        }
-                        case 3 -> {
-                            plataformaStreaming.carregarClientes("docs/arquivos/POO_Espectadores.csv");
-                            System.out.println("Cadastro de usuários por arquivo concluído!");
-                        }
-                        case 4 -> {
-                            plataformaStreaming.carregarAdministradores("docs/arquivos/POO_Administradores.csv");
-                            System.out.println("Cadastro de administradores por arquivo concluído!");
-                        }
-                        case 5 -> {
-                            plataformaStreaming.carregarClientes("docs/arquivos/POO_Espectadores.csv"); // se audiencia não achar os ids não vai cadastrar nada
-                            plataformaStreaming.carregarAudiencia("docs/arquivos/POO_Audiencia.csv");
-                            System.out.println("Cadastro de audiência por arquivo concluído!");
-                        }
-                        case 6 -> {
                             try {
                                 plataformaStreaming.salvarMidias("PS_Midias.csv");
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
                             }
                         }
-                        case 7 -> {
+                        case 3 -> {
                             try {
                                 plataformaStreaming.salvarClientes("PS_Usuarios.csv");
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
                             }
                         }
-                        case 8 -> {
+                        case 4 -> {
                             try {
-                                plataformaStreaming.salvarAudiencia("PS_Audiencia.csv");
+                                plataformaStreaming.salvarAudiencia("POO_Audiencia.csv");
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
                             }
                         }
-                        case 9 -> buscarMidia(plataformaStreaming);
-                        case 10 -> {
+                        case 5 -> buscarMidia(plataformaStreaming);
+                        case 6 -> {
+                            Midia midia = buscarMidia(plataformaStreaming);
+                            if (midia != null)
+                                System.out.println("Mídia: " + midia.getNome() + " - nota: " + midia.getMedia());
+                        }
+                        case 7 -> {
                             Genero generoEscolhido = escolherGenero();
 
                             if (generoEscolhido != null) {
@@ -423,7 +410,7 @@ public class App {
                                 if (!(lista.isEmpty())) lista.forEach(System.out::println);
                             } else System.out.println("Gênero inválido!");
                         }
-                        case 11 -> {
+                        case 8 -> {
                             Idioma idiomaEscolhido = escolherIdioma();
 
                             if (idiomaEscolhido != null) {
@@ -431,54 +418,45 @@ public class App {
                                 if (!(lista.isEmpty())) lista.forEach(System.out::println);
                             } else System.out.println("Idioma inválido!");
                         }
-                        case 12 -> {
+                        case 9 -> {
                             System.out.println("Digite a quantidade de episódios:");
                             int qtdEp = Integer.parseInt(teclado.nextLine());
 
                             List<Serie> listaFiltrada = plataformaStreaming.filtrarPorQtdEpisodio(qtdEp);
                             if (!(listaFiltrada.isEmpty())) listaFiltrada.forEach(System.out::println);
                         }
-                        case 13 -> {
-                            listarMidias(plataformaStreaming);
-                            Midia midia = buscarMidia(plataformaStreaming);
-                            if (midia != null)
-                                System.out.println("Mídia: " + midia.getNome() + " - nota: " + midia.getMedia());
-                        }
 
                         // menu relatorio
-                        case 14 -> {
+                        case 10 -> {
 
-                            if (verificaBDPlataforma(plataformaStreaming)) {
-
-                                int alt = subMenuRelatorios();
-                                switch (alt) {
-                                    case 0 -> {
-                                    }
-                                    case 1 -> {
-                                        relatorio(plataformaStreaming.relatorioClienteMaisMidias());
-                                    }
-                                    case 2 -> {
-                                        relatorio(plataformaStreaming.relatorioClienteMaisAvaliacoes());
-                                    }
-                                    case 3 -> {
-                                        relatorio(plataformaStreaming.relatorioClientesPorNumeroAvaliacoes(15));
-                                    }
-                                    case 4 -> {
-                                        relatorio(plataformaStreaming.relatorioMidiasMaisBemAvaliadas(10, 100));
-                                    }
-                                    case 5 -> {
-                                        relatorio(plataformaStreaming.relatorioMidiasMaisVizualizadas(10));
-                                    }
-                                    case 6 -> {
-                                        Genero genero = escolherGenero();
-                                        relatorio(plataformaStreaming.relatorioMidiasMaisBemAvaliadas(10, 100, genero));
-                                    }
-                                    case 7 -> {
-                                        Genero genero = escolherGenero();
-                                        relatorio(plataformaStreaming.relatorioMidiasMaisVizualizadas(10, genero));
-                                    }
-                                    default -> throw new Exception("Algo inesperado ocorreu! Tente novamente");
+                            int alt = subMenuRelatorios();
+                            switch (alt) {
+                                case 0 -> {
                                 }
+                                case 1 -> {
+                                    relatorio(plataformaStreaming.relatorioClienteMaisMidias());
+                                }
+                                case 2 -> {
+                                    relatorio(plataformaStreaming.relatorioClienteMaisAvaliacoes());
+                                }
+                                case 3 -> {
+                                    relatorio(plataformaStreaming.relatorioClientesPorNumeroAvaliacoes(15));
+                                }
+                                case 4 -> {
+                                    relatorio(plataformaStreaming.relatorioMidiasMaisBemAvaliadas(10, 100));
+                                }
+                                case 5 -> {
+                                    relatorio(plataformaStreaming.relatorioMidiasMaisVizualizadas(10));
+                                }
+                                case 6 -> {
+                                    Genero genero = escolherGenero();
+                                    relatorio(plataformaStreaming.relatorioMidiasMaisBemAvaliadas(10, 100, genero));
+                                }
+                                case 7 -> {
+                                    Genero genero = escolherGenero();
+                                    relatorio(plataformaStreaming.relatorioMidiasMaisVizualizadas(10, genero));
+                                }
+                                default -> throw new Exception("Algo inesperado ocorreu! Tente novamente");
                             }
                         }
                     }
@@ -518,20 +496,28 @@ public class App {
                                 if (!(lista.isEmpty())) lista.forEach(System.out::println);
                             }
                             case 6 -> {
-                                historico(cliente);
                                 if (!(cliente.getListaJaVistas().isEmpty())) {
+
+                                    historico(cliente);
+
                                     Midia midia = buscarMidia(plataformaStreaming);
                                     if (midia != null) {
-                                        System.out.println("Digite uma nota de 1 a 5 para a mídia:");
-                                        int nota = Integer.parseInt(teclado.nextLine());
-                                        System.out.println("Digite um comentário:");
-                                        String comentario = teclado.nextLine();
-                                        cliente.addAvaliacao(midia, nota, comentario);
+
+                                        int index = cliente.listaJaVistas.indexOf(midia);
+                                        if (index != -1) {
+
+                                            System.out.println("Digite uma nota de 1 a 5 para a mídia:");
+                                            int nota = Integer.parseInt(teclado.nextLine());
+                                            System.out.println("Digite um comentário:");
+                                            String comentario = teclado.nextLine();
+                                            cliente.addAvaliacao(midia, nota, comentario);
+
+                                        } else
+                                            System.out.println("Não foi possível avaliar pois a mídia não foi assistida!");
                                     }
-                                }
+                                }System.out.println("Não foi possível avaliar pois nenhuma mídia foi assistida!");
                             }
                             case 7 -> {
-                                listarMidias(plataformaStreaming);
                                 Midia midia = buscarMidia(plataformaStreaming);
                                 if (midia != null) cliente.adicionarNaLista(midia);
                             }
@@ -542,7 +528,6 @@ public class App {
                                 cliente.retirarNaLista(nomeMidia);
                             }
                             case 9 -> {
-                                listarMidias(plataformaStreaming);
                                 if (!(plataformaStreaming.getMidias().isEmpty())) {
                                     Midia midia = buscarMidia(plataformaStreaming);
                                     if (midia != null) cliente.registrarPorAudiencia(midia);
@@ -587,15 +572,6 @@ public class App {
                         }
                     } else System.out.println("Não há nenhum administrador logado.");
                     pausa();
-                }
-
-                // povar base de dados
-                case 5 -> {
-                    plataformaStreaming.carregarClientes("docs/arquivos/POO_Espectadores.csv");
-                    plataformaStreaming.carregarMidias("docs/arquivos/POO_Midias.csv");
-                    plataformaStreaming.carregarAdministradores("docs/arquivos/POO_Administradores.csv");
-                    plataformaStreaming.carregarAudiencia("docs/arquivos/POO_Audiencia.csv");
-                    System.out.println("O carregamento de arquivos foi concluído!");
                 }
 
             }

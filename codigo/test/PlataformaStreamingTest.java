@@ -108,7 +108,7 @@ public class PlataformaStreamingTest {
     @Test
     public void deveAdicionarCliente() {
         plataforma.adicionarCliente(clienteTeste);
-        String chave = clienteTeste.getUsuario() + ":" + clienteTeste.getSenha();
+        String chave = clienteTeste.getLogin() + ":" + clienteTeste.getSenha();
         assertNotNull(plataforma.getClientes().get(chave));
     }
 
@@ -124,17 +124,17 @@ public class PlataformaStreamingTest {
 
     @Test
     public void testLogin(){
-        String chave1 = clienteTeste2.getUsuario() + ":" + clienteTeste2.getSenha();
+        String chave1 = clienteTeste2.getLogin() + ":" + clienteTeste2.getSenha();
         clientes.put(chave1, clienteTeste2);
         plataforma.adicionarCliente(clienteTeste2);
-        plataforma.loginCliente("Cteste2", "1234");
+        plataforma.loginCliente("usuario1", "1234");
         assertEquals(clienteTeste2, plataforma.getClienteAtual());
     }
 
     @Test
     public void deveFazerLogin() {
         plataforma.adicionarCliente(clienteTeste);
-        plataforma.loginCliente("Cteste", "123");
+        plataforma.loginCliente("login", "123");
         assertEquals(clienteTeste, plataforma.getClienteAtual());
     }
 
@@ -200,11 +200,11 @@ public class PlataformaStreamingTest {
         HashMap<String, Cliente> expectedClientes = new HashMap<>();
         Cliente cliente1 = new Cliente("Breno", "breno1", "breno123", false);
         Cliente cliente2 = new Cliente("Arthur", "arthur1", "arthur123", false);
-        String chave1 = cliente1.getUsuario() + ":" + cliente1.getSenha();
-        String chave2 = cliente2.getUsuario() + ":" + cliente2.getSenha();
-        String chave3 = clienteTeste.getUsuario() + ":" + clienteTeste.getSenha();
-        String chave4 = clienteTeste2.getUsuario() + ":" + clienteTeste2.getSenha();
-        String chave5 = clienteTeste3.getUsuario() + ":" + clienteTeste3.getSenha();
+        String chave1 = cliente1.getLogin() + ":" + cliente1.getSenha();
+        String chave2 = cliente2.getLogin() + ":" + cliente2.getSenha();
+        String chave3 = clienteTeste.getLogin() + ":" + clienteTeste.getSenha();
+        String chave4 = clienteTeste2.getLogin() + ":" + clienteTeste2.getSenha();
+        String chave5 = clienteTeste3.getLogin() + ":" + clienteTeste3.getSenha();
 
         expectedClientes.put(chave1, cliente1);
         expectedClientes.put(chave2, cliente2);

@@ -207,7 +207,7 @@ public class Cliente {
                     this.dataQueFoiVista.put(midia.getId(), LocalDate.now());
                 } else throw new Exception("Mídia já assistida!");
 
-                this.verificarEstado();
+                state = state.verificarEstado(dataQueFoiVista);
 
             } catch (Exception e) {
                 System.out.println(e.toString());
@@ -219,36 +219,15 @@ public class Cliente {
 
     }
 
-    /**
-     * Verifica se é um cliente especialista
-     * Caso tenha assistido 5 ou mais midias mes passado, retornara true
-     * sempre verifica o estado do cliente caso tenha se tornado especialista.
-     */
-    public void verificarEstado() {
-        // Pega a data atual e subtrai um mês para obter a data de um mês atrás
-        LocalDate umMesAtras = LocalDate.now().minusMonths(1);
 
-
-        long totalMidiasUltimoMes = dataQueFoiVista.values().stream()
-                .filter(date -> date.getYear() == umMesAtras.getYear() && date.getMonthValue() == umMesAtras.getMonthValue())
-                .count();
-
-        if (!(this.state instanceof ClienteProfissional) && totalMidiasUltimoMes < 5 && (this.state instanceof ClienteEspecialista)) {
-            this.state = new ClienteEspecialista();
-        }
-    }
-
-
-    @Override
-    public String toString() {
-        StringBuilder aux = new StringBuilder((this.nomeDeUsuario + ";" + this.login + ";" + this.senha + ";" + this.tipoCliente()));
+    public String toSaveString() {
+        StringBuilder aux = new StringBuilder((this.nomeDeUsuario + ";" + this.login + ";" + this.senha + ";" + state.toString()));
         return aux.toString();
     }
 
-    private String tipoCliente() {
-        if (this.state instanceof ClienteProfissional) return "Profissional";
-        else if (this.state instanceof ClienteEspecialista) return "Especialista";
-        return "Regular";
+    public String toString() {
+        StringBuilder aux = new StringBuilder("Usuário " + state.toString() + " - Nome de usuário: " + this.nomeDeUsuario + " Login: " + this.login + " - Senha:" + this.senha);
+        return aux.toString();
     }
 
     /**
@@ -259,7 +238,7 @@ public class Cliente {
             FileWriter writer = new FileWriter(caminhoArq, true);
 
             if (!caminhoArq.equals("")) {
-                writer.write(this.toString() + "\n");
+                writer.write(this.toSaveString() + "\n");
             }
 
             writer.close();
@@ -278,11 +257,11 @@ public class Cliente {
             if (!caminhoArq.equals("")) {
 
                 for (Midia midia : listaParaVer) {
-                    writer.write(this.nomeDeUsuario + ";" + this.senha + ";F;" + midia.getNome() + ";" + midia.getId() + "\n");
+                    writer.write(this.login + ";" + this.senha + ";F;" + midia.getNome() + ";" + midia.getId() + "\n");
                 }
 
                 for (Midia midia : listaJaVistas) {
-                    writer.write(this.nomeDeUsuario + ";" + this.senha + ";A;" + midia.getNome() + ";" + midia.getId() + "\n");
+                    writer.write(this.login + ";" + this.senha + ";A;" + midia.getNome() + ";" + midia.getId() + "\n");
                 }
 
             }
@@ -293,6 +272,35 @@ public class Cliente {
         }
     }
 
+//    public void salvarAa(String caminhoArq, HashMap<String, Midia> midias) {
+//        try {
+//            FileWriter writer = new FileWriter(caminhoArq, true);
+//
+//            if (!caminhoArq.equals("")) {
+//
+//                Random random = new Random();
+//                int quantidadeMidias = random.nextInt(101) + 100; // Gera um número aleatório entre 100 e 200
+//
+//                int contador = 0;
+//                for (Map.Entry<String, Midia> entrada : midias.entrySet()) {
+//                    if (entrada.getValue().getEstadoMidia() == EstadoMidia.MODIFICAVEL) {
+//                        String randomValue = random.nextBoolean() ? "A" : "F";
+//                        writer.write(this.login + ";" + this.senha + ";" + randomValue + ";" + entrada.getValue().getNome() + ";" + entrada.getValue().getId() + "\n");
+//                    }
+//                    contador++;
+//
+//                    if (contador == quantidadeMidias) {
+//                        break;
+//                    }
+//                }
+//            }
+//
+//            writer.close();
+//        } catch (IOException e) {
+//            System.out.println("Erro ao salvar dados no arquivo.");
+//        }
+//    }
+
     /**
      * Adiciona a avaliação de acordo com o state do cliente
      *
@@ -300,15 +308,14 @@ public class Cliente {
      * @param comentario
      */
     public void addAvaliacao(Midia midia, int nota, String comentario) throws Exception {
-        this.verificarEstado();
 
         try {
             int index = listaJaVistas.indexOf(midia);
             try {
-                if (index != -1)
-                    state.addAvaliacao(this.nomeDeUsuario, midia, nota, comentario);
-                else
-                    throw new Exception("Não foi possível avaliar pois a mídia não foi assistida!");
+                if (index != -1) {
+                    state.addAvaliacao(this.login, midia, nota, comentario);
+                    state = state.verificarEstado(dataQueFoiVista);
+                } else throw new Exception("Não foi possível avaliar pois a mídia não foi assistida!");
             } catch (Exception e) {
                 System.out.println(e.toString());
             }

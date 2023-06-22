@@ -37,7 +37,7 @@ public class PlataformaStreaming {
      * @param cliente com os atributos senha e usuario
      */
     public void adicionarCliente(Cliente cliente) {
-        String chave = cliente.getUsuario() + ":" + cliente.getSenha();
+        String chave = cliente.getLogin() + ":" + cliente.getSenha();
         clientes.put(chave, cliente);
     }
 
@@ -66,12 +66,12 @@ public class PlataformaStreaming {
     /**
      * Encontrar um cliente que possui a mesma chave que essa pesquisa: concatenação entre usuario e senha fornecidos por parametro
      *
-     * @param nomeUsuario Nome de usuario
+     * @param login Nome de usuario
      * @param senha       senha
      * @return Cliente da plataforma
      */
-    public Cliente loginCliente(String nomeUsuario, String senha) {
-        String chave = nomeUsuario + ":" + senha;
+    public Cliente loginCliente(String login, String senha) {
+        String chave = login + ":" + senha;
 
         try {
             clienteAtual = clientes.get(chave);
@@ -287,6 +287,19 @@ public class PlataformaStreaming {
         }
     }
 
+//    public void salvarAa(String caminho) throws IOException {
+//
+//        int contador = 0;
+//        for (Map.Entry<String, Cliente> entrada : clientes.entrySet()) {
+//            entrada.getValue().salvarAa(caminho, midias);
+//            contador++;
+//
+//            if (contador == 3600) {
+//                break;
+//            }
+//        }
+//    }
+
     /**
      * * Le arquivo e separa cada atributo
      * * cria midia, sendo filme e serie
@@ -466,7 +479,7 @@ public class PlataformaStreaming {
         return midias.values().stream()
                 .filter(m -> !m.getAvaliacoes().isEmpty())
                 .flatMap(midia -> midia.getAvaliacoes().stream())
-                .collect(Collectors.groupingBy(Avaliacao::getNomeDeUsuario, Collectors.summingInt(e -> 1)));
+                .collect(Collectors.groupingBy(Avaliacao::getLogin, Collectors.summingInt(e -> 1)));
     }
 
     /**
@@ -594,8 +607,8 @@ public class PlataformaStreaming {
         return aux.toString();
     }
 
-    public Cliente buscarCliente(String nomeUsuario, String senha) {
-        String chave = nomeUsuario + ":" + senha;
+    public Cliente buscarCliente(String login, String senha) {
+        String chave = login + ":" + senha;
         return clientes.get(chave);
     }
 

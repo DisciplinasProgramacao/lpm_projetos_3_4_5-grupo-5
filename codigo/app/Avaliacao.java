@@ -2,20 +2,20 @@ package codigo.app;
 
 public class Avaliacao {
 
-    private String nomeDeUsuario;
+    private String login;
     private int avaliacao;
     private String comentario;
 
     /**
      * Adiciona avaliacao para clientes especialistas
      *
-     * @param nomeDeUsuario
+     * @param login
      * @param avaliacao
      * @param comentario
      */
-    public Avaliacao(String nomeDeUsuario, int avaliacao, String comentario) throws Exception {
+    public Avaliacao(String login, int avaliacao, String comentario) throws Exception {
         if (validaAvaliacao(avaliacao)) {
-            this.nomeDeUsuario = nomeDeUsuario;
+            this.login = login;
             this.avaliacao = avaliacao;
             this.comentario = comentario;
         }
@@ -38,8 +38,9 @@ public class Avaliacao {
         return false;
     }
 
-    public String getNomeDeUsuario() {
-        return this.nomeDeUsuario;
+
+    public String getLogin() {
+        return login;
     }
 
     public int getAvaliacao() {

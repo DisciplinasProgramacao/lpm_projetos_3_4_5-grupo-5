@@ -70,9 +70,24 @@ public abstract class Midia implements ISalvar {
         this.audiencia++;
     }
 
-    @Override
+    public String toSaveString() {
+        return definirTipoMidia() + ";" + this.id + ";" + this.nome + ";" + this.dataDeLancamento + ";" + this.genero.getNome() + ";" + this.idioma.getNome() + ";" + this.estadoMidia.getNome();
+    }
+
     public String toString() {
-        return definirTipoMidia() + ";" + this.id + ";" + this.nome + ";" + this.dataDeLancamento + ";" + this.genero.getNome() + ";" + this.idioma.getNome() + ";" + this.estadoMidia.getNome() ;
+        StringBuilder aux = new StringBuilder(isLancamento() + tipoMidia() + this.nome + " - " + this.dataDeLancamento + " • " + this.genero.getNome() + "/" + this.idioma.getNome());
+        return aux.toString();
+    }
+
+    private String isLancamento() {
+        if (this.estadoMidia == EstadoMidia.LANCAMENTO) return "Lançamento! - ";
+        return "";
+    }
+
+    private String tipoMidia() {
+        if (definirTipoMidia().equals("F")) return "Filme | ";
+        else if (definirTipoMidia().equals("S")) return "Série | ";
+        return null;
     }
 
     public abstract String definirTipoMidia();
@@ -109,11 +124,11 @@ public abstract class Midia implements ISalvar {
      */
     public void addAvaliacao(Avaliacao avaliacao) {
 
-        String nomeUsuario = avaliacao.getNomeDeUsuario();
+        String login = avaliacao.getLogin();
 
         try {
             for (Avaliacao a : this.avaliacoes) {
-                if (a.getNomeDeUsuario().equals(nomeUsuario)) {
+                if (a.getLogin().equals(login)) {
                     throw new Exception("Mídia já avaliada!");
                 }
             }

@@ -35,4 +35,9 @@ public class Administrador {
         return this.senha;
     }
 
+    public String getLogin() {
+        return login;
+    }
+
+
 }

@@ -29,9 +29,16 @@ public class Filme extends Midia {
      * @return String com o formato descrito acima.
      */
     @Override
+    public String toSaveString() {
+        StringBuilder desc = new StringBuilder(super.toSaveString());
+        desc.append(";" + this.duracao);
+        return desc.toString();
+    }
+
+    @Override
     public String toString() {
         StringBuilder desc = new StringBuilder(super.toString());
-        desc.append(";" + this.duracao);
+        desc.append(" • " + this.duracao + " min.");
         return desc.toString();
     }
 
@@ -50,7 +57,7 @@ public class Filme extends Midia {
             FileWriter writer = new FileWriter(caminhoArq, true);
 
             if (!caminhoArq.equals("")) {
-                writer.write(this + "\n");
+                writer.write(this.toSaveString() + "\n");
             }
 
             writer.close();
