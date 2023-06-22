@@ -30,7 +30,7 @@ public class Cliente {
                 if (profissional) this.state = new ClienteProfissional();
                 else this.state = new ClienteRegular();
             } else throw new Exception("Não foi possível criar o usuário!");
-
+// teste
         } catch (Exception e) {
             System.out.println(e.toString());
         }
