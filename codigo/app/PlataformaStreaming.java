@@ -394,6 +394,7 @@ public class PlataformaStreaming {
     }
 
     /**
+     * carrega os ADMs do arquivo
      * @throws FileNotFoundException
      */
     public void carregarAdministradores(String arquivo) throws FileNotFoundException {
@@ -417,6 +418,7 @@ public class PlataformaStreaming {
     }
 
     /**
+     * carrega dados de audiencia do arquivo
      * @param arquivo
      * @throws FileNotFoundException
      */
@@ -607,11 +609,23 @@ public class PlataformaStreaming {
         return aux.toString();
     }
 
+    /**
+     * busca cliente pelo login e senha
+     * @param login
+     * @param senha
+     * @return
+     */
     public Cliente buscarCliente(String login, String senha) {
         String chave = login + ":" + senha;
         return clientes.get(chave);
     }
 
+    /**
+     * buscar midia pelo nomne e id
+     * @param nome
+     * @param id
+     * @return
+     */
     public Midia buscarMidia(String nome, int id) {
         String chave = nome + ":" + id;
         return midias.get(chave);

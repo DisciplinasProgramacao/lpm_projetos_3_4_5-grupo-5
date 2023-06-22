@@ -70,20 +70,36 @@ public abstract class Midia implements ISalvar {
         this.audiencia++;
     }
 
+    /**
+     * toString para salvar no arquivo
+     * @return
+     */
     public String toSaveString() {
         return definirTipoMidia() + ";" + this.id + ";" + this.nome + ";" + this.dataDeLancamento + ";" + this.genero.getNome() + ";" + this.idioma.getNome() + ";" + this.estadoMidia.getNome();
     }
 
+    /**
+     * toString para mostrar na tela
+     * @return
+     */
     public String toString() {
         StringBuilder aux = new StringBuilder(isLancamento() + tipoMidia() + this.nome + " - " + this.dataDeLancamento + " • " + this.genero.getNome() + "/" + this.idioma.getNome());
         return aux.toString();
     }
 
+    /**
+     * retorna se eh lancamento
+     * @return
+     */
     private String isLancamento() {
         if (this.estadoMidia == EstadoMidia.LANCAMENTO) return "Lançamento! - ";
         return "";
     }
 
+    /**
+     * retorna o tipo de midia
+     * @return
+     */
     private String tipoMidia() {
         if (definirTipoMidia().equals("F")) return "Filme | ";
         else if (definirTipoMidia().equals("S")) return "Série | ";

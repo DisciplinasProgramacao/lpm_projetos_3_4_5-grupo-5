@@ -31,6 +31,7 @@ public class ClienteEspecialista implements IClienteState {
         return "Especialista";
     }
 
+
     @Override
     public IClienteState verificarEstado(Map<Integer, LocalDate> dataQueFoiVista) {
         // Pega a data atual e subtrai um mês para obter a data de um mês atrás

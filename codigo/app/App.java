@@ -8,6 +8,10 @@ import java.util.Scanner;
 public class App {
     private static final Scanner teclado = new Scanner(System.in);
 
+    /**
+     * primeiro menu, independente do login e do tipo de cliente
+     * @return
+     */
     private static int menu() {
         limparTela();
         System.out.println("""
@@ -24,6 +28,10 @@ public class App {
         return Integer.parseInt(teclado.nextLine());
     }
 
+    /**
+     * Menu para o cliente
+     * @return
+     */
     private static int subMenuCliente() {
         limparTela();
         System.out.println("""
@@ -46,6 +54,10 @@ public class App {
         return Integer.parseInt(teclado.nextLine());
     }
 
+    /**
+     * Menu com a opcoes da plataforma
+     * @return
+     */
     private static int subMenuPlataformaStreaming() {
         limparTela();
         System.out.println("""
@@ -68,6 +80,10 @@ public class App {
         return Integer.parseInt(teclado.nextLine());
     }
 
+    /**
+     * Menu do ADM
+     * @return
+     */
     private static int subMenuAdministrador() {
         limparTela();
         System.out.println("""
@@ -84,6 +100,10 @@ public class App {
         return Integer.parseInt(teclado.nextLine());
     }
 
+    /**
+     * Menu para escolher o tipo de cliente
+     * @return
+     */
     private static int subMenuLogin() {
         limparTela();
         System.out.println("""
@@ -98,6 +118,10 @@ public class App {
         return Integer.parseInt(teclado.nextLine());
     }
 
+    /**
+     * Menu com todos os relatorios
+     * @return
+     */
     private static int subMenuRelatorios() {
         limparTela();
         System.out.println("""
@@ -125,6 +149,10 @@ public class App {
         teclado.nextLine();
     }
 
+    /**
+     * Menu para escolher genero da midia
+     * @return
+     */
     private static Genero escolherGenero() {
 
         System.out.println("Gêneros: \n---------------------");
@@ -147,6 +175,10 @@ public class App {
         return generoEscolhido;
     }
 
+    /**
+     * Menu para escolher idioma
+     * @return
+     */
     private static Idioma escolherIdioma() {
 
         System.out.println("Idiomas: \n---------------------");
@@ -170,6 +202,10 @@ public class App {
 
     }
 
+    /**
+     * Menu para escolher se a midia eh lancamento ou modificavel
+     * @return
+     */
     private static EstadoMidia escolherEstadoMidia() {
 
         System.out.println("Tipos de mídia: \n---------------------");
@@ -193,12 +229,21 @@ public class App {
 
     }
 
+    /**
+     * Menu: adicionar a na lista para assistir
+     * @param cliente
+     */
     private static void listaParaVer(Cliente cliente) {
         List<Midia> lista = cliente.getListaParaVer();
         if (lista.isEmpty()) System.out.println("Não há nenhuma mídia cadastrada no seu 'Para Ver'!");
         else lista.forEach(System.out::println);
     }
 
+    /**
+     * Menu: buscar midia pelo nome
+     * @param plataformaStreaming
+     * @return
+     */
     private static Midia buscarMidia(PlataformaStreaming plataformaStreaming) {
         System.out.println("Digite o nome da midia:");
         String aux = teclado.nextLine();
@@ -209,12 +254,21 @@ public class App {
         return midia;
     }
 
+    /**
+     * Menu: visualizar o historico do cliente
+     * @param cliente
+     */
     private static void historico(Cliente cliente) {
         List<Midia> lista = cliente.getListaJaVistas();
         if (lista.isEmpty()) System.out.println("Não há nenhuma mídia cadastrada no seu histórico!");
         else lista.forEach(System.out::println);
     }
 
+    /**
+     * verifica se a plataforma streaming foi povoada
+     * @param plataformaStreaming
+     * @return
+     */
     private static boolean verificaBDPlataforma(PlataformaStreaming plataformaStreaming) {
 
         if (plataformaStreaming.getMidias().isEmpty()) {
@@ -229,6 +283,10 @@ public class App {
 
     }
 
+    /**
+     * verifica se relatorio eh null
+     * @param relatorio
+     */
     private static void relatorio(String relatorio) {
         if (relatorio.isEmpty()) System.out.println("Não existem relatórios para essa seleção");
         else System.out.println(relatorio);

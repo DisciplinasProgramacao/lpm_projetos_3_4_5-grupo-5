@@ -220,17 +220,26 @@ public class Cliente {
     }
 
 
+    /**
+     * toString para salvar no arquivo
+     * @return
+     */
     public String toSaveString() {
         StringBuilder aux = new StringBuilder((this.nomeDeUsuario + ";" + this.login + ";" + this.senha + ";" + state.toString()));
         return aux.toString();
     }
 
+    /**
+     * toString para mostrar ao usuario (formatado)
+     * @return
+     */
     public String toString() {
         StringBuilder aux = new StringBuilder("Usuário " + state.toString() + " - Nome de usuário: " + this.nomeDeUsuario + " Login: " + this.login + " - Senha:" + this.senha);
         return aux.toString();
     }
 
     /**
+     * salva os clientes no arquivo
      * @param caminhoArq
      */
     public void salvarClientes(String caminhoArq) {
@@ -248,6 +257,7 @@ public class Cliente {
     }
 
     /**
+     * salva audiencia no arquivo
      * @param caminhoArq
      */
     public void salvarAudiencia(String caminhoArq) {

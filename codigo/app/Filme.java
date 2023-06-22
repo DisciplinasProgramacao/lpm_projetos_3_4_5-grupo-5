@@ -35,6 +35,10 @@ public class Filme extends Midia {
         return desc.toString();
     }
 
+    /**
+     * toString para mostrar na tela
+     * @return
+     */
     @Override
     public String toString() {
         StringBuilder desc = new StringBuilder(super.toString());
