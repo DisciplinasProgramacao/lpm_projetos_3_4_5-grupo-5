@@ -67,7 +67,7 @@ public class PlataformaStreaming {
      * Encontrar um cliente que possui a mesma chave que essa pesquisa: concatenação entre usuario e senha fornecidos por parametro
      *
      * @param login Nome de usuario
-     * @param senha       senha
+     * @param senha senha
      * @return Cliente da plataforma
      */
     public Cliente loginCliente(String login, String senha) {
@@ -287,19 +287,6 @@ public class PlataformaStreaming {
         }
     }
 
-//    public void salvarAa(String caminho) throws IOException {
-//
-//        int contador = 0;
-//        for (Map.Entry<String, Cliente> entrada : clientes.entrySet()) {
-//            entrada.getValue().salvarAa(caminho, midias);
-//            contador++;
-//
-//            if (contador == 3600) {
-//                break;
-//            }
-//        }
-//    }
-
     /**
      * * Le arquivo e separa cada atributo
      * * cria midia, sendo filme e serie
@@ -313,52 +300,56 @@ public class PlataformaStreaming {
 
         Scanner scanner = new Scanner(new File(arquivo));
 
-        while (scanner.hasNextLine()) {
-            String linha = scanner.nextLine();
-            String[] campos = linha.split(";");
-            String tipo = campos[0];
-            int id = Integer.parseInt(campos[1]);
-            String nome = campos[2];
-            String lancamento = campos[3];
+        try {
+            while (scanner.hasNextLine()) {
+                String linha = scanner.nextLine();
+                String[] campos = linha.split(";");
+                String tipo = campos[0];
+                int id = Integer.parseInt(campos[1]);
+                String nome = campos[2];
+                String lancamento = campos[3];
 
-            Genero genero = null;
-            String generoDigitado = campos[4];
+                Genero genero = null;
+                String generoDigitado = campos[4];
 
-            for (Genero valor : Genero.values()) {
-                if (valor.getNome().equalsIgnoreCase(generoDigitado)) {
-                    genero = valor;
-                    break;
+                for (Genero valor : Genero.values()) {
+                    if (valor.getNome().equalsIgnoreCase(generoDigitado)) {
+                        genero = valor;
+                        break;
+                    }
+                }
+
+                Idioma idioma = null;
+                String idiomaDigitado = campos[5];
+                for (Idioma valor : Idioma.values()) {
+                    if (valor.getNome().equalsIgnoreCase(idiomaDigitado)) {
+                        idioma = valor;
+                        break;
+                    }
+                }
+
+                EstadoMidia estadoMidia = null;
+                String estadoDigitado = campos[6];
+                for (EstadoMidia valor : EstadoMidia.values()) {
+                    if (valor.getNome().equalsIgnoreCase(estadoDigitado)) {
+                        estadoMidia = valor;
+                        break;
+                    }
+                }
+
+                if (tipo.equals("F")) {
+                    int duracao = Integer.parseInt(campos[7]);
+                    Midia filme = new Filme(id, nome, genero, idioma, lancamento, estadoMidia, duracao);
+                    adicionarMidia(filme);
+
+                } else if (tipo.equals("S")) {
+                    int qtdEp = Integer.parseInt(campos[7]);
+                    Midia serie = new Serie(id, nome, genero, idioma, lancamento, estadoMidia, qtdEp);
+                    adicionarMidia(serie);
                 }
             }
-
-            Idioma idioma = null;
-            String idiomaDigitado = campos[5];
-            for (Idioma valor : Idioma.values()) {
-                if (valor.getNome().equalsIgnoreCase(idiomaDigitado)) {
-                    idioma = valor;
-                    break;
-                }
-            }
-
-            EstadoMidia estadoMidia = null;
-            String estadoDigitado = campos[6];
-            for (EstadoMidia valor : EstadoMidia.values()) {
-                if (valor.getNome().equalsIgnoreCase(estadoDigitado)) {
-                    estadoMidia = valor;
-                    break;
-                }
-            }
-
-            if (tipo.equals("F")) {
-                int duracao = Integer.parseInt(campos[7]);
-                Midia filme = new Filme(id, nome, genero, idioma, lancamento, estadoMidia, duracao);
-                adicionarMidia(filme);
-
-            } else if (tipo.equals("S")) {
-                int qtdEp = Integer.parseInt(campos[7]);
-                Midia serie = new Serie(id, nome, genero, idioma, lancamento, estadoMidia, qtdEp);
-                adicionarMidia(serie);
-            }
+        } catch (NumberFormatException e) {
+            System.out.println("Algo de inesperado aconteceu ao carregar os dados das Mídias");
         }
         scanner.close();
     }
@@ -395,6 +386,7 @@ public class PlataformaStreaming {
 
     /**
      * carrega os ADMs do arquivo
+     *
      * @throws FileNotFoundException
      */
     public void carregarAdministradores(String arquivo) throws FileNotFoundException {
@@ -419,6 +411,7 @@ public class PlataformaStreaming {
 
     /**
      * carrega dados de audiencia do arquivo
+     *
      * @param arquivo
      * @throws FileNotFoundException
      */
@@ -426,36 +419,38 @@ public class PlataformaStreaming {
 
         Scanner scanner = new Scanner(new File(arquivo));
 
-        while (scanner.hasNextLine()) {
-            String linha = scanner.nextLine();
+        try {
+            while (scanner.hasNextLine()) {
+                String linha = scanner.nextLine();
 
-            String[] dados = linha.split(";");
-            Cliente cliente = buscarCliente(dados[0], dados[1]);
+                String[] dados = linha.split(";");
+                Cliente cliente = buscarCliente(dados[0], dados[1]);
 
-            if (cliente != null) {
+                if (cliente != null) {
+                    Midia midia = buscarMidia(dados[3], Integer.parseInt(dados[4]));
+                    if (midia != null) {
 
-                Midia midia = buscarMidia(dados[3], Integer.parseInt(dados[4]));
-                if (midia != null) {
+                        if (midia.getEstadoMidia() == EstadoMidia.LANCAMENTO && cliente.state instanceof ClienteProfissional) {
 
-                    if (midia.getEstadoMidia() == EstadoMidia.LANCAMENTO && cliente.state instanceof ClienteProfissional) {
+                            if (dados[2].equals("F"))  // quero ver
+                                cliente.adicionarNaLista(midia);
 
-                        if (dados[2].equals("F"))  // quero ver
-                            cliente.adicionarNaLista(midia);
+                            else if (dados[2].equals("A")) { // historico
+                                cliente.registrarPorAudiencia(midia);
+                            }
+                        } else if (midia.getEstadoMidia() != EstadoMidia.LANCAMENTO) {
+                            if (dados[2].equals("F"))  // quero ver
+                                cliente.adicionarNaLista(midia);
 
-                        else if (dados[2].equals("A")) { // historico
-                            cliente.registrarPorAudiencia(midia);
+                            else if (dados[2].equals("A")) { // historico
+                                cliente.registrarPorAudiencia(midia);
+                            }
                         }
-                    } else if (midia.getEstadoMidia() != EstadoMidia.LANCAMENTO)
-
-                        if (dados[2].equals("F"))  // quero ver
-                            cliente.adicionarNaLista(midia);
-
-                        else if (dados[2].equals("A")) { // historico
-                            cliente.registrarPorAudiencia(midia);
-                        }
+                    }
                 }
-
             }
+        } catch (NumberFormatException e) {
+            System.out.println("Algo de inesperado aconteceu ao carregar os dados da Audiência");
         }
         scanner.close();
     }
@@ -499,12 +494,13 @@ public class PlataformaStreaming {
 
     /**
      * Relatório de qual a porcentagem dos clientes com pelo menos x avaliações
+     *
      * @param qtdAvaliacoes quantidade de avaliações
      * @return String com a porcentagem dos clientes que possuem determinado número de avaliações
      */
     public String relatorioClientesPorNumeroAvaliacoes(int qtdAvaliacoes) {
         long cont = getFrequencyMap().values().stream()
-                .filter(frequencia -> frequencia >= qtdAvaliacoes )
+                .filter(frequencia -> frequencia >= qtdAvaliacoes)
                 .count();
 
         double totalClientes = getFrequencyMap().size();
@@ -611,6 +607,7 @@ public class PlataformaStreaming {
 
     /**
      * busca cliente pelo login e senha
+     *
      * @param login
      * @param senha
      * @return
@@ -621,7 +618,8 @@ public class PlataformaStreaming {
     }
 
     /**
-     * buscar midia pelo nomne e id
+     * buscar midia pelo nome e id
+     *
      * @param nome
      * @param id
      * @return
