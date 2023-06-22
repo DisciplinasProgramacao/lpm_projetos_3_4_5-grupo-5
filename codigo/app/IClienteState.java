@@ -12,11 +12,4 @@ public interface IClienteState {
      */
     void addAvaliacao(String nomeUsuario, Midia midia, int nota, String comentario)throws Exception;
     String toString();
-
-    /**
-     * Verifica se é um cliente especialista
-     * Caso tenha assistido 5 ou mais midias mes passado, retornara true
-     * sempre verifica o estado do cliente caso tenha se tornado especialista.
-     */
-    IClienteState verificarEstado(Map<Integer, LocalDate> dataQueFoiVista);
 }

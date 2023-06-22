@@ -26,20 +26,6 @@ public class ClienteProfissional implements IClienteState {
         return "Profissional";
     }
 
-    @Override
-    public IClienteState verificarEstado(Map<Integer, LocalDate> dataQueFoiVista) {
-        // Pega a data atual e subtrai um mês para obter a data de um mês atrás
-        LocalDate umMesAtras = LocalDate.now().minusMonths(1);
 
-
-        long totalMidiasUltimoMes = dataQueFoiVista.values().stream()
-                .filter(date -> date.getYear() == umMesAtras.getYear() && date.getMonthValue() == umMesAtras.getMonthValue())
-                .count();
-
-//        if (!(this.state instanceof ClienteProfissional) && totalMidiasUltimoMes < 5 && (this.state instanceof ClienteEspecialista)) {
-//            this.state = new ClienteEspecialista();
-//        }
-        return null;
-    }
 
 }

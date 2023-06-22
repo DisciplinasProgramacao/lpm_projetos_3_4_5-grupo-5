@@ -113,6 +113,24 @@ public class Cliente {
         }
         return listaFiltrada;
     }
+    /**
+     * Verifica se é um cliente especialista
+     * Caso tenha assistido 5 ou mais midias mes passado, retornara true
+     * sempre verifica o estado do cliente caso tenha se tornado especialista.
+     */
+    public void verificarEstado() {
+        // Pega a data atual e subtrai um mês para obter a data de um mês atrás
+        LocalDate umMesAtras = LocalDate.now().minusMonths(1);
+
+
+        long totalMidiasUltimoMes = dataQueFoiVista.values().stream()
+                .filter(date -> date.getYear() == umMesAtras.getYear() && date.getMonthValue() == umMesAtras.getMonthValue())
+                .count();
+
+        if (!(this.state instanceof ClienteProfissional) && totalMidiasUltimoMes < 5 && (this.state instanceof ClienteEspecialista)) {
+            this.state = new ClienteEspecialista();
+        }
+    }
 
     /**
      * Filtra midias por idioma
@@ -207,7 +225,7 @@ public class Cliente {
                     this.dataQueFoiVista.put(midia.getId(), LocalDate.now());
                 } else throw new Exception("Mídia já assistida!");
 
-                state = state.verificarEstado(dataQueFoiVista);
+                this.verificarEstado();
 
             } catch (Exception e) {
                 System.out.println(e.toString());
@@ -220,26 +238,17 @@ public class Cliente {
     }
 
 
-    /**
-     * toString para salvar no arquivo
-     * @return
-     */
     public String toSaveString() {
         StringBuilder aux = new StringBuilder((this.nomeDeUsuario + ";" + this.login + ";" + this.senha + ";" + state.toString()));
         return aux.toString();
     }
 
-    /**
-     * toString para mostrar ao usuario (formatado)
-     * @return
-     */
     public String toString() {
         StringBuilder aux = new StringBuilder("Usuário " + state.toString() + " - Nome de usuário: " + this.nomeDeUsuario + " Login: " + this.login + " - Senha:" + this.senha);
         return aux.toString();
     }
 
     /**
-     * salva os clientes no arquivo
      * @param caminhoArq
      */
     public void salvarClientes(String caminhoArq) {
@@ -257,7 +266,6 @@ public class Cliente {
     }
 
     /**
-     * salva audiencia no arquivo
      * @param caminhoArq
      */
     public void salvarAudiencia(String caminhoArq) {
@@ -318,13 +326,12 @@ public class Cliente {
      * @param comentario
      */
     public void addAvaliacao(Midia midia, int nota, String comentario) throws Exception {
-
+        this.verificarEstado();
         try {
             int index = listaJaVistas.indexOf(midia);
             try {
                 if (index != -1) {
                     state.addAvaliacao(this.login, midia, nota, comentario);
-                    state = state.verificarEstado(dataQueFoiVista);
                 } else throw new Exception("Não foi possível avaliar pois a mídia não foi assistida!");
             } catch (Exception e) {
                 System.out.println(e.toString());
