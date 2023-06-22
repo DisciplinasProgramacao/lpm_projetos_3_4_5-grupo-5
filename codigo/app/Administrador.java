@@ -16,13 +16,13 @@ public class Administrador {
     public Administrador(String nomeDeUsuario, String login, String senha) {
         try {
             if (!(login.isEmpty() || login.length() > 20)) this.login = login;
-            else throw new Exception("Não foi possível criar o administrador!");
+            else throw new NullPointerException("Não foi possível criar o administrador!");
             if (!(nomeDeUsuario.isEmpty() || nomeDeUsuario.length() > 30)) this.nomeDeUsuario = nomeDeUsuario;
-            else throw new Exception("Não foi possível criar o administrador!");
+            else throw new NullPointerException("Não foi possível criar o administrador!");
             if (!(senha.isEmpty() || senha.length() > 10)) this.senha = senha;
-            else throw new Exception("Não foi possível criar o administrador!");
+            else throw new NullPointerException("Não foi possível criar o administrador!");
 
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
             System.out.println(e.toString());
         }
     }
@@ -38,6 +38,4 @@ public class Administrador {
     public String getLogin() {
         return login;
     }
-
-
 }

@@ -77,11 +77,8 @@ public class PlataformaStreaming {
             clienteAtual = clientes.get(chave);
             if (clienteAtual != null)
                 return clienteAtual;
-
-            throw new Exception("Usuário não encontrado!");
-
-        } catch (Exception e) {
-            System.out.println(e.toString());
+        } catch (NullPointerException e) {
+            System.out.println("Usuário não encontrado!");
         }
         return null;
     }
@@ -101,10 +98,8 @@ public class PlataformaStreaming {
             if (admAtual != null)
                 return admAtual;
 
-            throw new Exception("Administrador não encontrado!");
-
-        } catch (Exception e) {
-            System.out.println(e.toString());
+        } catch (NullPointerException e) {
+            System.out.println("Administrador não encontrado!");
         }
         return null;
     }
@@ -130,9 +125,8 @@ public class PlataformaStreaming {
             if (!(midiasPorGenero.isEmpty()))
                 return midiasPorGenero;
 
-            throw new Exception("Não há mídias para essa seleção!");
-        } catch (Exception e) {
-            System.out.println(e.toString());
+        } catch (NullPointerException e) {
+            System.out.println("Não há mídias para essa seleção!");
         }
         return midiasPorGenero;
     }
@@ -158,9 +152,8 @@ public class PlataformaStreaming {
             if (!(midiasPorIdioma.isEmpty()))
                 return midiasPorIdioma;
 
-            throw new Exception("Não há mídias para essa seleção!");
-        } catch (Exception e) {
-            System.out.println(e.toString());
+        } catch (NullPointerException e) {
+            System.out.println("Não há mídias para essa seleção!");
         }
         return midiasPorIdioma;
     }
@@ -192,9 +185,8 @@ public class PlataformaStreaming {
             if (!(seriesPorEpisodio.isEmpty()))
                 return seriesPorEpisodio;
 
-            throw new Exception("Não há séries para essa seleção!");
-        } catch (Exception e) {
-            System.out.println(e.toString());
+        } catch (NullPointerException e) {
+            System.out.println("Não há séries para essa seleção!");
         }
         return seriesPorEpisodio;
     }
@@ -216,9 +208,9 @@ public class PlataformaStreaming {
                     return midia;
                 }
             }
-            throw new Exception("Mídia não encontrada!");
-        } catch (Exception e) {
-            System.out.println(e.toString());
+
+        } catch (NullPointerException e) {
+            System.out.println("Mídia não encontrada!");
         }
         return null;
     }
